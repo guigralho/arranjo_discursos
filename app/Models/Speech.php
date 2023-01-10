@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\DeleteObserver;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,5 +35,15 @@ class Speech extends Model
     public function userCreated()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::parse($date)->format('d/m/Y');
+    }
+
+    public function getUpdatedAtAttribute($date)
+    {
+        return Carbon::parse($date)->format('d/m/Y H:i:s');
     }
 }

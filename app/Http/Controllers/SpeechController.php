@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SpeechRequest;
+use App\Models\Speech;
 use App\Services\SpeechService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class SpeechController extends Controller
@@ -30,5 +33,48 @@ class SpeechController extends Controller
             'name' => 'Discursos',
             'list' => $list
         ]);
+    }
+
+    public function store(SpeechRequest $speechRequest)
+    {
+
+        $speech = new Speech();
+        $speech->number = $speechRequest->number;
+        $speech->theme = $speechRequest->theme;
+
+        $speech->user_created_id = $speechRequest->user()->id;
+
+        $this->speechService->create($speech);
+
+        return Redirect::route('speeches.index');
+    }
+
+    public function create()
+    {
+        return Inertia::render('Speech/Create', [
+            'name' => 'Novo discurso',
+        ]);
+    }
+
+    public function show($speech)
+    {
+        $speech = Speech::whereId($speech)->with('userCreated')->with('userUpdated')->first();
+
+        return Inertia::render('Speech/Update', [
+            'name' => 'Alterar discurso',
+            'speech' => $speech
+        ]);
+    }
+
+    public function update(SpeechRequest $speechRequest, Speech $speech)
+    {
+        $speech->number = $speechRequest->number;
+        $speech->theme = $speechRequest->theme;
+
+        $speech->user_updated_id = $speechRequest->user()->id;
+
+        $this->speechService->create($speech);
+
+        return Redirect::route('speeches.index');
     }
 }
