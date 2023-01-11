@@ -6,6 +6,7 @@ import TablePaginator from "@/Components/TablePaginator.vue";
 import { ref, watch } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import debounce from "lodash/debounce";
+import DeleteModal from "@/Components/DeleteModal.vue";
 
 let props = defineProps({
     name: String,
@@ -15,6 +16,8 @@ let props = defineProps({
 });
 
 let search = ref(props.filters.search);
+let showModal = ref(false);
+let selectedItem = ref({});
 
 watch(
     search,
@@ -114,7 +117,14 @@ watch(
                                         icon="fa-solid fa-edit"
                                     />
                                 </EditButton>
-                                <DeleteButton :href="route('profile.edit')">
+                                <DeleteButton
+                                    @click="
+                                        () => {
+                                            showModal = true;
+                                            selectedItem = item;
+                                        }
+                                    "
+                                >
                                     <font-awesome-icon
                                         icon="fa-solid fa-trash"
                                     />
@@ -135,5 +145,12 @@ watch(
                 <TablePaginator :list="list" />
             </div>
         </div>
+
+        <DeleteModal
+            :delete-url="`speeches/${selectedItem.id}`"
+            :show="showModal"
+            :to-delete="`Tema ${selectedItem.number} - ${selectedItem.theme}`"
+            @close="showModal = false"
+        />
     </div>
 </template>

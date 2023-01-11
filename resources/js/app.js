@@ -17,6 +17,8 @@ import {
     faUserSecret,
     faEdit,
     faTrash,
+    faCircleCheck,
+    faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
@@ -27,7 +29,9 @@ library.add(
     faChevronLeft,
     faChevronRight,
     faEdit,
-    faTrash
+    faTrash,
+    faCircleCheck,
+    faSpinner
 );
 
 const appName =
@@ -41,7 +45,6 @@ createInertiaApp({
             import.meta.glob("./Pages/**/*.vue")
         );
         page.then((module) => {
-            console.log(module.default.layout);
             module.default.layout =
                 module.default.layout === undefined
                     ? AuthenticatedLayout

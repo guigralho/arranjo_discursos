@@ -19,7 +19,7 @@ const form = useForm({
 const submit = () => {
     form.put(route("speeches.update", props.speech.id), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
+        onSuccess: () => {},
         onError: () => {
             if (form.errors.password) {
                 form.reset("theme");

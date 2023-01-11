@@ -61,7 +61,7 @@ class SpeechController extends Controller
     {
         $speech = Speech::whereId($speech)->with('userCreated')->with('userUpdated')->first();
 
-        return Inertia::render('Speech/Update', [
+        return Inertia::render('Speech/Show', [
             'name' => 'Alterar discurso',
             'speech' => $speech
         ]);
@@ -76,6 +76,13 @@ class SpeechController extends Controller
 
         $this->speechService->create($speech);
 
-        return Redirect::route('speeches.index');
+        return Redirect::route('speeches.show', $speech->id);
+    }
+
+    public function destroy(Speech $speech)
+    {
+        $this->speechService->delete($speech);
+
+        return Redirect::back();
     }
 }
