@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
+import SaveButton from "@/Components/Buttons/SaveButton.vue";
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -101,7 +102,7 @@ const updatePassword = () => {
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <SaveButton :disabled="form.processing">Salvar</SaveButton>
 
                 <Transition
                     class="transition ease-in-out"

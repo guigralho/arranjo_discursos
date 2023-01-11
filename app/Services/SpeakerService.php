@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\Speech;
+use App\Models\Speaker;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class SpeechService
+class SpeakerService
 {
 
     /**
-     * @param Speech $speech
+     * @param Speaker $speaker
      */
     public function __construct(
-        public Speech $speech,
+        public Speaker $speaker,
     )
     {
     }
@@ -22,7 +22,7 @@ class SpeechService
      * @param $userId
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
-    public function findSpeechById($userId)
+    public function findSpeakerById($userId)
     {
         return $this->query()->find($userId);
     }
@@ -32,7 +32,7 @@ class SpeechService
      */
     private function query()
     {
-        return $this->speech->query();
+        return $this->speaker->query();
     }
 
     /**
@@ -46,8 +46,8 @@ class SpeechService
 
         if ($searchString) {
             $query = $query->where(function ($query) use ($searchString) {
-                return $query->where('number', $searchString)
-                    ->orWhere('theme', 'like', "%{$searchString}%");
+                return $query->where('privilege', $searchString)
+                    ->orWhere('name', 'like', "%{$searchString}%");
             });
         }
 
@@ -55,23 +55,23 @@ class SpeechService
     }
 
     /**
-     * @param Speech $speech
+     * @param Speaker $speaker
      * @return array
      */
-    public function update(Speech $speech)
+    public function update(Speaker $speaker)
     {
-        return $this->create($speech);
+        return $this->create($speaker);
     }
 
     /**
-     * @param Speech $speech
+     * @param Speaker $speaker
      * @return array
      */
-    public function create(Speech $speech)
+    public function create(Speaker $speaker)
     {
         try {
-            DB::transaction(function () use ($speech) {
-                if (!$speech->save())
+            DB::transaction(function () use ($speaker) {
+                if (!$speaker->save())
                     throw new Exception('Erro ao inserir no banco de dados');
 
                 return true;
@@ -90,11 +90,11 @@ class SpeechService
     }
 
     /**
-     * @param Speech $speech
+     * @param Speaker $speaker
      * @return bool|null
      */
-    public function delete(Speech $speech)
+    public function delete(Speaker $speaker)
     {
-        return $speech->delete();
+        return $speaker->delete();
     }
 }

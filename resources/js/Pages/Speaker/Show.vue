@@ -1,28 +1,27 @@
 <script setup>
 import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
 
 const props = defineProps({
     name: String,
-    speech: Object,
+    speaker: Object,
 });
 
 const form = useForm({
-    number: props.speech.number,
-    theme: props.speech.theme,
+    name: props.speaker.name,
+    privilege: props.speaker.privilege,
 });
 
 const submit = () => {
-    form.put(route("speeches.update", props.speech.id), {
+    form.put(route("speakers.update", props.speaker.id), {
         preserveScroll: true,
         onSuccess: () => {},
         onError: () => {
-            if (form.errors.theme) {
-                form.reset("theme");
+            if (form.errors.privilege) {
+                form.reset("privilege");
             }
-            if (form.errors.number) {
-                form.reset("number");
+            if (form.errors.name) {
+                form.reset("name");
             }
         },
     });
@@ -33,6 +32,6 @@ const submit = () => {
     <Head :title="name" />
 
     <div class="mx-auto max-w-7xl space-y-6 py-6 sm:px-6 lg:px-8">
-        <Form :form="form" :speech="speech" :submit="submit" />
+        <Form :data="speaker" :form="form" :submit="submit" />
     </div>
 </template>

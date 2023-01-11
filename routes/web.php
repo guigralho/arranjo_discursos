@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SpeakerController;
 use App\Http\Controllers\SpeechController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/speeches', SpeechController::class);
+
+    Route::resource('/speakers', SpeakerController::class);
 });
 
 require __DIR__ . '/auth.php';

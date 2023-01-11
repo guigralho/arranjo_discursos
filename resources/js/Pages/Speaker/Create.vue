@@ -3,20 +3,20 @@ import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
 
 const form = useForm({
-    number: "",
-    theme: "",
+    name: "",
+    privilege: "",
 });
 
 const submit = () => {
-    form.post(route("speeches.store"), {
+    form.post(route("speakers.store"), {
         preserveScroll: true,
         onSuccess: () => form.reset(),
         onError: () => {
-            if (form.errors.theme) {
-                form.reset("theme");
+            if (form.errors.privilege) {
+                form.reset("privilege");
             }
-            if (form.errors.number) {
-                form.reset("number");
+            if (form.errors.name) {
+                form.reset("name");
             }
         },
     });

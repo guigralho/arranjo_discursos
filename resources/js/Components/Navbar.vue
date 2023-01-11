@@ -185,6 +185,11 @@ const setNavigation = () => {
             href: route("speeches.index"),
             current: route().current("speeches*"),
         },
+        {
+            name: "Oradores",
+            href: route("speakers.index"),
+            current: route().current("speakers*"),
+        },
     ];
 };
 

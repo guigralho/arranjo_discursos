@@ -11,7 +11,6 @@ use Inertia\Inertia;
 
 class SpeechController extends Controller
 {
-
     public function __construct(public SpeechService $speechService, public Request $request)
     {
     }
