@@ -3,12 +3,29 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
+import { ref, watch } from "vue";
+import { Inertia } from "@inertiajs/inertia";
+import debounce from "lodash/debounce";
 
-defineProps({
+let props = defineProps({
     name: String,
     list: Object,
     search: String,
+    filters: Object,
 });
+
+let search = ref(props.filters.search);
+
+watch(
+    search,
+    debounce(function (value) {
+        Inertia.get(
+            "/speeches",
+            { search: value },
+            { preserveState: true, replace: true }
+        );
+    }, 300)
+);
 </script>
 
 <template>
@@ -16,31 +33,25 @@ defineProps({
 
     <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
         <div
-            class="mb-1 flex w-full flex-col justify-between sm:mb-0 md:flex-row"
+            class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
         >
-            <div class="text-end">
-                <form
-                    class="flex flex-col justify-center space-y-3 md:w-full md:flex-row md:space-x-3 md:space-y-0"
-                >
-                    <div class="relative">
-                        <input
-                            :value="$page.props.ziggy.query.search"
-                            autocomplete="off"
-                            class="w-full flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-sky-900 dark:bg-gray-800 dark:text-gray-200"
-                            name="search"
-                            placeholder="Buscar"
-                            type="text"
-                        />
-                    </div>
-                </form>
+            <div class="flex flex-col gap-4 md:w-full md:flex-row">
+                <div class="relative">
+                    <input
+                        v-model="search"
+                        autocomplete="off"
+                        class="w-full flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-sky-900 dark:bg-gray-800 dark:text-gray-200"
+                        name="search"
+                        placeholder="Buscar"
+                        type="text"
+                    />
+                </div>
             </div>
-            <div class="mt-4">
-                <Link
-                    :href="route('speeches.create')"
-                    class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
-                    >Novo</Link
-                >
-            </div>
+            <Link
+                :href="route('speeches.create')"
+                class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
+                >Novo</Link
+            >
         </div>
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
             <div
@@ -114,7 +125,9 @@ defineProps({
                             v-else
                             class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-white"
                         >
-                            <td class="px-5 py-3 text-sm">Nenhum registro</td>
+                            <td class="px-5 py-3 text-sm" colspan="4">
+                                Nenhum registro encontrado!
+                            </td>
                         </tr>
                     </tbody>
                 </table>

@@ -31,7 +31,8 @@ class SpeechController extends Controller
 
         return Inertia::render('Speech/List', [
             'name' => 'Discursos',
-            'list' => $list
+            'list' => $list,
+            'filters' => $this->request->only('search')
         ]);
     }
 
