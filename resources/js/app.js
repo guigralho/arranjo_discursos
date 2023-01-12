@@ -12,13 +12,15 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
     faChevronLeft,
     faChevronRight,
-    faMoon,
-    faSun,
-    faUserSecret,
-    faEdit,
-    faTrash,
     faCircleCheck,
+    faEdit,
+    faMoon,
+    faSortAsc,
+    faSortDesc,
     faSpinner,
+    faSun,
+    faTrash,
+    faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
@@ -31,7 +33,9 @@ library.add(
     faEdit,
     faTrash,
     faCircleCheck,
-    faSpinner
+    faSpinner,
+    faSortAsc,
+    faSortDesc
 );
 
 const appName =

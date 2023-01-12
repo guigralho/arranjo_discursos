@@ -24,8 +24,12 @@ class SpeakerController extends Controller
         if ($this->request->has('search'))
             $search['searchString'] = $this->request->get('search');
 
+        $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'id';
+        $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
+
         $list = $this->speakerService
             ->list($search)
+            ->orderBy($field, $dir)
             ->paginate($this->request->get('perPage', 10))
             ->withQueryString()
             ->onEachSide(1);
@@ -33,7 +37,7 @@ class SpeakerController extends Controller
         return Inertia::render('Speaker/List', [
             'name' => 'Oradores',
             'list' => $list,
-            'filters' => $this->request->only('search')
+            'filters' => $this->request->only(['search', 'orderField', 'orderDir', 'page'])
         ]);
     }
 

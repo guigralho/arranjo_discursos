@@ -15,20 +15,51 @@ let props = defineProps({
     filters: Object,
 });
 
+let page = ref(props.filters.page);
 let search = ref(props.filters.search);
+let orderDir = ref(props.filters.orderDir);
+let orderField = ref(props.filters.orderField);
 let showModal = ref(false);
 let selectedItem = ref({});
 
 watch(
-    search,
-    debounce(function (value) {
+    [search, orderDir, orderField],
+    debounce(function (
+        [valueSearch, valueOrderDir, valueOrderField],
+        [oldValSearch]
+    ) {
+        if (valueSearch !== oldValSearch) {
+            page.value = 1;
+        }
         Inertia.get(
             "/speakers",
-            { search: value },
+            {
+                search: valueSearch,
+                orderDir: valueOrderDir,
+                orderField: valueOrderField,
+                page: page.value,
+            },
             { preserveState: true, replace: true }
         );
-    }, 300)
+    },
+    300)
 );
+
+const toggleOrder = (field) => {
+    orderField.value = field;
+
+    if (orderDir.value === undefined) {
+        orderDir.value = "asc";
+    } else if (orderDir.value === "asc") {
+        orderDir.value = "desc";
+    } else if (orderDir.value === "desc") {
+        orderDir.value = undefined;
+
+        orderField.value = "";
+    }
+
+    console.log(orderDir.value);
+};
 </script>
 
 <template>
@@ -63,19 +94,31 @@ watch(
                 <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
                     <thead>
                         <tr
-                            class="font-weight-bold border-b px-10 text-gray-800 dark:border-gray-900 dark:text-white"
+                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-white"
                         >
                             <th
-                                class="w-2/12 px-5 py-5 text-left text-sm uppercase"
+                                class="w-2/12 cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
+                                @click="toggleOrder('privilege')"
                             >
-                                Privilégio
+                                <p class="flex items-center gap-2">
+                                    Privilégio
+                                    <font-awesome-icon
+                                        v-if="orderField === 'privilege'"
+                                        :icon="`fa-solid fa-sort-${orderDir}`"
+                                    />
+                                </p>
                             </th>
                             <th
-                                class="px-5 py-5 text-left text-sm uppercase"
+                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
+                                @click="toggleOrder('name')"
                             >
                                 Nome
+                                <font-awesome-icon
+                                    v-if="orderField === 'name'"
+                                    :icon="`fa-solid fa-sort-${orderDir}`"
+                                />
                             </th>
                             <th
                                 class="px-5 py-5 text-left text-sm uppercase"
