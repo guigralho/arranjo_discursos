@@ -1,10 +1,13 @@
 <script setup>
 import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
+import SpeechsList from "@/Pages/Speaker/Partials/SpeechsList.vue";
 
 const props = defineProps({
     name: String,
     speaker: Object,
+    mySpeeches: Object,
+    speeches: Object,
 });
 
 const form = useForm({
@@ -31,7 +34,14 @@ const submit = () => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl space-y-6 py-6 sm:px-6 lg:px-8">
+    <div
+        class="mx-auto grid max-w-7xl grid-cols-none gap-6 py-6 sm:grid-cols-2 sm:px-6 lg:px-8"
+    >
         <Form :data="speaker" :form="form" :submit="submit" />
+        <SpeechsList
+            :my-speeches="mySpeeches"
+            :speaker="speaker"
+            :speeches="speeches"
+        />
     </div>
 </template>

@@ -29,6 +29,11 @@ class Speech extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function speakers()
+    {
+        return $this->belongsToMany(Speaker::class);
+    }
+
     /**
      * @return mixed
      */

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SpeakerController;
+use App\Http\Controllers\SpeakerSpeechController;
 use App\Http\Controllers\SpeechController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/speeches', SpeechController::class);
 
     Route::resource('/speakers', SpeakerController::class);
+
+    Route::post('/speaker-speech/{speaker}', [SpeakerSpeechController::class, 'store'])->name('speaker-speech.store');
+    Route::delete('/speaker-speech/{speaker}/{speech}', [SpeakerSpeechController::class, 'destroy'])->name('speaker-speech.destroy');
 });
 
 require __DIR__ . '/auth.php';

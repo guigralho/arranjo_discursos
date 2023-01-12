@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SpeakerRequest;
 use App\Models\Speaker;
+use App\Models\Speech;
 use App\Services\SpeakerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class SpeakerController extends Controller
@@ -46,6 +48,8 @@ class SpeakerController extends Controller
 
         $this->speakerService->create($speaker);
 
+        Session::flash('message', ['value' => 'Criado com sucesso!', 'uuid' => uniqid()]);
+
         return Redirect::route('speakers.show', $speaker->id);
     }
 
@@ -58,11 +62,14 @@ class SpeakerController extends Controller
 
     public function show($speaker)
     {
+        $name = 'Alterar orador';
         $speaker = Speaker::whereId($speaker)->with('userCreated')->with('userUpdated')->first();
-        return Inertia::render('Speaker/Show', [
-            'name' => 'Alterar orador',
-            'speaker' => $speaker
-        ]);
+
+        $speeches = Speech::query()->whereNotIn('id', $speaker->speeches()->get()->pluck('pivot.speech_id'))->get();
+
+        $mySpeeches = $speaker->speeches()->orderBy('number')->paginate(10);
+
+        return Inertia::render('Speaker/Show', compact('name', 'speaker', 'mySpeeches', 'speeches'));
     }
 
     public function update(SpeakerRequest $speakerRequest, Speaker $speaker)
@@ -74,12 +81,16 @@ class SpeakerController extends Controller
 
         $this->speakerService->create($speaker);
 
+        Session::flash('message', ['value' => 'Atualizado com sucesso!', 'uuid' => uniqid()]);
+
         return Redirect::route('speakers.show', $speaker->id);
     }
 
     public function destroy(Speaker $speaker)
     {
         $this->speakerService->delete($speaker);
+
+        Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
         return Redirect::back();
     }

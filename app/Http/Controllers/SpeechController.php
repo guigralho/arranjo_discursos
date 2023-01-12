@@ -7,6 +7,7 @@ use App\Models\Speech;
 use App\Services\SpeechService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class SpeechController extends Controller
@@ -46,6 +47,8 @@ class SpeechController extends Controller
 
         $this->speechService->create($speech);
 
+        Session::flash('message', ['value' => 'Criado com sucesso!', 'uuid' => uniqid()]);
+
         return Redirect::route('speeches.index');
     }
 
@@ -75,12 +78,16 @@ class SpeechController extends Controller
 
         $this->speechService->create($speech);
 
+        Session::flash('message', ['value' => 'Atualizado com sucesso!', 'uuid' => uniqid()]);
+
         return Redirect::route('speeches.show', $speech->id);
     }
 
     public function destroy(Speech $speech)
     {
         $this->speechService->delete($speech);
+
+        Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
         return Redirect::back();
     }

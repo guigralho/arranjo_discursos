@@ -1,6 +1,7 @@
 <script setup>
 import Navbar from "@/Components/Navbar.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
+import SuccessAlert from "@/Components/SuccessAlert.vue";
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import Breadcrumb from "@/Components/Breadcrumb.vue";
 
             <!-- Page Content -->
             <main>
+                <SuccessAlert />
                 <slot />
             </main>
         </div>

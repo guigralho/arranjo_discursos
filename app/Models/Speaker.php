@@ -37,6 +37,11 @@ class Speaker extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function speeches()
+    {
+        return $this->belongsToMany(Speech::class);
+    }
+
     public function getCreatedAtAttribute($date)
     {
         return Carbon::parse($date)->format('d/m/Y');

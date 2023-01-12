@@ -2,8 +2,8 @@
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
+import TextInput from "@/Components/TextInput.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 
 defineProps({
@@ -22,21 +22,6 @@ const back = () => {
 
 <template>
     <form class="space-y-6" @submit.prevent="submit">
-        <Transition
-            class="transition duration-300 ease-in-out"
-            enter-from-class="opacity-0"
-            leave-to-class="opacity-0"
-        >
-            <div
-                v-if="form.recentlySuccessful"
-                class="bg-green-50 px-5 py-3 sm:rounded-lg"
-            >
-                <p class="text-bold text-emerald-800">
-                    <font-awesome-icon icon="fa-solid fa-circle-check" />
-                    Salvo com sucesso!
-                </p>
-            </div>
-        </Transition>
         <div class="bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8">
             <section class="max-w-xl space-y-6">
                 <div>
@@ -83,17 +68,16 @@ const back = () => {
             <PrimaryButton
                 :disabled="form.processing"
                 :href="route('speakers.index')"
+                class="flex-1 sm:flex-none"
                 type="button"
                 >Voltar</PrimaryButton
             >
-            <SaveButton :disabled="form.processing">
-                <font-awesome-icon
-                    v-if="form.processing"
-                    icon="fa-solid fa-spinner"
-                    spin
-                />
+            <SaveButton :disabled="form.processing" class="flex-1 sm:flex-none">
                 <p v-if="!form.processing">Salvar</p>
-                <p v-else>Aguarde...</p>
+                <p v-else>
+                    <font-awesome-icon icon="fa-solid fa-spinner" spin />
+                    Aguarde...
+                </p>
             </SaveButton>
         </div>
     </form>

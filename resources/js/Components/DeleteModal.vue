@@ -31,6 +31,7 @@ let disabledDeleteButton = ref(false);
 const deleteRow = () => {
     Inertia.delete(props.deleteUrl, {
         preserveState: true,
+        preserveScroll: true,
         replace: true,
         onSuccess: () => {
             emit("close");
