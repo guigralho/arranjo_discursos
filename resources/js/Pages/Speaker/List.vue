@@ -57,8 +57,6 @@ const toggleOrder = (field) => {
 
         orderField.value = "";
     }
-
-    console.log(orderDir.value);
 };
 </script>
 

@@ -23,8 +23,16 @@ class SpeechController extends Controller
         if ($this->request->has('search'))
             $search['searchString'] = $this->request->get('search');
 
+        if ($this->request->filled('hasSpeakers'))
+            $search['hasSpeakers'] = $this->request->get('hasSpeakers');
+
+        $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'id';
+        $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
+
         $list = $this->speechService
             ->list($search)
+            ->with('speakers')
+            ->orderBy($field, $dir)
             ->paginate($this->request->get('perPage', 10))
             ->withQueryString()
             ->onEachSide(1);
@@ -32,7 +40,7 @@ class SpeechController extends Controller
         return Inertia::render('Speech/List', [
             'name' => 'Discursos',
             'list' => $list,
-            'filters' => $this->request->only('search')
+            'filters' => $this->request->only(['search', 'orderField', 'orderDir', 'page', 'hasSpeakers'])
         ]);
     }
 

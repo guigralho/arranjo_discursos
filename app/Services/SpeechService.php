@@ -42,6 +42,7 @@ class SpeechService
     public function list(array $search = [])
     {
         $searchString = data_get($search, 'searchString', false);
+        $hasSpeakers = data_get($search, 'hasSpeakers', false);
         $query = $this->query();
 
         if ($searchString) {
@@ -49,6 +50,10 @@ class SpeechService
                 return $query->where('number', $searchString)
                     ->orWhere('theme', 'like', "%{$searchString}%");
             });
+        }
+
+        if ($hasSpeakers == 'true') {
+            $query = $query->has('speakers');
         }
 
         return $query;
