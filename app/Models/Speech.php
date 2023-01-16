@@ -34,6 +34,11 @@ class Speech extends Model
         return $this->belongsToMany(Speaker::class);
     }
 
+    public function lastMade()
+    {
+        return $this->hasOne(ReceiveSpeakers::class)->orderBy('date', 'desc');
+    }
+
     /**
      * @return mixed
      */

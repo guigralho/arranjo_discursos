@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('receive_speakers', function (Blueprint $table) {
             $table->id();
 
-            $table->string('date');
+            $table->date('date');
             $table->string('speaker')->nullable();
             $table->unsignedBigInteger('schedule_id')->nullable()->unsigned();
             $table->unsignedBigInteger('speech_id')->nullable()->unsigned();

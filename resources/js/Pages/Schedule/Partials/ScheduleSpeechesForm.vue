@@ -38,7 +38,8 @@ const fillDates = () => {
         form.weeks.push({
             date: item.date,
             speech: item.speech_id,
-            speaker: item.speaker || item.speaker_id,
+            speaker:
+                props.speakers === undefined ? item.speaker : item.speaker_id,
         });
     });
 };

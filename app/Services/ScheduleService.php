@@ -109,11 +109,11 @@ class ScheduleService
             foreach ($dt->daysUntil($dt2) as $item) {
                 if ($schedule->day == 'Sábado' && $item->dayOfWeek === Carbon::SATURDAY) {
                     $schedule->toSend()->create([
-                        'date' => $item->format('d/m/Y'),
+                        'date' => $item->format('Y-m-d'),
                     ]);
                 } else if ($item->dayOfWeek === Carbon::SUNDAY) {
                     $schedule->toSend()->create([
-                        'date' => $item->format('d/m/Y'),
+                        'date' => $item->format('Y-m-d'),
                     ]);
                 }
             }
@@ -123,7 +123,7 @@ class ScheduleService
             foreach ($dt->daysUntil($dt2) as $item) {
                 if ($item->dayOfWeek === Carbon::SUNDAY) {
                     $schedule->toReceive()->create([
-                        'date' => $item->format('d/m/Y'),
+                        'date' => $item->format('Y-m-d'),
                     ]);
                 }
             }

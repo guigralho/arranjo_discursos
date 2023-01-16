@@ -123,7 +123,7 @@ class ScheduleController extends Controller
         foreach ($this->request->get('weeks') as $week) {
             $schedule->toReceive()->create([
                 'speech_id' => $week['speech'],
-                'date' => $week['date'],
+                'date' => dateConverter($week['date']),
                 'speaker' => $week['speaker'],
                 'created_at' => now()
             ]);
@@ -145,7 +145,7 @@ class ScheduleController extends Controller
         foreach ($this->request->get('weeks') as $week) {
             $schedule->toSend()->create([
                 'speech_id' => $week['speech'],
-                'date' => $week['date'],
+                'date' => dateConverter($week['date']),
                 'speaker_id' => $week['speaker'],
                 'created_at' => now()
             ]);

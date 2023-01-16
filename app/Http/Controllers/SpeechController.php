@@ -26,12 +26,15 @@ class SpeechController extends Controller
         if ($this->request->filled('hasSpeakers'))
             $search['hasSpeakers'] = $this->request->get('hasSpeakers');
 
-        $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'id';
+        $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'speeches.id';
         $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
 
         $list = $this->speechService
             ->list($search)
-            ->with('speakers')
+            ->select('speeches.*')
+            ->with(['speakers', 'lastMade'])
+            ->join('receive_speakers', 'receive_speakers.speech_id', '=', 'speeches.id', 'left')
+            ->groupBy('speeches.id')
             ->orderBy($field, $dir)
             ->paginate($this->request->get('perPage', 10))
             ->withQueryString()

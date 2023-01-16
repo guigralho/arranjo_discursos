@@ -141,7 +141,7 @@ const toggleOrder = (field) => {
                             <th
                                 class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
-                                @click="toggleOrder('updated_at')"
+                                @click="toggleOrder('speeches.updated_at')"
                             >
                                 <p class="flex items-center gap-2">
                                     Atualizado em
@@ -149,6 +149,22 @@ const toggleOrder = (field) => {
                                         :order-dir="orderDir"
                                         :update-icon="
                                             orderField === 'updated_at'
+                                        "
+                                    />
+                                </p>
+                            </th>
+                            <th
+                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                scope="col"
+                                @click="toggleOrder('receive_speakers.date')"
+                            >
+                                <p class="flex items-center gap-2">
+                                    Realizado em
+                                    <SortIcons
+                                        :order-dir="orderDir"
+                                        :update-icon="
+                                            orderField ===
+                                            'receive_speakers.date'
                                         "
                                     />
                                 </p>
@@ -182,6 +198,9 @@ const toggleOrder = (field) => {
                             </td>
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
                                 {{ item.updated_at }}
+                            </td>
+                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                                {{ item.last_made?.date }}
                             </td>
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
                                 {{ item.speakers.length > 0 ? "Sim" : "Não" }}
