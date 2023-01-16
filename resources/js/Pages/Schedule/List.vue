@@ -3,12 +3,13 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import debounce from "lodash/debounce";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
+import Datepicker from "flowbite-datepicker/Datepicker";
 
 let props = defineProps({
     name: String,
@@ -19,24 +20,36 @@ let props = defineProps({
 
 let page = ref(props.filters.page);
 let search = ref(props.filters.search);
+let searchDate = ref(props.filters.searchDate);
 let orderDir = ref(props.filters.orderDir);
 let orderField = ref(props.filters.orderField);
 let showModal = ref(false);
 let selectedItem = ref({});
 
+onMounted(() => {
+    // the DOM element will be assigned to the ref after initial render
+    new Datepicker(document.getElementById("datepickerId"), {
+        format: "dd/mm/yyyy",
+        startView: 1,
+        pickLevel: 1,
+        autohide: true,
+    });
+});
+
 watch(
-    [search, orderDir, orderField],
+    [search, searchDate, orderDir, orderField],
     debounce(function (
-        [valueSearch, valueOrderDir, valueOrderField],
+        [valueSearch, valueSearchDate, valueOrderDir, valueOrderField],
         [oldValSearch]
     ) {
         if (valueSearch !== oldValSearch) {
             page.value = 1;
         }
         Inertia.get(
-            "/speakers",
+            "/schedules",
             {
                 search: valueSearch,
+                searchDate: valueSearchDate,
                 orderDir: valueOrderDir,
                 orderField: valueOrderField,
                 page: page.value,
@@ -60,6 +73,10 @@ const toggleOrder = (field) => {
         orderField.value = "";
     }
 };
+
+const changeVal = (val) => {
+    searchDate.value = val;
+};
 </script>
 
 <template>
@@ -80,9 +97,21 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
+                <div class="relative">
+                    <TextInput
+                        id="datepickerId"
+                        v-model="searchDate"
+                        autocomplete="off"
+                        class="dark:bg-gray-800 dark:text-gray-200"
+                        name="searchDate"
+                        placeholder="Data"
+                        type="text"
+                        @focusout="changeVal($event.target.value)"
+                    />
+                </div>
             </div>
             <Link
-                :href="route('speakers.create')"
+                :href="route('schedules.create')"
                 class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
                 >Novo</Link
             >
@@ -99,34 +128,26 @@ const toggleOrder = (field) => {
                             <th
                                 class="w-2/12 cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
-                                @click="toggleOrder('privilege')"
+                                @click="toggleOrder('month')"
                             >
                                 <p class="flex items-center gap-2">
-                                    Privilégio
+                                    Data
                                     <SortIcons
                                         :order-dir="orderDir"
-                                        :update-icon="
-                                            orderField === 'privilege'
-                                        "
+                                        :update-icon="orderField === 'month'"
                                     />
                                 </p>
                             </th>
                             <th
                                 class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
-                                @click="toggleOrder('name')"
+                                @click="toggleOrder('congregation')"
                             >
-                                Nome
+                                Congregação
                                 <SortIcons
                                     :order-dir="orderDir"
-                                    :update-icon="orderField === 'name'"
+                                    :update-icon="orderField === 'congregation'"
                                 />
-                            </th>
-                            <th
-                                class="px-5 py-5 text-left text-sm uppercase"
-                                scope="col"
-                            >
-                                Último discurso
                             </th>
                             <th
                                 class="w-1/12 px-5 py-5 text-left text-sm uppercase"
@@ -144,19 +165,16 @@ const toggleOrder = (field) => {
                             class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-white dark:hover:bg-gray-700"
                         >
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
-                                {{ item.privilege }}
+                                {{ item.translated_month }}
                             </td>
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
-                                {{ item.name }}
-                            </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
-                                TODO
+                                {{ item.congregation }}
                             </td>
                             <td
                                 class="space-x-3 whitespace-nowrap px-5 py-5 text-sm"
                             >
                                 <EditButton
-                                    :href="route('speakers.show', item.id)"
+                                    :href="route('schedules.show', item.id)"
                                 >
                                     <font-awesome-icon
                                         icon="fa-solid fa-edit"
@@ -192,9 +210,9 @@ const toggleOrder = (field) => {
         </div>
 
         <DeleteModal
-            :delete-url="`speakers/${selectedItem.id}`"
+            :delete-url="`schedules/${selectedItem.id}`"
             :show="showModal"
-            :to-delete="selectedItem.name"
+            :to-delete="`${selectedItem.translated_month} - ${selectedItem.congregation}`"
             @close="showModal = false"
         />
     </div>

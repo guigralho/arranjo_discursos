@@ -25,13 +25,12 @@ watch(notification, (val) => {
     >
         <div v-if="showNot" class="mx-auto max-w-7xl py-3 sm:px-3 lg:px-8">
             <div
-                class="bg-green-50 px-5 py-3 dark:bg-green-700 sm:rounded-lg"
+                class="mb-4 rounded-lg bg-green-100 p-4 text-sm text-green-700 dark:bg-gray-800 dark:text-green-400"
+                role="alert"
                 @click="showNot = null"
             >
-                <p class="text-bold text-emerald-800 dark:text-white">
-                    <font-awesome-icon icon="fa-solid fa-circle-check" />
-                    {{ showNot.value }}
-                </p>
+                <font-awesome-icon icon="fa-solid fa-circle-check" />
+                {{ showNot.value }}
             </div>
         </div>
     </Transition>

@@ -181,6 +181,11 @@ const setNavigation = () => {
             current: route().current("dashboard*"),
         },
         {
+            name: "Arranjos",
+            href: route("schedules.index"),
+            current: route().current("schedules*"),
+        },
+        {
             name: "Discursos",
             href: route("speeches.index"),
             current: route().current("speeches*"),

@@ -15,6 +15,7 @@ import {
     faCircleCheck,
     faEdit,
     faMoon,
+    faSort,
     faSortAsc,
     faSortDesc,
     faSpinner,
@@ -35,7 +36,8 @@ library.add(
     faCircleCheck,
     faSpinner,
     faSortAsc,
-    faSortDesc
+    faSortDesc,
+    faSort
 );
 
 const appName =

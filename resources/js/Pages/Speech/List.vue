@@ -8,6 +8,8 @@ import { Inertia } from "@inertiajs/inertia";
 import debounce from "lodash/debounce";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import Checkbox from "@/Components/Checkbox.vue";
+import TextInput from "@/Components/TextInput.vue";
+import SortIcons from "@/Components/SortIcons.vue";
 
 let props = defineProps({
     name: String,
@@ -72,10 +74,10 @@ const toggleOrder = (field) => {
         >
             <div class="flex flex-col items-center gap-4 md:w-full md:flex-row">
                 <div class="relative">
-                    <input
+                    <TextInput
                         v-model="search"
                         autocomplete="off"
-                        class="w-full flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-sky-900 dark:bg-gray-800 dark:text-gray-200"
+                        class="dark:bg-gray-800 dark:text-gray-200"
                         name="search"
                         placeholder="Buscar"
                         type="text"
@@ -117,9 +119,9 @@ const toggleOrder = (field) => {
                             >
                                 <p class="flex items-center gap-2">
                                     Número
-                                    <font-awesome-icon
-                                        v-if="orderField === 'number'"
-                                        :icon="`fa-solid fa-sort-${orderDir}`"
+                                    <SortIcons
+                                        :order-dir="orderDir"
+                                        :update-icon="orderField === 'number'"
                                     />
                                 </p>
                             </th>
@@ -130,9 +132,9 @@ const toggleOrder = (field) => {
                             >
                                 <p class="flex items-center gap-2">
                                     Tema
-                                    <font-awesome-icon
-                                        v-if="orderField === 'theme'"
-                                        :icon="`fa-solid fa-sort-${orderDir}`"
+                                    <SortIcons
+                                        :order-dir="orderDir"
+                                        :update-icon="orderField === 'theme'"
                                     />
                                 </p>
                             </th>
@@ -143,9 +145,11 @@ const toggleOrder = (field) => {
                             >
                                 <p class="flex items-center gap-2">
                                     Atualizado em
-                                    <font-awesome-icon
-                                        v-if="orderField === 'updated_at'"
-                                        :icon="`fa-solid fa-sort-${orderDir}`"
+                                    <SortIcons
+                                        :order-dir="orderDir"
+                                        :update-icon="
+                                            orderField === 'updated_at'
+                                        "
                                     />
                                 </p>
                             </th>

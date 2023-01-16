@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SpeakerController;
 use App\Http\Controllers\SpeakerSpeechController;
 use App\Http\Controllers\SpeechController;
@@ -38,8 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/speeches', SpeechController::class);
-
     Route::resource('/speakers', SpeakerController::class);
+    Route::resource('/schedules', ScheduleController::class);
 
     Route::post('/speaker-speech/{speaker}', [SpeakerSpeechController::class, 'store'])->name('speaker-speech.store');
     Route::delete('/speaker-speech/{speaker}/{speech}', [SpeakerSpeechController::class, 'destroy'])->name('speaker-speech.destroy');

@@ -2,6 +2,7 @@
 
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
+use App\Models\Schedule;
 use App\Models\Speaker;
 use App\Models\Speech;
 use Diglactic\Breadcrumbs\Breadcrumbs;
@@ -30,6 +31,7 @@ Breadcrumbs::for('speeches.show', function (BreadcrumbTrail $trail, $speech) {
     $trail->push($speech->theme, route('speeches.show', $speech->id));
 });
 
+//
 Breadcrumbs::for('speakers.index', function (BreadcrumbTrail $trail) {
     $trail->push('Oradores', route('speakers.index'));
 });
@@ -43,4 +45,20 @@ Breadcrumbs::for('speakers.show', function (BreadcrumbTrail $trail, $speaker) {
     $speaker = Speaker::findOrFail($speaker);
     $trail->parent('speakers.index');
     $trail->push($speaker->name, route('speakers.show', $speaker->id));
+});
+
+//
+Breadcrumbs::for('schedules.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Arranjos', route('schedules.index'));
+});
+
+Breadcrumbs::for('schedules.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('schedules.index');
+    $trail->push('Novo arranjo', route('schedules.create'));
+});
+
+Breadcrumbs::for('schedules.show', function (BreadcrumbTrail $trail, $schedule) {
+    $schedule = Schedule::findOrFail($schedule);
+    $trail->parent('schedules.index');
+    $trail->push($schedule->congregation, route('schedules.show', $schedule->id));
 });
