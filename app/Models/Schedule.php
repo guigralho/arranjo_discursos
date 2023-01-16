@@ -39,6 +39,16 @@ class Schedule extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function toReceive()
+    {
+        return $this->hasMany(ReceiveSpeakers::class);
+    }
+
+    public function toSend()
+    {
+        return $this->hasMany(SendSpeakers::class);
+    }
+
     public function getFormattedMonthAttribute()
     {
         return Carbon::parse($this->month)->format('d/m/Y');

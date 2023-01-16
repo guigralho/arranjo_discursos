@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Schedule;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -52,7 +53,6 @@ class ScheduleService
         }
 
         if ($searchDate) {
-            dd(dateConverter($searchDate));
             $query = $query->where('month', dateConverter($searchDate));
         }
 
@@ -83,6 +83,8 @@ class ScheduleService
                 if (!$schedule->save())
                     throw new Exception('Erro ao inserir no banco de dados');
 
+                $this->saveReceiveDates($schedule);
+
                 return true;
             });
 
@@ -96,6 +98,37 @@ class ScheduleService
         }
 
         return ['success' => true, 'message' => 'Registro salvo com sucesso'];
+    }
+
+    public function saveReceiveDates(Schedule $schedule)
+    {
+        $dt = Carbon::parse($schedule->month);
+        $dt2 = Carbon::parse($schedule->month)->lastOfMonth();
+
+        if (!$schedule->toSend()->exists()) {
+            foreach ($dt->daysUntil($dt2) as $item) {
+                if ($schedule->day == 'Sábado' && $item->dayOfWeek === Carbon::SATURDAY) {
+                    $schedule->toSend()->create([
+                        'date' => $item->format('d/m/Y'),
+                    ]);
+                } else if ($item->dayOfWeek === Carbon::SUNDAY) {
+                    $schedule->toSend()->create([
+                        'date' => $item->format('d/m/Y'),
+                    ]);
+                }
+            }
+        }
+
+        if (!$schedule->toReceive()->exists()) {
+            foreach ($dt->daysUntil($dt2) as $item) {
+                if ($item->dayOfWeek === Carbon::SUNDAY) {
+                    $schedule->toReceive()->create([
+                        'date' => $item->format('d/m/Y'),
+                    ]);
+                }
+            }
+        }
+
     }
 
     /**

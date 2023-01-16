@@ -98,4 +98,9 @@ class SpeakerController extends Controller
 
         return Redirect::back();
     }
+
+    public function getSpeeches(Speaker $speaker)
+    {
+        return $speaker->speeches()->orderBy('number')->get();
+    }
 }

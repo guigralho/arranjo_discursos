@@ -40,7 +40,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/speeches', SpeechController::class);
     Route::resource('/speakers', SpeakerController::class);
+    Route::get('/speakers/get-speeches/{speaker}', [SpeakerController::class, 'getSpeeches'])->name('speakers.get-speeches');
+
     Route::resource('/schedules', ScheduleController::class);
+    Route::post('/schedules/save-receive/{schedule}', [ScheduleController::class, 'saveReceive'])->name('schedules.save-receive');
+    Route::post('/schedules/save-send/{schedule}', [ScheduleController::class, 'saveSend'])->name('schedules.save-send');
 
     Route::post('/speaker-speech/{speaker}', [SpeakerSpeechController::class, 'store'])->name('speaker-speech.store');
     Route::delete('/speaker-speech/{speaker}/{speech}', [SpeakerSpeechController::class, 'destroy'])->name('speaker-speech.destroy');

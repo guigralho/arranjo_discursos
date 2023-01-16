@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ScheduleRequest;
 use App\Models\Schedule;
+use App\Models\Speaker;
 use App\Models\Speech;
 use App\Services\ScheduleService;
 use Illuminate\Http\Request;
@@ -74,10 +75,13 @@ class ScheduleController extends Controller
     public function show($schedule)
     {
         $name = 'Alterar arranjo';
-        $schedule = Schedule::whereId($schedule)->with('userCreated')->with('userUpdated')->first();
+        $schedule = Schedule::whereId($schedule)
+            ->with(['userCreated', 'toReceive', 'toSend'])
+            ->first();
         $speeches = Speech::get();
+        $speakers = Speaker::get();
 
-        return Inertia::render('Schedule/Show', compact('name', 'schedule', 'speeches'));
+        return Inertia::render('Schedule/Show', compact('name', 'schedule', 'speeches', 'speakers'));
     }
 
     public function update(ScheduleRequest $scheduleRequest, Schedule $schedule)
@@ -106,5 +110,49 @@ class ScheduleController extends Controller
         Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
         return Redirect::back();
+    }
+
+    public function saveReceive(Schedule $schedule)
+    {
+        $this->request->validate([
+            'weeks.*.date' => ['required', 'date_format:d/m/Y'],
+        ]);
+
+        $schedule->toReceive()->delete();
+
+        foreach ($this->request->get('weeks') as $week) {
+            $schedule->toReceive()->create([
+                'speech_id' => $week['speech'],
+                'date' => $week['date'],
+                'speaker' => $week['speaker'],
+                'created_at' => now()
+            ]);
+        }
+
+        Session::flash('message', ['value' => 'Atualizado com sucesso!', 'uuid' => uniqid()]);
+
+        return Redirect::route('schedules.show', $schedule->id);
+    }
+
+    public function saveSend(Schedule $schedule)
+    {
+        $this->request->validate([
+            'weeks.*.date' => ['required', 'date_format:d/m/Y'],
+        ]);
+
+        $schedule->toSend()->delete();
+
+        foreach ($this->request->get('weeks') as $week) {
+            $schedule->toSend()->create([
+                'speech_id' => $week['speech'],
+                'date' => $week['date'],
+                'speaker_id' => $week['speaker'],
+                'created_at' => now()
+            ]);
+        }
+
+        Session::flash('message', ['value' => 'Atualizado com sucesso!', 'uuid' => uniqid()]);
+
+        return Redirect::route('schedules.show', $schedule->id);
     }
 }

@@ -205,7 +205,10 @@ return [
         'weight' => 'peso',
         'year' => 'ano',
         'zip_code' => 'cep',
-        'speech_id' => 'tema'
+        'speech_id' => 'tema',
+        'weeks.*.date' => 'data',
+        'weeks.*.speech' => 'tema',
+        'weeks.*.speaker' => 'orador',
     ],
 
 ];
