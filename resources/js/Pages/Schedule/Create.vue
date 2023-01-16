@@ -5,6 +5,11 @@ import { Head, useForm } from "@inertiajs/inertia-vue3";
 const form = useForm({
     formatted_month: "",
     congregation: "",
+    day: "",
+    hour: "",
+    address: "",
+    contact: "",
+    phone: "",
 });
 
 const submit = () => {
@@ -18,7 +23,21 @@ const submit = () => {
             if (form.errors.congregation) {
                 form.reset("congregation");
             }
-            console.log(form.errors);
+            if (form.errors.day) {
+                form.reset("day");
+            }
+            if (form.errors.hour) {
+                form.reset("hour");
+            }
+            if (form.errors.address) {
+                form.reset("address");
+            }
+            if (form.errors.contact) {
+                form.reset("contact");
+            }
+            if (form.errors.phone) {
+                form.reset("phone");
+            }
         },
     });
 };

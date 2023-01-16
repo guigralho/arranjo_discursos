@@ -150,6 +150,28 @@ const changeVal = (val) => {
                                 />
                             </th>
                             <th
+                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                scope="col"
+                                @click="toggleOrder('day')"
+                            >
+                                Dia
+                                <SortIcons
+                                    :order-dir="orderDir"
+                                    :update-icon="orderField === 'day'"
+                                />
+                            </th>
+                            <th
+                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                scope="col"
+                                @click="toggleOrder('hour')"
+                            >
+                                Hora
+                                <SortIcons
+                                    :order-dir="orderDir"
+                                    :update-icon="orderField === 'hour'"
+                                />
+                            </th>
+                            <th
                                 class="w-1/12 px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
                             >
@@ -169,6 +191,12 @@ const changeVal = (val) => {
                             </td>
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
                                 {{ item.congregation }}
+                            </td>
+                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                                {{ item.day }}
+                            </td>
+                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                                {{ item.hour }}
                             </td>
                             <td
                                 class="space-x-3 whitespace-nowrap px-5 py-5 text-sm"

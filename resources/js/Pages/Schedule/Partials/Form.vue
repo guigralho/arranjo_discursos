@@ -73,14 +73,83 @@ const changeVal = (val) => {
                     />
                 </div>
 
-                <p class="dark:text-gray-400">
-                    <i>{{
-                        data &&
-                        `Atualizado em: ${data.updated_at} por ${data.user_updated?.name}`
-                    }}</i>
-                </p>
+                <div>
+                    <InputLabel for="day" value="Dia da reunião" />
+
+                    <TextInput
+                        id="day"
+                        ref="dayInput"
+                        v-model="form.day"
+                        autocomplete="off"
+                        class="mt-1 block w-full"
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.day" class="mt-2" />
+                </div>
+
+                <div>
+                    <InputLabel for="hour" value="Hora da reunião" />
+
+                    <TextInput
+                        id="hour"
+                        ref="hourInput"
+                        v-model="form.hour"
+                        autocomplete="off"
+                        class="mt-1 block w-full"
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.hour" class="mt-2" />
+                </div>
+
+                <div>
+                    <InputLabel for="address" value="Endereço" />
+
+                    <TextInput
+                        id="address"
+                        ref="addressInput"
+                        v-model="form.address"
+                        autocomplete="off"
+                        class="mt-1 block w-full"
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.address" class="mt-2" />
+                </div>
+
+                <div>
+                    <InputLabel for="contact" value="Contato" />
+
+                    <TextInput
+                        id="contact"
+                        ref="contactInput"
+                        v-model="form.contact"
+                        autocomplete="off"
+                        class="mt-1 block w-full"
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.contact" class="mt-2" />
+                </div>
+
+                <div>
+                    <InputLabel for="phone" value="Telefone" />
+
+                    <TextInput
+                        id="phone"
+                        ref="phoneInput"
+                        v-model="form.phone"
+                        autocomplete="off"
+                        class="mt-1 block w-full"
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.phone" class="mt-2" />
+                </div>
             </section>
         </div>
+
         <div class="flex items-center gap-4">
             <PrimaryButton
                 :disabled="form.processing"

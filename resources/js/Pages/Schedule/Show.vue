@@ -10,6 +10,11 @@ const props = defineProps({
 const form = useForm({
     formatted_month: props.schedule.formatted_month,
     congregation: props.schedule.congregation,
+    day: props.schedule.day,
+    hour: props.schedule.hour,
+    address: props.schedule.address,
+    contact: props.schedule.contact,
+    phone: props.schedule.phone,
 });
 
 const submit = () => {
@@ -22,6 +27,21 @@ const submit = () => {
             }
             if (form.errors.congregation) {
                 form.reset("congregation");
+            }
+            if (form.errors.day) {
+                form.reset("day");
+            }
+            if (form.errors.hour) {
+                form.reset("hour");
+            }
+            if (form.errors.address) {
+                form.reset("address");
+            }
+            if (form.errors.contact) {
+                form.reset("contact");
+            }
+            if (form.errors.phone) {
+                form.reset("phone");
             }
         },
     });

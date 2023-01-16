@@ -49,6 +49,11 @@ class ScheduleController extends Controller
         $schedule = new Schedule();
         $schedule->month = $scheduleRequest->formatted_month;
         $schedule->congregation = $scheduleRequest->congregation;
+        $schedule->day = $scheduleRequest->day;
+        $schedule->hour = $scheduleRequest->hour;
+        $schedule->address = $scheduleRequest->address;
+        $schedule->contact = $scheduleRequest->contact;
+        $schedule->phone = $scheduleRequest->phone;
 
         $schedule->user_created_id = $scheduleRequest->user()->id;
 
@@ -79,6 +84,11 @@ class ScheduleController extends Controller
     {
         $schedule->month = $scheduleRequest->formatted_month;
         $schedule->congregation = $scheduleRequest->congregation;
+        $schedule->day = $scheduleRequest->day;
+        $schedule->hour = $scheduleRequest->hour;
+        $schedule->address = $scheduleRequest->address;
+        $schedule->contact = $scheduleRequest->contact;
+        $schedule->phone = $scheduleRequest->phone;
 
         $schedule->user_updated_id = $scheduleRequest->user()->id;
 
