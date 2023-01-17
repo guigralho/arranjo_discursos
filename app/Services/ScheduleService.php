@@ -111,7 +111,7 @@ class ScheduleService
                     $schedule->toSend()->create([
                         'date' => $item->format('Y-m-d'),
                     ]);
-                } else if ($item->dayOfWeek === Carbon::SUNDAY) {
+                } else if ($schedule->day == 'Domingo' && $item->dayOfWeek === Carbon::SUNDAY) {
                     $schedule->toSend()->create([
                         'date' => $item->format('Y-m-d'),
                     ]);

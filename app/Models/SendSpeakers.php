@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +38,10 @@ class SendSpeakers extends Model
     public function speaker()
     {
         return $this->belongsTo(Speaker::class);
+    }
+
+    public function getDateAttribute($date)
+    {
+        return Carbon::parse($date)->format('d/m/Y');
     }
 }

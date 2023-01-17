@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SpeakerSpeechesExport;
 use App\Http\Requests\SpeakerRequest;
 use App\Models\Speaker;
 use App\Models\Speech;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SpeakerController extends Controller
 {
@@ -24,11 +26,15 @@ class SpeakerController extends Controller
         if ($this->request->has('search'))
             $search['searchString'] = $this->request->get('search');
 
-        $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'id';
+        $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'speakers.id';
         $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
 
         $list = $this->speakerService
             ->list($search)
+            ->select('speakers.*')
+            ->with(['lastSpeechMade'])
+            ->join('send_speakers', 'send_speakers.speaker_id', '=', 'speakers.id', 'left')
+            ->groupBy('speakers.id')
             ->orderBy($field, $dir)
             ->paginate($this->request->get('perPage', 10))
             ->withQueryString()
@@ -103,4 +109,18 @@ class SpeakerController extends Controller
     {
         return $speaker->speeches()->orderBy('number')->get();
     }
+
+    public function downloadSpeeches()
+    {
+        $speakers = Speaker::query()
+            ->with('speeches')
+            ->has('speeches')
+            ->whereIn('id', $this->request->get('ids'))
+            ->get();
+
+        $export = new SpeakerSpeechesExport($speakers);
+
+        return Excel::download($export, 'invoices.xlsx');
+    }
+
 }

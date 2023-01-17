@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/speakers/download-speeches', [SpeakerController::class, 'downloadSpeeches'])->name('speakers.download-speeches');
+
     Route::resource('/speeches', SpeechController::class);
     Route::resource('/speakers', SpeakerController::class);
     Route::get('/speakers/get-speeches/{speaker}', [SpeakerController::class, 'getSpeeches'])->name('speakers.get-speeches');

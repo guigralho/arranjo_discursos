@@ -37,9 +37,14 @@ class Speaker extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function lastSpeechMade()
+    {
+        return $this->hasOne(SendSpeakers::class)->orderBy('date', 'desc');
+    }
+
     public function speeches()
     {
-        return $this->belongsToMany(Speech::class);
+        return $this->belongsToMany(Speech::class)->orderBy('number');
     }
 
     public function getCreatedAtAttribute($date)

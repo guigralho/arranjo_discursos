@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SpeakerSpeech extends Model
 {
     use HasFactory;
+
+    protected $table = 'speaker_speech';
 }
