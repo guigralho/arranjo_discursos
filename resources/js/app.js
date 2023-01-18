@@ -53,6 +53,7 @@ createInertiaApp({
             import.meta.glob("./Pages/**/*.vue")
         );
         page.then((module) => {
+            console.log(module.default.layout);
             module.default.layout =
                 module.default.layout === undefined
                     ? AuthenticatedLayout
