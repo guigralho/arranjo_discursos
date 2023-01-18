@@ -1,7 +1,8 @@
 <script setup>
 import Form from "./Partials/Form.vue";
-import { Head, useForm } from "@inertiajs/inertia-vue3";
+import { Head, useForm, Link } from "@inertiajs/inertia-vue3";
 import ScheduleSpeechesForm from "@/Pages/Schedule/Partials/ScheduleSpeechesForm.vue";
+import SaveButton from "@/Components/Buttons/SaveButton.vue";
 
 const props = defineProps({
     name: String,
@@ -68,6 +69,7 @@ const submit = () => {
         <ScheduleSpeechesForm
             :dates="schedule.to_send"
             :route="route('schedules.save-send', props.schedule.id)"
+            :schedule="schedule"
             :speakers="speakers"
             :speeches="speeches"
             title="Enviar"

@@ -15,6 +15,7 @@ const props = defineProps({
     dates: Object,
     speeches: Object,
     speakers: Object,
+    schedule: Object,
 });
 
 const form = useForm({
@@ -57,6 +58,21 @@ const getSpeakerSpeeches = debounce(async function (val) {
     select.innerHTML = html;
 }, 300);
 
+const generateWhatsappLink = (item) => {
+    let disc = props.speeches.filter(
+        (res) => res.id === parseInt(item.speech)
+    )[0];
+
+    let link = "https://web.whatsapp.com/send?l=pt&phone=";
+    link += "55 (11) 91072-0902";
+    link += `&text=*Arranjo de discurso - ${item.date}*%0a`;
+    link += `*Congregação:* ${props.schedule?.congregation}%0a`;
+    link += `*Horário:* ${props.schedule?.hour}%0a`;
+    link += `*Tema:* ${disc.number} - ${disc.theme}`;
+
+    return link;
+};
+
 onMounted(() => {
     fillDates();
 });
@@ -66,7 +82,6 @@ onMounted(() => {
         <h1 class="text-xl font-bold text-gray-700 dark:text-gray-300">
             {{ title }}
         </h1>
-        <p>{{ teste }}</p>
         <form @submit.prevent="submit">
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div
@@ -154,10 +169,22 @@ onMounted(() => {
                                 class="mt-2"
                             />
                         </div>
+
+                        <a
+                            v-if="item.speech && schedule"
+                            :href="generateWhatsappLink(item)"
+                            class="w-fit gap-1 rounded-md border border-transparent bg-green-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-green-900 focus:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-green-900 sm:grow-0"
+                            target="_blank"
+                        >
+                            <font-awesome-icon
+                                icon="fa-brands fa-whatsapp"
+                                size="lg"
+                            />
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="mt-4 flex items-center">
+            <div class="mt-4 flex items-center gap-4">
                 <SaveButton
                     :disabled="form.processing"
                     class="flex-1 sm:flex-none"
@@ -168,6 +195,7 @@ onMounted(() => {
                         Aguarde...
                     </p>
                 </SaveButton>
+                <slot />
             </div>
         </form>
     </div>

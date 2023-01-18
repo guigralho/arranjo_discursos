@@ -7,10 +7,11 @@ if [ $? -ne 0 ]; then
 fi
 
 docker run --rm \
-    -v $(pwd):/opt \
-    -w /opt \
-    composer:latest \
-    composer install
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
 
 LIGHT_CYAN='\033[1;36m'
 NC='\033[0m'

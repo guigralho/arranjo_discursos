@@ -24,6 +24,7 @@ import {
     faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 library.add(
     faUserSecret,
@@ -37,7 +38,8 @@ library.add(
     faSpinner,
     faSortAsc,
     faSortDesc,
-    faSort
+    faSort,
+    faWhatsapp
 );
 
 const appName =
