@@ -17,5 +17,4 @@ $ sail artisan storage:link
 $ sail artisan migrate
 $ sail npm install
 $ sail npm run dev
-
 ```
