@@ -2,22 +2,25 @@
     <div
         class="flex items-center justify-between border-gray-200 bg-white px-4 py-3 dark:bg-gray-800 sm:px-6"
     >
-        <div class="flex flex-1 justify-between sm:hidden">
+        <div
+            :class="list.links[0].url ? 'justify-between' : 'justify-end'"
+            class="flex flex-1 items-center md:hidden"
+        >
             <Link
                 v-if="list.links[0].url"
                 :href="list.links[0].url"
-                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >Previous</Link
+                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                >Anterior</Link
             >
             <Link
                 v-if="list.links[list.links.length - 1].url"
                 :href="list.links[list.links.length - 1].url"
-                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >Next</Link
+                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                >Próximo</Link
             >
         </div>
         <div
-            class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
+            class="hidden sm:items-center sm:justify-between md:flex md:flex-1"
         >
             <div>
                 <p class="text-sm text-gray-700 dark:text-gray-200">

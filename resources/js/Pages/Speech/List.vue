@@ -21,15 +21,22 @@ let props = defineProps({
 let page = ref(props.filters.page);
 let search = ref(props.filters.search);
 let hasSpeakers = ref(props.filters.hasSpeakers);
+let moreThan2Years = ref(props.filters.moreThan2Years);
 let orderDir = ref(props.filters.orderDir);
 let orderField = ref(props.filters.orderField);
 let showModal = ref(false);
 let selectedItem = ref({});
 
 watch(
-    [search, orderDir, orderField, hasSpeakers],
+    [search, orderDir, orderField, hasSpeakers, moreThan2Years],
     debounce(function (
-        [valueSearch, valueOrderDir, valueOrderField, valueHasSpeakers],
+        [
+            valueSearch,
+            valueOrderDir,
+            valueOrderField,
+            valueHasSpeakers,
+            valueMoreThan2Years,
+        ],
         [oldValSearch]
     ) {
         if (valueSearch !== oldValSearch) {
@@ -42,6 +49,7 @@ watch(
                 orderDir: valueOrderDir,
                 orderField: valueOrderField,
                 hasSpeakers: valueHasSpeakers,
+                moreThan2Years: valueMoreThan2Years,
                 page: page.value,
             },
             { preserveState: true, replace: true }
@@ -72,7 +80,9 @@ const toggleOrder = (field) => {
         <div
             class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
         >
-            <div class="flex flex-col items-center gap-4 md:w-full md:flex-row">
+            <div
+                class="flex flex-col gap-4 md:w-full md:flex-row md:items-center"
+            >
                 <div class="relative">
                     <TextInput
                         v-model="search"
@@ -83,7 +93,7 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
-                <div class="relative">
+                <div class="relative flex gap-4">
                     <label class="flex items-center">
                         <Checkbox
                             v-model:checked="hasSpeakers"
@@ -95,6 +105,17 @@ const toggleOrder = (field) => {
                             Já preparado?
                         </span>
                     </label>
+                    <label class="flex items-center">
+                        <Checkbox
+                            v-model:checked="moreThan2Years"
+                            class="h-5 w-5"
+                        />
+                        <span
+                            class="ml-2 text-lg text-gray-600 dark:text-gray-400"
+                        >
+                            Pode ser feito?
+                        </span>
+                    </label>
                 </div>
             </div>
             <Link
@@ -103,11 +124,97 @@ const toggleOrder = (field) => {
                 >Novo</Link
             >
         </div>
+
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
+            <div
+                class="mb-4 block min-w-full shadow dark:bg-gray-800 md:hidden"
+            >
+                <div
+                    class="w-full rounded-lg bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                    <div class="flow-root">
+                        <ul
+                            v-if="list.total"
+                            class="divide-y divide-gray-200 dark:divide-gray-700"
+                            role="list"
+                        >
+                            <li
+                                v-for="item in list.data"
+                                :key="item.id"
+                                class="p-4 sm:p-4"
+                            >
+                                <div class="flex flex-col">
+                                    <p
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+                                    >
+                                        {{ item.number }} -
+                                        {{ item.theme }}
+                                    </p>
+                                    <p
+                                        class="text-sm text-gray-500 dark:text-gray-400"
+                                    >
+                                        Atualizado em
+                                        {{ item.updated_at }}
+                                    </p>
+                                    <p
+                                        class="text-sm text-gray-500 dark:text-gray-400"
+                                    >
+                                        {{
+                                            item.last_made?.date &&
+                                            "Realizado em " +
+                                                item.last_made?.date
+                                        }}
+                                    </p>
+                                    <p
+                                        class="text-sm text-gray-500 dark:text-gray-400"
+                                    >
+                                        {{
+                                            item.speakers.length === 0
+                                                ? "Não"
+                                                : ""
+                                        }}
+                                        Preparado
+                                    </p>
+                                    <div class="flex gap-3">
+                                        <EditButton
+                                            :href="
+                                                route('speeches.show', item.id)
+                                            "
+                                            class="grow"
+                                        >
+                                            <font-awesome-icon
+                                                icon="fa-solid fa-edit"
+                                            />
+                                        </EditButton>
+                                        <DeleteButton
+                                            class="grow"
+                                            @click="
+                                                () => {
+                                                    showModal = true;
+                                                    selectedItem = item;
+                                                }
+                                            "
+                                        >
+                                            <font-awesome-icon
+                                                icon="fa-solid fa-trash"
+                                            />
+                                        </DeleteButton>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div v-else class="p-4 text-center sm:p-4">
+                            <p>Nenhum registro encontrado!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div
                 class="inline-block min-w-full overflow-hidden rounded-lg shadow"
             >
-                <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
+                <table
+                    class="hidden min-w-full table-fixed bg-white dark:bg-gray-800 md:block"
+                >
                     <thead>
                         <tr
                             class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-white"

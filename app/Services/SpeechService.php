@@ -43,6 +43,7 @@ class SpeechService
     {
         $searchString = data_get($search, 'searchString', false);
         $hasSpeakers = data_get($search, 'hasSpeakers', false);
+        $moreThan2Years = data_get($search, 'moreThan2Years', false);
         $query = $this->query();
 
         if ($searchString) {
@@ -54,6 +55,16 @@ class SpeechService
 
         if ($hasSpeakers == 'true') {
             $query = $query->has('speakers');
+        }
+
+        if ($moreThan2Years == 'true') {
+            $query =
+                $query->where(function ($query) use ($searchString) {
+                    return $query->whereHas('lastMade', function ($query) use ($searchString) {
+                        return $query->whereDate('date', '<=', now()->sub(2, 'years'));
+                    })
+                        ->orWhereDoesntHave('lastMade');
+                });
         }
 
         return $query;

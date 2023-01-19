@@ -26,6 +26,9 @@ class SpeechController extends Controller
         if ($this->request->filled('hasSpeakers'))
             $search['hasSpeakers'] = $this->request->get('hasSpeakers');
 
+        if ($this->request->filled('moreThan2Years'))
+            $search['moreThan2Years'] = $this->request->get('moreThan2Years');
+
         $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'speeches.id';
         $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
 
