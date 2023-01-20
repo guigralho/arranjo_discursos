@@ -1,11 +1,11 @@
 <table>
     <tbody>
+    <tr>
+        <td style="text-align: center; font-size: 14px; font-weight: bold">Oradores - Congregação Vila Medeiros</td>
+    </tr>
     @foreach($speakers as $speaker)
         <tr>
-            <td>Orador</td>
-        </tr>
-        <tr>
-            <td>{{ $speaker->name }}</td>
+            <td style="font-weight: bold">{{ $speaker->name }}</td>
         </tr>
         <tr>
             <td>Temas</td>
