@@ -27,12 +27,30 @@ let showModal = ref(false);
 let selectedItem = ref({});
 
 onMounted(() => {
+    Datepicker.locales.pt = {
+        monthsShort: [
+            "Jan",
+            "Fev",
+            "Mar",
+            "Abr",
+            "Mai",
+            "Jun",
+            "Jul",
+            "Ago",
+            "Set",
+            "Out",
+            "Nov",
+            "Dez",
+        ],
+    };
+
     // the DOM element will be assigned to the ref after initial render
     new Datepicker(document.getElementById("datepickerId"), {
         format: "dd/mm/yyyy",
         startView: 1,
         pickLevel: 1,
         autohide: true,
+        language: "pt",
     });
 });
 

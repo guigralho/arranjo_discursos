@@ -51,8 +51,9 @@ class SpeakerController extends Controller
     {
 
         $speaker = new Speaker();
-        $speaker->name = $speakerRequest->name;
         $speaker->privilege = $speakerRequest->privilege;
+        $speaker->name = $speakerRequest->name;
+        $speaker->phone = $speakerRequest->phone;
 
         $speaker->user_created_id = $speakerRequest->user()->id;
 
@@ -84,8 +85,9 @@ class SpeakerController extends Controller
 
     public function update(SpeakerRequest $speakerRequest, Speaker $speaker)
     {
-        $speaker->name = $speakerRequest->name;
         $speaker->privilege = $speakerRequest->privilege;
+        $speaker->name = $speakerRequest->name;
+        $speaker->phone = $speakerRequest->phone;
 
         $speaker->user_updated_id = $speakerRequest->user()->id;
 
@@ -120,7 +122,7 @@ class SpeakerController extends Controller
 
         $export = new SpeakerSpeechesExport($speakers);
 
-        return Excel::download($export, 'invoices.xlsx');
+        return Excel::download($export, 'relação_discursos.xlsx');
     }
 
 }

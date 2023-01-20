@@ -10,6 +10,7 @@ import DeleteModal from "@/Components/DeleteModal.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
+import MobileList from "@/Pages/Speech/Partials/MobileList.vue";
 
 let props = defineProps({
     name: String,
@@ -125,90 +126,15 @@ const toggleOrder = (field) => {
             >
         </div>
 
-        <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
-            <div
-                class="mb-4 block min-w-full shadow dark:bg-gray-800 md:hidden"
-            >
-                <div
-                    class="w-full rounded-lg bg-white dark:border-gray-700 dark:bg-gray-800"
-                >
-                    <div class="flow-root">
-                        <ul
-                            v-if="list.total"
-                            class="divide-y divide-gray-200 dark:divide-gray-700"
-                            role="list"
-                        >
-                            <li
-                                v-for="item in list.data"
-                                :key="item.id"
-                                class="p-4 sm:p-4"
-                            >
-                                <div class="flex flex-col">
-                                    <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
-                                    >
-                                        {{ item.number }} -
-                                        {{ item.theme }}
-                                    </p>
-                                    <p
-                                        class="text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        Atualizado em
-                                        {{ item.updated_at }}
-                                    </p>
-                                    <p
-                                        class="text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        {{
-                                            item.last_made?.date &&
-                                            "Realizado em " +
-                                                item.last_made?.date
-                                        }}
-                                    </p>
-                                    <p
-                                        class="text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        {{
-                                            item.speakers.length === 0
-                                                ? "Não"
-                                                : ""
-                                        }}
-                                        Preparado
-                                    </p>
-                                    <div class="flex gap-3">
-                                        <EditButton
-                                            :href="
-                                                route('speeches.show', item.id)
-                                            "
-                                            class="grow"
-                                        >
-                                            <font-awesome-icon
-                                                icon="fa-solid fa-edit"
-                                            />
-                                        </EditButton>
-                                        <DeleteButton
-                                            class="grow"
-                                            @click="
-                                                () => {
-                                                    showModal = true;
-                                                    selectedItem = item;
-                                                }
-                                            "
-                                        >
-                                            <font-awesome-icon
-                                                icon="fa-solid fa-trash"
-                                            />
-                                        </DeleteButton>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div v-else class="p-4 text-center sm:p-4">
-                            <p>Nenhum registro encontrado!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div
+            class="-mx-4 overflow-x-auto px-4 py-4 sm:col-span-2 sm:-mx-8 sm:px-8"
+        >
+            <MobileList
+                :list="list"
+                :order-dir="orderDir"
+                :order-field="orderField"
+                @toggle-order="toggleOrder"
+            />
             <div
                 class="inline-block min-w-full overflow-hidden rounded-lg shadow"
             >
@@ -255,7 +181,7 @@ const toggleOrder = (field) => {
                                     <SortIcons
                                         :order-dir="orderDir"
                                         :update-icon="
-                                            orderField === 'updated_at'
+                                            orderField === 'speeches.updated_at'
                                         "
                                     />
                                 </p>

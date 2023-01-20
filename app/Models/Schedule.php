@@ -56,7 +56,7 @@ class Schedule extends Model
 
     public function getTranslatedMonthAttribute()
     {
-        return Carbon::parse($this->month)->format('M - Y');
+        return strtoupper(Carbon::parse($this->month)->translatedFormat('M/Y'));
     }
 
     public function getCreatedAtAttribute($date)

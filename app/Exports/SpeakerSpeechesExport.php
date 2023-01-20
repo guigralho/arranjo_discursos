@@ -4,8 +4,9 @@ namespace App\Exports;
 
 use Illuminate\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class SpeakerSpeechesExport implements FromView
+class SpeakerSpeechesExport implements FromView, ShouldAutoSize
 {
 
     public function __construct(public $speakers)

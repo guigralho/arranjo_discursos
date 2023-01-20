@@ -36,7 +36,7 @@ const back = () => {
                 </p>
             </div>
         </Transition>
-        <div class="bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8">
+        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
             <section class="max-w-xl space-y-6">
                 <div>
                     <InputLabel for="number" value="Número" />
@@ -84,13 +84,11 @@ const back = () => {
                 >Voltar</PrimaryButton
             >
             <SaveButton :disabled="form.processing">
-                <font-awesome-icon
-                    v-if="form.processing"
-                    icon="fa-solid fa-spinner"
-                    spin
-                />
                 <p v-if="!form.processing">Salvar</p>
-                <p v-else>Aguarde...</p>
+                <p v-else>
+                    <font-awesome-icon icon="fa-solid fa-spinner" spin />
+                    Aguarde...
+                </p>
             </SaveButton>
         </div>
     </form>

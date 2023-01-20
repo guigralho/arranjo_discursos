@@ -1,5 +1,6 @@
 import "./bootstrap";
 import "../css/app.css";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/inertia-vue3";
@@ -10,6 +11,8 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
+    faAngleDown,
+    faAngleUp,
     faChevronLeft,
     faChevronRight,
     faCircleCheck,
@@ -39,7 +42,9 @@ library.add(
     faSortAsc,
     faSortDesc,
     faSort,
-    faWhatsapp
+    faWhatsapp,
+    faAngleUp,
+    faAngleDown
 );
 
 const appName =
@@ -53,7 +58,6 @@ createInertiaApp({
             import.meta.glob("./Pages/**/*.vue")
         );
         page.then((module) => {
-            console.log(module.default.layout);
             module.default.layout =
                 module.default.layout === undefined
                     ? AuthenticatedLayout

@@ -59,14 +59,18 @@ const getSpeakerSpeeches = debounce(async function (val) {
 }, 300);
 
 const generateWhatsappLink = (item) => {
+    let speaker = props.speakers.filter(
+        (res) => res.id === parseInt(item.speaker)
+    )[0];
     let disc = props.speeches.filter(
         (res) => res.id === parseInt(item.speech)
     )[0];
 
-    let link = "https://web.whatsapp.com/send?l=pt&phone=";
-    link += "55 (11) 91072-0902";
+    let link = "https://api.whatsapp.com/send?l=pt&phone=";
+    link += `55 ${speaker.phone}`;
     link += `&text=*Arranjo de discurso - ${item.date}*%0a`;
     link += `*Congregação:* ${props.schedule?.congregation}%0a`;
+    link += `*Endereço:* ${props.schedule?.address}%0a`;
     link += `*Horário:* ${props.schedule?.hour}%0a`;
     link += `*Tema:* ${disc.number} - ${disc.theme}`;
 

@@ -3,8 +3,9 @@ import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
 
 const form = useForm({
-    name: "",
     privilege: "",
+    name: "",
+    phone: "",
 });
 
 const submit = () => {
@@ -17,6 +18,9 @@ const submit = () => {
             }
             if (form.errors.name) {
                 form.reset("name");
+            }
+            if (form.errors.phone) {
+                form.reset("phone");
             }
         },
     });
@@ -34,7 +38,7 @@ defineProps({
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-6 py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto grid max-w-7xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
         <Form :form="form" :submit="submit" />
     </div>
 </template>

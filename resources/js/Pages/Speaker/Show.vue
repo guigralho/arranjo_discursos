@@ -11,8 +11,9 @@ const props = defineProps({
 });
 
 const form = useForm({
-    name: props.speaker.name,
     privilege: props.speaker.privilege,
+    name: props.speaker.name,
+    phone: props.speaker.phone,
 });
 
 const submit = () => {
@@ -26,6 +27,9 @@ const submit = () => {
             if (form.errors.name) {
                 form.reset("name");
             }
+            if (form.errors.phone) {
+                form.reset("phone");
+            }
         },
     });
 };
@@ -35,7 +39,7 @@ const submit = () => {
     <Head :title="name" />
 
     <div
-        class="mx-auto grid max-w-7xl grid-cols-none gap-6 py-6 sm:grid-cols-2 sm:px-6 lg:px-8"
+        class="mx-auto grid max-w-7xl grid-cols-none gap-6 py-6 px-4 sm:grid-cols-2 sm:px-6 lg:px-8"
     >
         <Form :data="speaker" :form="form" :submit="submit" />
         <SpeechsList

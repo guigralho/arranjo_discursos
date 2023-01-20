@@ -20,9 +20,16 @@ const back = () => {
 };
 </script>
 
+<script>
+import { mask } from "vue-the-mask";
+export default {
+    directives: { mask },
+};
+</script>
+
 <template>
     <form class="space-y-6" @submit.prevent="submit">
-        <div class="bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8">
+        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
             <section class="max-w-xl space-y-6">
                 <div>
                     <InputLabel for="privilege" value="Privilégio" />
@@ -54,6 +61,22 @@ const back = () => {
                     />
 
                     <InputError :message="form.errors.name" class="mt-2" />
+                </div>
+
+                <div>
+                    <InputLabel for="phone" value="Celular" />
+
+                    <TextInput
+                        id="phone"
+                        ref="phoneInput"
+                        v-model="form.phone"
+                        v-mask="['(##) ####-####', '(##) #####-####']"
+                        autocomplete="off"
+                        class="mt-1 block w-full"
+                        type="tel"
+                    />
+
+                    <InputError :message="form.errors.phone" class="mt-2" />
                 </div>
 
                 <p class="dark:text-gray-400">

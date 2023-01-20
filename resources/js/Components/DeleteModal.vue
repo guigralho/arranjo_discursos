@@ -55,7 +55,7 @@ const deleteRow = () => {
         <div class="mt-6 flex flex-row justify-evenly space-x-2">
             <DeleteButton
                 :disabled="disabledDeleteButton"
-                class="flex-1"
+                class="flex-1 uppercase"
                 method="delete"
                 @click="deleteRow"
             >

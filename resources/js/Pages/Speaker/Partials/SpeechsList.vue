@@ -38,7 +38,7 @@ const submitSpeech = () => {
 </script>
 <template>
     <form class="flex flex-col space-y-6" @submit.prevent="submitSpeech">
-        <div class="bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8">
+        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
             <section class="max-w-xl space-y-6">
                 <div>
                     <InputLabel for="privilege" value="Temas" />
