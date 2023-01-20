@@ -137,13 +137,13 @@ const toggleOrder = (field) => {
                             <th
                                 class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
-                                @click="toggleOrder('send_speakers.date')"
+                                @click="toggleOrder('max(send_speakers.date)')"
                             >
                                 Último discurso
                                 <SortIcons
                                     :order-dir="orderDir"
                                     :update-icon="
-                                        orderField === 'send_speakers.date'
+                                        orderField === 'max(send_speakers.date)'
                                     "
                                 />
                             </th>

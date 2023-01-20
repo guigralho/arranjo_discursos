@@ -6,6 +6,7 @@ use App\Http\Requests\SpeechRequest;
 use App\Models\Speech;
 use App\Services\SpeechService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
@@ -38,7 +39,7 @@ class SpeechController extends Controller
             ->with(['speakers', 'lastMade'])
             ->join('receive_speakers', 'receive_speakers.speech_id', '=', 'speeches.id', 'left')
             ->groupBy('speeches.id')
-            ->orderBy($field, $dir)
+            ->orderBy(DB::raw($field), $dir)
             ->paginate($this->request->get('perPage', 10))
             ->withQueryString()
             ->onEachSide(1);

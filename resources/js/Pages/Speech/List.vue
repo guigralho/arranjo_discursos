@@ -189,7 +189,9 @@ const toggleOrder = (field) => {
                             <th
                                 class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
-                                @click="toggleOrder('receive_speakers.date')"
+                                @click="
+                                    toggleOrder('max(receive_speakers.date)')
+                                "
                             >
                                 <p class="flex items-center gap-2">
                                     Realizado em
@@ -197,7 +199,7 @@ const toggleOrder = (field) => {
                                         :order-dir="orderDir"
                                         :update-icon="
                                             orderField ===
-                                            'receive_speakers.date'
+                                            'max(receive_speakers.date)'
                                         "
                                     />
                                 </p>

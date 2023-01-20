@@ -43,7 +43,9 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
                     <option value="number">Número</option>
                     <option value="theme">Tema</option>
                     <option value="speeches.updated_at">Atualizado em</option>
-                    <option value="receive_speakers.date">Realizado em</option>
+                    <option value="max(receive_speakers.date)">
+                        Realizado em
+                    </option>
                 </SelectInput>
             </div>
             <div class="relative grid grid-cols-2 gap-2">

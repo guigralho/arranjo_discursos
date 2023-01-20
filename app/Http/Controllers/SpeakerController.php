@@ -8,6 +8,7 @@ use App\Models\Speaker;
 use App\Models\Speech;
 use App\Services\SpeakerService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
@@ -35,7 +36,7 @@ class SpeakerController extends Controller
             ->with(['lastSpeechMade'])
             ->join('send_speakers', 'send_speakers.speaker_id', '=', 'speakers.id', 'left')
             ->groupBy('speakers.id')
-            ->orderBy($field, $dir)
+            ->orderBy(DB::raw($field), $dir)
             ->paginate($this->request->get('perPage', 10))
             ->withQueryString()
             ->onEachSide(1);
