@@ -94,7 +94,7 @@ onMounted(() => {
                     class="flex flex-col gap-4"
                 >
                     <div
-                        class="grid grid-cols-1 gap-4 bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8"
+                        class="grid grid-cols-1 gap-4 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8"
                     >
                         <div>
                             <InputLabel :for="`date${key}`" value="Data" />

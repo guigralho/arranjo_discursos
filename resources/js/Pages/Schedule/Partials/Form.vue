@@ -33,7 +33,7 @@ const changeVal = (val) => {
 
 <template>
     <form class="space-y-6" @submit.prevent="submit">
-        <div class="bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8">
+        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
             <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <InputLabel for="datepickerId" value="Data" />

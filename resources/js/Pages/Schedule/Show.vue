@@ -57,7 +57,7 @@ const submit = () => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl gap-6 py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
         <Form :data="schedule" :form="form" :submit="submit" />
 
         <ScheduleSpeechesForm
