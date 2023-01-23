@@ -27,5 +27,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Model::preventLazyLoading(!$this->app->isProduction());
+
+        if ($this->app->isProduction()) {
+            \URL::forceScheme('https');
+        }
     }
 }
