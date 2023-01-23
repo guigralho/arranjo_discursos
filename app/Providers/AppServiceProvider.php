@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(!$this->app->isProduction());
 
         if ($this->app->isProduction()) {
+            $this->app['request']->server->set('HTTPS', 'on');
             \URL::forceScheme('https');
         }
     }
