@@ -60,8 +60,8 @@ class SpeechService
         if ($moreThan2Years == 'true') {
             $query =
                 $query->where(function ($query) use ($searchString) {
-                    return $query->whereHas('lastMade', function ($query) use ($searchString) {
-                        return $query->whereDate('date', '<=', now()->sub(2, 'years'));
+                    return $query->orWhereDoesntHave('lastMade', function ($query) use ($searchString) {
+                        return $query->whereDate('date', '>', now()->sub(2, 'years'));
                     })
                         ->orWhereDoesntHave('lastMade');
                 });
