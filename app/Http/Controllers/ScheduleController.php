@@ -164,6 +164,6 @@ class ScheduleController extends Controller
             ->first();
 
         $pdf = Pdf::loadView('pdfs.quadro', $schedule->toArray());
-        return $pdf->stream('quadro.pdf');
+        return $pdf->download('quadro.pdf');
     }
 }
