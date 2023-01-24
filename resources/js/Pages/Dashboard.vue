@@ -29,7 +29,6 @@ defineProps({
                 </p>
                 <p>Endereço: {{ current.address }}</p>
                 <p>Horário: {{ current.hour }}</p>
-                <p>Temas:</p>
 
                 <div class="mt-4 grid grid-cols-1 gap-4">
                     <p class="text-2xl">Receber</p>
@@ -86,7 +85,6 @@ defineProps({
                 </p>
                 <p>Endereço: {{ next.address }}</p>
                 <p>Horário: {{ next.hour }}</p>
-                <p>Temas:</p>
             </div>
         </div>
     </div>
