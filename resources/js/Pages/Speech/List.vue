@@ -143,7 +143,7 @@ const toggleOrder = (field) => {
                 >
                     <thead>
                         <tr
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-white"
+                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
                         >
                             <th
                                 class="w-1/12 cursor-pointer px-5 py-5 text-left text-sm uppercase"
@@ -223,7 +223,7 @@ const toggleOrder = (field) => {
                             v-for="item in list.data"
                             v-if="list.total"
                             :key="item.id"
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-white dark:hover:bg-gray-700"
+                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
                         >
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
                                 {{ item.number }}
@@ -266,7 +266,7 @@ const toggleOrder = (field) => {
                         </tr>
                         <tr
                             v-else
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-white"
+                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
                         >
                             <td class="px-5 py-3 text-sm" colspan="4">
                                 Nenhum registro encontrado!

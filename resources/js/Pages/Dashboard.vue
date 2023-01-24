@@ -22,7 +22,7 @@ defineProps({
                     Congregação: {{ current.congregation }} -
                     <Link
                         :href="route('schedules.show', current.id)"
-                        class="text-md rounded-md border border-sky-800 px-2 text-sky-800 hover:bg-sky-800 hover:text-gray-900 dark:bg-sky-800 dark:text-gray-100 dark:hover:bg-transparent dark:hover:bg-transparent"
+                        class="text-md rounded-md border border-sky-800 px-2 text-sky-800 hover:bg-sky-800 hover:text-gray-100 dark:bg-sky-800 dark:text-gray-100 dark:hover:bg-transparent dark:hover:bg-transparent"
                     >
                         Detalhes
                     </Link>
@@ -42,8 +42,8 @@ defineProps({
                             <p>Dia: {{ item.date }}</p>
                             <p>Orador: {{ item.speaker }}</p>
                             <p>
-                                Tema: {{ item.speech.number }} -
-                                {{ item.speech.theme }}
+                                Tema: {{ item.speech?.number }} -
+                                {{ item.speech?.theme }}
                             </p>
                         </div>
                     </div>
@@ -78,7 +78,7 @@ defineProps({
                     Congregação: {{ next.congregation }} -
                     <Link
                         :href="route('schedules.show', next.id)"
-                        class="text-md rounded-md border border-sky-800 px-2 text-sky-800 hover:bg-sky-800 hover:text-gray-900 dark:bg-sky-800 dark:text-gray-100 dark:hover:bg-transparent dark:hover:bg-transparent"
+                        class="text-md rounded-md border border-sky-800 px-2 text-sky-800 hover:bg-sky-800 hover:text-gray-100 dark:bg-sky-800 dark:text-gray-100 dark:hover:bg-transparent dark:hover:bg-transparent"
                     >
                         Detalhes
                     </Link>

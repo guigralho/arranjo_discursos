@@ -76,7 +76,7 @@ class SpeechController extends Controller
 
     public function show($speech)
     {
-        $speech = Speech::whereId($speech)->with('userCreated')->with('userUpdated')->first();
+        $speech = Speech::whereId($speech)->with(['userCreated', 'userUpdated', 'speakers'])->first();
 
         return Inertia::render('Speech/Show', [
             'name' => 'Alterar discurso',

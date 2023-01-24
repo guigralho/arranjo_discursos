@@ -85,7 +85,7 @@ export default {
                             </svg>
                             <div class="ml-4 text-lg font-semibold leading-7">
                                 <a
-                                    class="text-gray-900 underline dark:text-white"
+                                    class="text-gray-900 underline dark:text-gray-100"
                                     href="https://laravel.com/docs"
                                     >Documentation</a
                                 >
@@ -127,7 +127,7 @@ export default {
                             </svg>
                             <div class="ml-4 text-lg font-semibold leading-7">
                                 <a
-                                    class="text-gray-900 underline dark:text-white"
+                                    class="text-gray-900 underline dark:text-gray-100"
                                     href="https://laracasts.com"
                                     >Laracasts</a
                                 >
@@ -165,7 +165,7 @@ export default {
                             </svg>
                             <div class="ml-4 text-lg font-semibold leading-7">
                                 <a
-                                    class="text-gray-900 underline dark:text-white"
+                                    class="text-gray-900 underline dark:text-gray-100"
                                     href="https://laravel-news.com/"
                                     >Laravel News</a
                                 >
@@ -202,7 +202,7 @@ export default {
                                 ></path>
                             </svg>
                             <div
-                                class="ml-4 text-lg font-semibold leading-7 text-gray-900 dark:text-white"
+                                class="ml-4 text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100"
                             >
                                 Vibrant Ecosystem
                             </div>

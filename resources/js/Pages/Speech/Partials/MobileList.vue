@@ -77,7 +77,7 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
                         >
                             <div class="flex flex-col">
                                 <p
-                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
                                 >
                                     {{ item.number }} -
                                     {{ item.theme }}
