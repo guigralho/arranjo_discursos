@@ -16,6 +16,7 @@ import {
     faChevronRight,
     faCircleCheck,
     faEdit,
+    faFileArrowDown,
     faMoon,
     faSort,
     faSortAsc,
@@ -45,7 +46,8 @@ library.add(
     faWhatsapp,
     faAngleUp,
     faAngleDown,
-    faCircleUser
+    faCircleUser,
+    faFileArrowDown
 );
 
 const appName =

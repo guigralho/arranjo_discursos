@@ -44,9 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/schedules', ScheduleController::class);
     Route::post('/schedules/save-receive/{schedule}', [ScheduleController::class, 'saveReceive'])->name('schedules.save-receive');
     Route::post('/schedules/save-send/{schedule}', [ScheduleController::class, 'saveSend'])->name('schedules.save-send');
+    Route::get('/download-pdf/{schedule}', [ScheduleController::class, 'downloadPdf'])->name('download-pdf');
 
     Route::post('/speaker-speech/{speaker}', [SpeakerSpeechController::class, 'store'])->name('speaker-speech.store');
     Route::delete('/speaker-speech/{speaker}/{speech}', [SpeakerSpeechController::class, 'destroy'])->name('speaker-speech.destroy');
+
 });
 
 require __DIR__ . '/auth.php';

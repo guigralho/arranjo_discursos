@@ -7,6 +7,7 @@ use App\Models\Schedule;
 use App\Models\Speaker;
 use App\Models\Speech;
 use App\Services\ScheduleService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -154,5 +155,15 @@ class ScheduleController extends Controller
         Session::flash('message', ['value' => 'Atualizado com sucesso!', 'uuid' => uniqid()]);
 
         return Redirect::route('schedules.show', $schedule->id);
+    }
+
+    public function downloadPdf($schedule)
+    {
+        $schedule = Schedule::whereId($schedule)
+            ->with(['toReceive.speech'])
+            ->first();
+
+        $pdf = Pdf::loadView('pdfs.quadro', $schedule->toArray());
+        return $pdf->stream('quadro.pdf');
     }
 }

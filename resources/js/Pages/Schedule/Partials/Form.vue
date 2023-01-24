@@ -150,7 +150,7 @@ const changeVal = (val) => {
             </section>
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex flex-wrap items-center gap-4">
             <PrimaryButton
                 :disabled="form.processing"
                 :href="route('schedules.index')"
@@ -165,6 +165,16 @@ const changeVal = (val) => {
                     Aguarde...
                 </p>
             </SaveButton>
+
+            <a
+                v-if="data.id"
+                :href="route('download-pdf', data.id)"
+                class="flex-1 rounded-md bg-sky-800 px-4 py-2 text-center text-xs font-semibold uppercase text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 sm:flex-none"
+                type="button"
+            >
+                <font-awesome-icon icon="fa-solid fa-file-arrow-down" />
+                Gerar quadro
+            </a>
         </div>
     </form>
 </template>
