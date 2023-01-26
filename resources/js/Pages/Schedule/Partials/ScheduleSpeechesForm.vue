@@ -66,13 +66,22 @@ const generateWhatsappLink = (item) => {
         (res) => res.id === parseInt(item.speech)
     )[0];
 
-    let link = "https://api.whatsapp.com/send?l=pt&phone=";
-    link += `55 ${speaker.phone}`;
-    link += `&text=*Arranjo de discurso - ${item.date}*%0a`;
-    link += `*Congregação:* ${props.schedule?.congregation}%0a`;
-    link += `*Endereço:* ${props.schedule?.address}%0a`;
-    link += `*Horário:* ${props.schedule?.hour}%0a`;
-    link += `*Tema:* ${disc.number} - ${disc.theme}`;
+    let link = "";
+    if (speaker.phone) {
+        let phone = speaker.phone
+            .replaceAll("-", "")
+            .replaceAll(" ", "")
+            .replaceAll("(", "")
+            .replaceAll(")", "");
+
+        link = "https://api.whatsapp.com/send?phone=";
+        link += `55${phone}`;
+        link += `&text=*Arranjo de discurso - ${item.date}*%0a`;
+        link += `*Congregação:* ${props.schedule?.congregation}%0a`;
+        link += `*Endereço:* ${props.schedule?.address}%0a`;
+        link += `*Horário:* ${props.schedule?.hour}%0a`;
+        link += `*Tema:* ${disc.number} - ${disc.theme}`;
+    }
 
     return link;
 };
