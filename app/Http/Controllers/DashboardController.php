@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use Carbon\Carbon;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -14,8 +15,10 @@ class DashboardController extends Controller
             ->whereDate('month', date('Y-m-01'))
             ->first();
 
+        $nextDate = Carbon::now()->addMonth()->format('Y-m-01');
+
         $next = Schedule::query()
-            ->whereDate('month', date('Y-m-01', strtotime('+1 month')))
+            ->whereDate('month', $nextDate)
             ->first();
 
         return Inertia::render('Dashboard', compact('current', 'next'));
