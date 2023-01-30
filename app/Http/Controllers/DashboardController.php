@@ -15,7 +15,7 @@ class DashboardController extends Controller
             ->whereDate('month', date('Y-m-01'))
             ->first();
 
-        $nextDate = Carbon::now()->addMonth()->format('Y-m-01');
+        $nextDate = Carbon::now()->firstOfMonth()->addMonth()->format('Y-m-01');
 
         $next = Schedule::query()
             ->whereDate('month', $nextDate)
