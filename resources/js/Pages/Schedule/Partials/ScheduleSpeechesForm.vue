@@ -184,7 +184,7 @@ onMounted(() => {
                         </div>
 
                         <a
-                            v-if="item.speech && schedule"
+                            v-if="item.speaker && item.speech && schedule"
                             :href="generateWhatsappLink(item)"
                             class="w-fit gap-1 rounded-md border border-transparent bg-green-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-green-900 focus:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-green-900 sm:grow-0"
                             target="_blank"
