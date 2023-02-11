@@ -1,6 +1,7 @@
 <script setup>
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import SelectInput from "@/Components/SelectInput.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -36,7 +37,7 @@ const changeVal = (val) => {
         <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
             <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                    <InputLabel for="datepickerId" value="Data" />
+                    <InputLabel for="datepickerId" value="Data *" />
 
                     <TextInput
                         id="datepickerId"
@@ -56,7 +57,7 @@ const changeVal = (val) => {
                 </div>
 
                 <div>
-                    <InputLabel for="congregation" value="Congregação" />
+                    <InputLabel for="congregation" value="Congregação *" />
 
                     <TextInput
                         id="congregation"
@@ -76,14 +77,16 @@ const changeVal = (val) => {
                 <div>
                     <InputLabel for="day" value="Dia da reunião" />
 
-                    <TextInput
+                    <SelectInput
                         id="day"
                         ref="dayInput"
                         v-model="form.day"
-                        autocomplete="off"
                         class="mt-1 block w-full"
-                        type="text"
-                    />
+                    >
+                        <option value="">Selecione...</option>
+                        <option value="Sábado">Sábado</option>
+                        <option value="Domingo">Domingo</option>
+                    </SelectInput>
 
                     <InputError :message="form.errors.day" class="mt-2" />
                 </div>
