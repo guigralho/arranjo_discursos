@@ -91,14 +91,6 @@ export default {
 
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
-                :href="route('register')"
-                class="flex-auto"
-            >
-                Cadastrar-se
-            </PrimaryButton>
-
-            <PrimaryButton
-                :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
                 class="flex-auto"
             >
