@@ -8,6 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 const form = useForm({
     name: "",
     email: "",
+    congregation_id: "",
     password: "",
     password_confirmation: "",
     terms: false,
@@ -61,6 +62,20 @@ export default {
             />
 
             <InputError :message="form.errors.email" class="mt-2" />
+        </div>
+
+        <div class="mt-4">
+            <InputLabel for="congregation_id" value="Congregação" />
+
+            <TextInput
+                id="congregation_id"
+                v-model="form.congregation_id"
+                class="mt-1 block w-full"
+                required
+                type="text"
+            />
+
+            <InputError :message="form.errors.congregation_id" class="mt-2" />
         </div>
 
         <div class="mt-4">

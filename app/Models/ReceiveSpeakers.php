@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\CongregationScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,15 @@ class ReceiveSpeakers extends Model
         'date',
         'speaker',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($speaker) {
+            $speaker->congregation_id = auth()->user()->congregation_id;
+        });
+
+        static::addGlobalScope(new CongregationScope());
+    }
 
     /**
      * @return mixed

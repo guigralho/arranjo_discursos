@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\CongregationScope;
 use App\Observers\DeleteObserver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +20,15 @@ class Speaker extends Model
     {
         parent::boot();
         self::observe(new DeleteObserver());
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($speaker) {
+            $speaker->congregation_id = auth()->user()->congregation_id;
+        });
+
+        static::addGlobalScope(new CongregationScope());
     }
 
     /**
