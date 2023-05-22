@@ -41,12 +41,12 @@ class Schedule extends Model
 
     public function toReceive()
     {
-        return $this->hasMany(ReceiveSpeakers::class);
+        return $this->hasMany(ReceiveSpeakers::class)->orderBy('date');
     }
 
     public function toSend()
     {
-        return $this->hasMany(SendSpeakers::class);
+        return $this->hasMany(SendSpeakers::class)->orderBy('date');
     }
 
     public function getFormattedMonthAttribute()
