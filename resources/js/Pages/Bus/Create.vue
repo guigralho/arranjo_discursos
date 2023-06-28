@@ -1,4 +1,5 @@
 <script setup>
+import Form from "./Partials/Form.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 
 defineProps({
@@ -11,9 +12,9 @@ defineProps({
 
 const form = useForm({
     passenger_id: "",
-    friday: 0,
-    saturday: 0,
-    sunday: 0,
+    friday: false,
+    saturday: false,
+    sunday: false,
     amount: "",
     obs: "",
 });
