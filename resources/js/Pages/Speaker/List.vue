@@ -92,11 +92,7 @@ const toggleOrder = (field) => {
                     </a>
                 </div>
             </div>
-            <Link
-                :href="route('speakers.create')"
-                class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
-                >Novo</Link
-            >
+            <Link :href="route('speakers.create')" class="btn-novo">Novo</Link>
         </div>
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
             <div

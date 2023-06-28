@@ -15,7 +15,6 @@ import {
     faChevronLeft,
     faChevronRight,
     faCircleCheck,
-    faTimesCircle,
     faEdit,
     faFileArrowDown,
     faMoon,
@@ -24,6 +23,7 @@ import {
     faSortDesc,
     faSpinner,
     faSun,
+    faTimesCircle,
     faTrash,
     faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";

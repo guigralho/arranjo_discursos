@@ -1,20 +1,19 @@
 <script setup>
-import Form from "./Partials/Form.vue";
-import {useForm} from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 defineProps({
     show: {
         type: Boolean,
         default: false,
     },
-    passengers: Object
+    passengers: Object,
 });
 
 const form = useForm({
     passenger_id: "",
-    friday: "",
-    saturday: "",
-    sunday: "",
+    friday: 0,
+    saturday: 0,
+    sunday: 0,
     amount: "",
     obs: "",
 });
@@ -24,10 +23,7 @@ const emit = defineEmits(["close"]);
 const submit = () => {
     form.post(route("bus.store"), {
         preserveScroll: true,
-        onSuccess: () => {
-            form.reset()
-            emit('close')
-        },
+        onSuccess: () => {},
         onError: () => {
             if (form.errors.passenger_id) {
                 form.reset("passenger_id");
@@ -39,6 +35,6 @@ const submit = () => {
 
 <template>
     <div class="mx-auto grid max-w-7xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
-        <Form :form="form" :passengers="passengers" :submit="submit"/>
+        <Form :form="form" :passengers="passengers" :submit="submit" />
     </div>
 </template>

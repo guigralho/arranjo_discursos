@@ -5,7 +5,8 @@ import Checkbox from "@/Components/Checkbox.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import SelectInput from "@/Components/SelectInput.vue";
+import { onMounted } from "vue";
+import { initTE, Select } from "tw-elements";
 
 defineProps({
     submit: Function,
@@ -16,6 +17,10 @@ defineProps({
         default: null,
     },
 });
+
+onMounted(() => {
+    initTE({ Select });
+});
 </script>
 
 <template>
@@ -23,14 +28,14 @@ defineProps({
         <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
             <section class="max-w-xl space-y-6">
                 <fieldset>
-                    <InputLabel for="passenger_id" value="Nome"/>
+                    <InputLabel for="passenger_id" value="Nome" />
 
-                    <SelectInput
-                        id="passenger_id"
+                    <select
                         v-model="form.passenger_id"
-                        class="mt-1 block w-full"
+                        data-te-select-filter="true"
+                        data-te-select-init
+                        data-te-select-placeholder="Selecione..."
                     >
-                        <option value="">Selecione...</option>
                         <option
                             v-for="passenger in passengers"
                             :key="passenger.id"
@@ -38,7 +43,7 @@ defineProps({
                         >
                             {{ passenger.name }}
                         </option>
-                    </SelectInput>
+                    </select>
 
                     <InputError
                         :message="form.errors.passenger_id"
@@ -47,13 +52,16 @@ defineProps({
                 </fieldset>
 
                 <fieldset>
-                    <InputLabel value="Dias"/>
+                    <InputLabel value="Dias" />
                     <div class="flex justify-between">
                         <div class="relative flex gap-x-3">
                             <div class="flex h-6 items-center">
                                 <Checkbox
-                                    id="friday" v-model:checked="form.friday" name="friday"
-                                    value="1"/>
+                                    id="friday"
+                                    v-model:checked="form.friday"
+                                    name="friday"
+                                    value="1"
+                                />
                             </div>
                             <div class="text-sm leading-6">
                                 <label
@@ -66,7 +74,12 @@ defineProps({
                         </div>
                         <div class="relative flex gap-x-3">
                             <div class="flex h-6 items-center">
-                                <Checkbox id="saturday" v-model:checked="form.saturday" name="saturday" value="1"/>
+                                <Checkbox
+                                    id="saturday"
+                                    v-model:checked="form.saturday"
+                                    name="saturday"
+                                    value="1"
+                                />
                             </div>
                             <div class="text-sm leading-6">
                                 <label
@@ -79,7 +92,12 @@ defineProps({
                         </div>
                         <div class="relative flex gap-x-3">
                             <div class="flex h-6 items-center">
-                                <Checkbox id="sunday" v-model:checked="form.sunday" name="sunday" value="1"/>
+                                <Checkbox
+                                    id="sunday"
+                                    v-model:checked="form.sunday"
+                                    name="sunday"
+                                    value="1"
+                                />
                             </div>
                             <div class="text-sm leading-6">
                                 <label
@@ -94,7 +112,7 @@ defineProps({
                 </fieldset>
 
                 <fieldset>
-                    <InputLabel for="amount" value="Pago"/>
+                    <InputLabel for="amount" value="Pago" />
 
                     <TextInput
                         id="amount"
@@ -105,34 +123,51 @@ defineProps({
                     />
                 </fieldset>
 
-                <fieldset>
-                    <InputLabel for="amount" value="A Pagar"/>
+                <fieldset class="flex gap-4">
+                    <div>
+                        <InputLabel for="amount" value="A Pagar" />
 
-                    <p class="font-medium text-sm text-gray-700 dark:text-gray-300">
-                        {{
-                            ((form.friday + form.saturday + form.sunday) * $inertia.page.props.valor_onibus).toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL"
-                            })
-                        }}
-                    </p>
+                        <p
+                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >
+                            {{
+                                (
+                                    (form.friday +
+                                        form.saturday +
+                                        form.sunday) *
+                                    $inertia.page.props.valor_onibus
+                                ).toLocaleString("pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL",
+                                })
+                            }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <InputLabel for="amount" value="Saldo" />
+
+                        <p
+                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >
+                            {{
+                                (
+                                    form.amount -
+                                    (form.friday +
+                                        form.saturday +
+                                        form.sunday) *
+                                        $inertia.page.props.valor_onibus
+                                ).toLocaleString("pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL",
+                                })
+                            }}
+                        </p>
+                    </div>
                 </fieldset>
 
                 <fieldset>
-                    <InputLabel for="amount" value="Saldo"/>
-
-                    <p class="font-medium text-sm text-gray-700 dark:text-gray-300">
-                        {{
-                            (form.amount - ((form.friday + form.saturday + form.sunday) * $inertia.page.props.valor_onibus)).toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL"
-                            })
-                        }}
-                    </p>
-                </fieldset>
-
-                <fieldset>
-                    <InputLabel for="obs" value="Observações"/>
+                    <InputLabel for="obs" value="Observações" />
 
                     <textarea
                         id="obs"
@@ -152,12 +187,11 @@ defineProps({
                 type="button"
             >
                 Voltar
-            </PrimaryButton
-            >
+            </PrimaryButton>
             <SaveButton :disabled="form.processing" class="flex-1 sm:flex-none">
                 <p v-if="!form.processing">Salvar</p>
                 <p v-else>
-                    <font-awesome-icon icon="fa-solid fa-spinner" spin/>
+                    <font-awesome-icon icon="fa-solid fa-spinner" spin />
                     Aguarde...
                 </p>
             </SaveButton>

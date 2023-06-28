@@ -50,6 +50,11 @@ class BusController extends Controller
             ->select(DB::raw('sum(buses.friday) as friday, sum(buses.saturday) as saturday, sum(buses.sunday) as sunday, sum(buses.amount) as amount'))
             ->first();
 
+        $totais->friday = $totais->friday ?? 0;
+        $totais->saturday = $totais->saturday ?? 0;
+        $totais->sunday = $totais->sunday ?? 0;
+        $totais->amount = $totais->amount ?? 0;
+
         return Inertia::render('Bus/List', [
             'name' => 'Oradores',
             'list' => $list,
