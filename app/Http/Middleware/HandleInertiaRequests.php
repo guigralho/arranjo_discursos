@@ -33,8 +33,9 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'app' => [
                 'name' => config('app.name'),
-                'url' => config('app.url'),
+                'url' => config('app.url')
             ],
+            'valor_onibus' => env('VALOR_ONIBUS'),
             'flash' => [
                 'message' => $request->session()->get('message'),
             ],

@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\Speech;
+use App\Models\Bus;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class SpeechService
+class BusService
 {
 
     /**
-     * @param Speech $speech
+     * @param Bus $bus
      */
     public function __construct(
-        public Speech $speech,
+        public Bus $bus,
     )
     {
     }
@@ -21,7 +21,7 @@ class SpeechService
     /**
      * @param $userId
      */
-    public function findSpeechById($userId)
+    public function findBusById($userId)
     {
         return $this->query()->find($userId);
     }
@@ -31,7 +31,7 @@ class SpeechService
      */
     private function query()
     {
-        return $this->speech->query();
+        return $this->bus->query();
     }
 
     /**
@@ -41,52 +41,60 @@ class SpeechService
     public function list(array $search = [])
     {
         $searchString = data_get($search, 'searchString', false);
-        $hasSpeakers = data_get($search, 'hasSpeakers', false);
-        $moreThan2Years = data_get($search, 'moreThan2Years', false);
+        $searchFriday = data_get($search, 'searchFriday', false);
+        $searchSaturday = data_get($search, 'searchSaturday', false);
+        $searchSunday = data_get($search, 'searchSunday', false);
         $query = $this->query();
 
         if ($searchString) {
             $query = $query->where(function ($query) use ($searchString) {
-                return $query->where('number', $searchString)
-                    ->orWhere('theme', 'like', "%{$searchString}%");
+                return $query->whereHas('passenger', function ($query) use ($searchString) {
+                    return $query->where('name', 'like', "%{$searchString}%")
+                        ->orWhere('doc', 'like', "%{$searchString}%");
+                })
+                    ->orWhere('obs', 'like', "%{$searchString}%");
             });
         }
 
-        if ($hasSpeakers == 'true') {
-            $query = $query->has('speakers');
+        if ($searchFriday) {
+            $query = $query->where('friday', $searchFriday);
         }
 
-        if ($moreThan2Years == 'true') {
-            $query =
-                $query->where(function ($query) use ($searchString) {
-                    return $query->orWhereDoesntHave('lastMade', function ($query) use ($searchString) {
-                        return $query->whereDate('date', '>', now()->sub(2, 'years'));
-                    })
-                        ->orWhereDoesntHave('lastMade');
-                });
+        if ($searchSaturday) {
+            $query = $query->where('saturday', $searchSaturday);
+        }
+
+        if ($searchSunday) {
+            $query = $query->where('sunday', $searchSunday);
         }
 
         return $query;
     }
 
     /**
-     * @param Speech $speech
+     * @param Bus $bus
      * @return array
      */
-    public function update(Speech $speech)
+    public function update(Bus $bus)
     {
-        return $this->create($speech);
+        return $this->create($bus);
     }
 
     /**
-     * @param Speech $speech
+     * @param Bus $bus
      * @return array
      */
-    public function create(Speech $speech)
+    public function create(Bus $bus)
     {
         try {
-            DB::transaction(function () use ($speech) {
-                if (!$speech->save())
+            DB::transaction(function () use ($bus) {
+                if (!empty($bus->amount)) {
+                    $bus->amount = priceFormat($bus->amount);
+                } else {
+                    $bus->amount = 0;
+                }
+
+                if (!$bus->save())
                     throw new Exception('Erro ao inserir no banco de dados');
 
                 return true;
@@ -105,11 +113,11 @@ class SpeechService
     }
 
     /**
-     * @param Speech $speech
+     * @param Bus $bus
      * @return bool|null
      */
-    public function delete(Speech $speech)
+    public function delete(Bus $bus)
     {
-        return $speech->delete();
+        return $bus->delete();
     }
 }

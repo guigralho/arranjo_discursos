@@ -196,6 +196,11 @@ const setNavigation = () => {
             href: route("speakers.index"),
             current: route().current("speakers*"),
         },
+        {
+            name: "Ônibus",
+            href: route("bus.index"),
+            current: route().current("bus*"),
+        },
     ];
 };
 
