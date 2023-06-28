@@ -7,6 +7,10 @@ import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import debounce from "lodash/debounce";
 import { Inertia } from "@inertiajs/inertia";
+import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
+import EditLink from "@/Components/Buttons/EditLink.vue";
+import CheckIcon from "@/Components/CheckIcon.vue";
+import MobileList from "@/Pages/Bus/Partials/MobileList.vue";
 
 let props = defineProps({
     name: String,
@@ -156,10 +160,17 @@ const toggleOrder = (field) => {
             <Link :href="route('bus.create')" class="btn-novo"> Novo </Link>
         </div>
     </div>
+
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
+            <MobileList
+                :list="list"
+                :order-dir="orderDir"
+                :order-field="orderField"
+                @toggle-order="toggleOrder"
+            />
             <div
-                class="inline-block min-w-full overflow-hidden rounded-lg shadow"
+                class="inline-block hidden min-w-full overflow-hidden rounded-lg shadow md:block"
             >
                 <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
                     <thead>
@@ -243,8 +254,8 @@ const toggleOrder = (field) => {
                     </thead>
                     <tbody>
                         <tr
-                            v-for="item in list"
-                            v-if="list.length > 0"
+                            v-for="item in list.data"
+                            v-if="list.total"
                             :key="item.id"
                             class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
                         >

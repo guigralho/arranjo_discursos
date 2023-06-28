@@ -45,7 +45,9 @@ class BusController extends Controller
             ->select('buses.*')
             ->join('passengers', 'buses.passenger_id', '=', 'passengers.id', 'left')
             ->orderBy(DB::raw($field), $dir)
-            ->get();
+            ->paginate($this->request->get('perPage', 50))
+            ->withQueryString()
+            ->onEachSide(1);
 
         $totais = $this->busService
             ->list($search)

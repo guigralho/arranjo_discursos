@@ -59,6 +59,6 @@ class Bus extends Model
 
     public function getAmountAttribute($val)
     {
-        return $val;
+        return (float)$val;
     }
 }
