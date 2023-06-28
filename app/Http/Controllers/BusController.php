@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BusListExport;
 use App\Http\Requests\BusRequest;
 use App\Models\Bus;
 use App\Models\Passenger;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BusController extends Controller
 {
@@ -125,5 +127,12 @@ class BusController extends Controller
         Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
         return Redirect::back();
+    }
+
+    public function downloadList()
+    {
+        $export = new BusListExport();
+
+        return Excel::download($export, 'arranjo_onibus.xlsx');
     }
 }

@@ -12,11 +12,14 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
     faAngleDown,
     faAngleUp,
+    faBus,
     faChevronLeft,
     faChevronRight,
     faCircleCheck,
     faEdit,
     faFileArrowDown,
+    faFileLines,
+    faList,
     faMoon,
     faSort,
     faSortAsc,
@@ -25,6 +28,7 @@ import {
     faSun,
     faTimesCircle,
     faTrash,
+    faUsers,
     faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
@@ -49,7 +53,11 @@ library.add(
     faAngleUp,
     faAngleDown,
     faCircleUser,
-    faFileArrowDown
+    faUsers,
+    faFileArrowDown,
+    faList,
+    faBus,
+    faFileLines
 );
 
 const appName =

@@ -3,26 +3,6 @@
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <div
-                    class="absolute inset-y-0 left-0 flex items-center sm:hidden"
-                >
-                    <!-- Mobile menu button-->
-                    <DisclosureButton
-                        class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                    >
-                        <span class="sr-only">Open main menu</span>
-                        <Bars3Icon
-                            v-if="!open"
-                            aria-hidden="true"
-                            class="block h-6 w-6"
-                        />
-                        <XMarkIcon
-                            v-else
-                            aria-hidden="true"
-                            class="block h-6 w-6"
-                        />
-                    </DisclosureButton>
-                </div>
-                <div
                     class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
                 >
                     <div class="flex flex-shrink-0 items-center">
@@ -30,8 +10,20 @@
                             {{ $inertia.page.props.app.name }}
                         </h1>
                     </div>
-                    <div class="hidden sm:ml-6 sm:block">
+                    <div class="hidden sm:ml-6 lg:block">
                         <div class="flex space-x-4">
+                            <Link
+                                key="Dashboard"
+                                :class="[
+                                    route().current('dashboard*')
+                                        ? 'bg-gray-900 text-white'
+                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                    'rounded-md px-3 py-2 text-sm font-medium',
+                                ]"
+                                :href="route('dashboard')"
+                            >
+                                Dashboard
+                            </Link>
                             <Link
                                 v-for="item in navigation"
                                 :key="item.name"
@@ -124,26 +116,34 @@
                 </div>
             </div>
         </div>
-
-        <DisclosurePanel class="sm:hidden">
-            <div class="space-y-1 px-2 pt-2 pb-3">
-                <DisclosureButton
-                    v-for="item in navigation"
-                    :key="item.name"
-                    :aria-current="item.current ? 'page' : undefined"
-                    :class="[
-                        item.current
-                            ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block rounded-md px-3 py-2 text-base font-medium',
-                    ]"
-                    :href="item.href"
-                    as="a"
-                    >{{ item.name }}
-                </DisclosureButton>
-            </div>
-        </DisclosurePanel>
     </Disclosure>
+
+    <div
+        class="fixed bottom-0 left-0 z-50 h-16 w-full bg-white dark:bg-gray-800 lg:hidden"
+    >
+        <div class="mx-auto grid h-full max-w-lg grid-cols-4 font-medium">
+            <Link
+                v-for="item in navigation"
+                :key="item.name"
+                :aria-current="item.current ? 'page' : undefined"
+                :class="[
+                    item.current ? 'bg-gray-900' : 'text-gray-300',
+                    'group inline-flex flex-col items-center justify-center px-5 text-sm dark:text-gray-400 ',
+                ]"
+                :href="item.href"
+                type="button"
+            >
+                <font-awesome-icon
+                    :class="[item.current ? 'text-white' : 'text-gray-300']"
+                    :icon="item.icon"
+                    size="lg"
+                />
+                <span :class="[item.current ? 'text-white' : 'text-gray-300']">
+                    {{ item.name }}
+                </span>
+            </Link>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -177,29 +177,28 @@ let navigation = ref([]);
 const setNavigation = () => {
     navigation.value = [
         {
-            name: "Dashboard",
-            href: route("dashboard"),
-            current: route().current("dashboard*"),
-        },
-        {
             name: "Arranjos",
             href: route("schedules.index"),
             current: route().current("schedules*"),
+            icon: "fa-solid fa-list",
         },
         {
             name: "Discursos",
             href: route("speeches.index"),
             current: route().current("speeches*"),
+            icon: "fa-solid fa-file-lines",
         },
         {
             name: "Oradores",
             href: route("speakers.index"),
             current: route().current("speakers*"),
+            icon: "fa-solid fa-list",
         },
         {
             name: "Ônibus",
             href: route("bus.index"),
             current: route().current("bus*"),
+            icon: "fa-solid fa-list",
         },
     ];
 };

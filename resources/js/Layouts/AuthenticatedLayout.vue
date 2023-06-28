@@ -2,6 +2,8 @@
 import Navbar from "@/Components/Navbar.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import SuccessAlert from "@/Components/SuccessAlert.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { Link } from "@inertiajs/inertia-vue3";
 </script>
 
 <template>

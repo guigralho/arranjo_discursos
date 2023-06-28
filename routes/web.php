@@ -50,8 +50,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/speaker-speech/{speaker}', [SpeakerSpeechController::class, 'store'])->name('speaker-speech.store');
     Route::delete('/speaker-speech/{speaker}/{speech}', [SpeakerSpeechController::class, 'destroy'])->name('speaker-speech.destroy');
 
-    Route::resource('/bus', BusController::class);
 
+    Route::get('/bus/download-list', [BusController::class, 'downloadList'])->name('bus.download-list');
+    Route::resource('/bus', BusController::class);
 });
 
 require __DIR__ . '/auth.php';

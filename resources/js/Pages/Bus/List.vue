@@ -23,7 +23,6 @@ let saturday = ref(props.filters.saturday);
 let sunday = ref(props.filters.sunday);
 let orderDir = ref(props.filters.orderDir);
 let orderField = ref(props.filters.orderField);
-let totalFriday = ref(0);
 
 watch(
     [search, friday, saturday, sunday, orderDir, orderField],
@@ -144,9 +143,20 @@ const toggleOrder = (field) => {
                         </div>
                     </div>
                 </div>
+                <div class="relative">
+                    <a
+                        :href="route('bus.download-list')"
+                        class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
+                        type="button"
+                    >
+                        Baixar excel
+                    </a>
+                </div>
             </div>
             <Link :href="route('bus.create')" class="btn-novo"> Novo </Link>
         </div>
+    </div>
+    <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
             <div
                 class="inline-block min-w-full overflow-hidden rounded-lg shadow"
@@ -172,15 +182,8 @@ const toggleOrder = (field) => {
                             <th
                                 class="px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
-                                @click="toggleOrder('passengers.doc')"
                             >
                                 RG
-                                <SortIcons
-                                    :order-dir="orderDir"
-                                    :update-icon="
-                                        orderField === 'passengers.doc'
-                                    "
-                                />
                             </th>
                             <th
                                 class="px-5 py-5 text-left text-sm uppercase"
