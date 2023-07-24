@@ -33,14 +33,21 @@ class SpeechController extends Controller
         $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'speeches.id';
         $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
 
-        $list = $this->speechService
+        $query = $this->speechService
             ->list($search)
             ->select('speeches.*')
             ->with(['speakers', 'lastMade'])
             ->join('receive_speakers', 'receive_speakers.speech_id', '=', 'speeches.id', 'left')
-            ->groupBy('speeches.id')
-            ->orderBy(DB::raw($field), $dir)
-            ->paginate($this->request->get('perPage', 10))
+            ->groupBy('speeches.id');
+
+        if ($field == 'max(receive_speakers.date)') {
+            $query = $query->orderBy(DB::raw($field), $dir)
+                ->orderBy('number', 'asc');
+        } else {
+            $query = $query->orderBy(DB::raw($field), $dir);
+        }
+
+        $list = $query->paginate($this->request->get('perPage', 10))
             ->withQueryString()
             ->onEachSide(1);
 
