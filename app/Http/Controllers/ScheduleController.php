@@ -35,7 +35,7 @@ class ScheduleController extends Controller
         $list = $this->scheduleService
             ->list($search)
             ->orderBy($field, $dir)
-            ->paginate($this->request->get('perPage', 10))
+            ->paginate($this->request->get('perPage', 12))
             ->withQueryString()
             ->onEachSide(1);
 
