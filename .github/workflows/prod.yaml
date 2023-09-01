@@ -39,5 +39,4 @@ jobs:
             cd /var/www/html/arranjo_discursos/
             php composer.phar install
             php artisan migrate --force
-            npm install
-            npm run build
+            nvm use 18
