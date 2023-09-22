@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SpeakerController;
@@ -54,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/bus/download-list', [BusController::class, 'downloadList'])->name('bus.download-list');
     Route::delete('/bus/delete-all', [BusController::class, 'deleteAll'])->name('bus.delete-all');
     Route::resource('/bus', BusController::class);
+
+    Route::resource('/passengers', PassengerController::class);
 });
 
 require __DIR__ . '/auth.php';

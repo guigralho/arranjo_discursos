@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
                 'name' => config('app.name'),
                 'url' => config('app.url')
             ],
-            'valor_onibus' => env('VALOR_ONIBUS'),
+            'valor_onibus' => config('app.valor_onibus'),
             'flash' => [
                 'message' => $request->session()->get('message'),
             ],

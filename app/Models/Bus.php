@@ -49,7 +49,7 @@ class Bus extends Model
 
     public function getTotalAttribute()
     {
-        return ($this->friday + $this->saturday + $this->sunday) * env('VALOR_ONIBUS');
+        return ($this->friday + $this->saturday + $this->sunday) * config('app.valor_onibus');
     }
 
     public function getSaldoAttribute()

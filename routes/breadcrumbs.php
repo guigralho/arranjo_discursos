@@ -3,6 +3,7 @@
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
 use App\Models\Bus;
+use App\Models\Passenger;
 use App\Models\Schedule;
 use App\Models\Speaker;
 use App\Models\Speech;
@@ -78,4 +79,20 @@ Breadcrumbs::for('bus.show', function (BreadcrumbTrail $trail, $bu) {
     $bus = Bus::findOrFail($bu);
     $trail->parent('bus.index');
     $trail->push($bus->passenger->name, route('bus.show', $bus->id));
+});
+
+//
+Breadcrumbs::for('passengers.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Passageiros', route('passengers.index'));
+});
+
+Breadcrumbs::for('passengers.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('passengers.index');
+    $trail->push('Novo passageiro', route('passengers.create'));
+});
+
+Breadcrumbs::for('passengers.show', function (BreadcrumbTrail $trail, $passenger) {
+    $passenger = Passenger::findOrFail($passenger);
+    $trail->parent('passengers.index');
+    $trail->push($passenger->name, route('passengers.show', $passenger->id));
 });

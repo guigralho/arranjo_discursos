@@ -41,9 +41,9 @@ let selectedItem = ref({});
                                 </p>
 
                                 <div class="flex gap-4">
-                                    <CheckIcon :checked="item.friday" />
-                                    <CheckIcon :checked="item.saturday" />
-                                    <CheckIcon :checked="item.sunday" />
+                                    <CheckIcon :checked="item.friday > 0" />
+                                    <CheckIcon :checked="item.saturday > 0" />
+                                    <CheckIcon :checked="item.sunday > 0" />
                                 </div>
 
                                 <div

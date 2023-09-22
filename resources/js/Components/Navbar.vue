@@ -32,21 +32,27 @@
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
-                            <Link
-                                v-for="item in navigation"
-                                :key="item.name"
-                                :aria-current="
-                                    item.current ? 'page' : undefined
-                                "
-                                :class="[
-                                    item.current
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                    'rounded-md px-3 py-2 text-sm font-medium',
-                                ]"
-                                :href="item.href"
-                                >{{ item.name }}</Link
-                            >
+                            <div v-for="item in navigation" :key="item.name">
+                                <Link
+                                    v-if="
+                                        (item.name === 'Ônibus' &&
+                                            $inertia.page.props.auth.user.id ===
+                                                1) ||
+                                        item.name !== 'Ônibus'
+                                    "
+                                    :aria-current="
+                                        item.current ? 'page' : undefined
+                                    "
+                                    :class="[
+                                        item.current
+                                            ? 'bg-gray-900 text-white'
+                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                        'rounded-md px-3 py-2 text-sm font-medium',
+                                    ]"
+                                    :href="item.href"
+                                    >{{ item.name }}
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -95,6 +101,12 @@
                             <MenuItems
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                             >
+                                <p
+                                    class="block px-4 py-2 text-sm text-gray-700"
+                                >
+                                    Olá,
+                                    {{ $inertia.page.props.auth.user.name }}
+                                </p>
                                 <MenuItem v-slot="{ active }">
                                     <Link
                                         :class="[
@@ -103,7 +115,7 @@
                                         ]"
                                         :href="route('profile.edit')"
                                     >
-                                        Your Profile
+                                        Seu perfil
                                     </Link>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
@@ -115,7 +127,7 @@
                                         :href="route('logout')"
                                         method="post"
                                         type="button"
-                                        >Sign out
+                                        >Sair
                                     </Link>
                                 </MenuItem>
                             </MenuItems>
@@ -158,16 +170,15 @@ import {
 } from "@headlessui/vue";
 import {
     Bars3Icon,
-    XMarkIcon,
     MoonIcon,
     SunIcon,
     UserCircleIcon,
+    XMarkIcon,
 } from "@heroicons/vue/24/outline";
 import { useDark, useToggle } from "@vueuse/core";
 import { Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 import { ref } from "vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);

@@ -82,7 +82,7 @@ const toggleOrder = (field) => {
 <template>
     <Head title="Dashboard" />
 
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div
             class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
         >
@@ -173,6 +173,9 @@ const toggleOrder = (field) => {
                 </div>
             </div>
             <Link :href="route('bus.create')" class="btn-novo"> Novo</Link>
+            <Link :href="route('passengers.index')" class="btn-novo">
+                Passageiros
+            </Link>
         </div>
     </div>
 
