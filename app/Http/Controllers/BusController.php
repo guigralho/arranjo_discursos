@@ -51,7 +51,7 @@ class BusController extends Controller
 
         $totais = $this->busService
             ->list($search)
-            ->select(DB::raw('sum(buses.friday) as friday, sum(buses.saturday) as saturday, sum(buses.sunday) as sunday, sum(buses.amount) as amount'))
+            ->select(DB::raw('sum(buses.friday) as friday, sum(buses.saturday) as saturday, sum(buses.sunday) as sunday, ifnull(sum(buses.amount),0) as amount'))
             ->first();
 
         $totais->friday = $totais->friday ?? 0;
