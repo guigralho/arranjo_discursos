@@ -38,9 +38,11 @@ jobs:
           script: |
             cd /var/www/html/arranjo_discursos/
             php composer.phar install --optimize-autoloader --no-dev
+            php artisan down
             php artisan config:cache
             php artisan migrate --force
             export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm use 18
             npm install
             npm run build
+            php artisan up

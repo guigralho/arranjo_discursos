@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/bus/download-list', [BusController::class, 'downloadList'])->name('bus.download-list');
-    Route::get('/bus/delete-all', [BusController::class, 'deleteAll'])->name('bus.delete-all');
+    Route::delete('/bus/delete-all', [BusController::class, 'deleteAll'])->name('bus.delete-all');
     Route::resource('/bus', BusController::class);
 });
 
