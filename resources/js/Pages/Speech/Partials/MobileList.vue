@@ -4,8 +4,8 @@ import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import { ref, watch } from "vue";
-import debounce from "lodash/debounce";
 import { Inertia } from "@inertiajs/inertia";
+import DeleteModal from "@/Components/DeleteModal.vue";
 
 const emit = defineEmits(["toggleOrder"]);
 
@@ -17,6 +17,8 @@ const props = defineProps({
 
 let dir = ref(props.orderDir);
 let field = ref(props.orderField);
+let showModal = ref(false);
+let selectedItem = ref({});
 
 watch([dir, field], ([valueOrderDir, valueOrderField]) => {
     Inertia.get(
@@ -132,5 +134,12 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
                 </div>
             </div>
         </div>
+
+        <DeleteModal
+            :delete-url="`speeches/${selectedItem.id}`"
+            :show="showModal"
+            :to-delete="`Tema ${selectedItem.number} - ${selectedItem.theme}`"
+            @close="showModal = false"
+        />
     </div>
 </template>

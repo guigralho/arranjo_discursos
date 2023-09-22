@@ -2,12 +2,17 @@
 import CheckIcon from "@/Components/CheckIcon.vue";
 import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import EditLink from "@/Components/Buttons/EditLink.vue";
+import { ref } from "vue";
+import DeleteModal from "@/Components/DeleteModal.vue";
 
-const props = defineProps({
+defineProps({
     list: Object,
     orderField: String,
     orderDir: String,
 });
+
+let showModal = ref(false);
+let selectedItem = ref({});
 </script>
 
 <template>
@@ -107,7 +112,7 @@ const props = defineProps({
 
                                 <div class="mt-3 flex gap-3">
                                     <EditLink
-                                        :href="route('speeches.show', item.id)"
+                                        :href="route('bus.show', item.id)"
                                         class="grow"
                                     >
                                         Detalhes
@@ -133,5 +138,12 @@ const props = defineProps({
                 </div>
             </div>
         </div>
+
+        <DeleteModal
+            :delete-url="`bus/${selectedItem.id}`"
+            :show="showModal"
+            :to-delete="selectedItem.passenger?.name"
+            @close="showModal = false"
+        />
     </div>
 </template>

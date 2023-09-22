@@ -7,10 +7,10 @@ import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import debounce from "lodash/debounce";
 import { Inertia } from "@inertiajs/inertia";
-import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
-import EditLink from "@/Components/Buttons/EditLink.vue";
-import CheckIcon from "@/Components/CheckIcon.vue";
 import MobileList from "@/Pages/Bus/Partials/MobileList.vue";
+import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
+import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
+import DeleteModal from "@/Components/DeleteModal.vue";
 
 let props = defineProps({
     name: String,
@@ -27,6 +27,9 @@ let saturday = ref(props.filters.saturday);
 let sunday = ref(props.filters.sunday);
 let orderDir = ref(props.filters.orderDir);
 let orderField = ref(props.filters.orderField);
+let deleteUrl = ref("");
+let showModal = ref(false);
+let selectedItem = ref("");
 
 watch(
     [search, friday, saturday, sunday, orderDir, orderField],
@@ -147,17 +150,29 @@ const toggleOrder = (field) => {
                         </div>
                     </div>
                 </div>
-                <div class="relative">
+                <div class="flex flex-wrap gap-3">
                     <a
                         :href="route('bus.download-list')"
-                        class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
+                        class="flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
                         type="button"
                     >
                         Baixar excel
                     </a>
+                    <DeleteLink
+                        class="!text-center !text-base !font-semibold !tracking-normal"
+                        @click="
+                            () => {
+                                showModal = true;
+                                selectedItem = 'TODOS OS REGISTROS!';
+                                deleteUrl = `bus/delete-all`;
+                            }
+                        "
+                    >
+                        Excluir arranjo
+                    </DeleteLink>
                 </div>
             </div>
-            <Link :href="route('bus.create')" class="btn-novo"> Novo </Link>
+            <Link :href="route('bus.create')" class="btn-novo"> Novo</Link>
         </div>
     </div>
 
@@ -178,7 +193,7 @@ const toggleOrder = (field) => {
                             class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
                         >
                             <th
-                                class="w-2/12 cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="w-[10%] cursor-pointer px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
                                 @click="toggleOrder('passengers.name')"
                             >
@@ -386,6 +401,19 @@ const toggleOrder = (field) => {
                                         icon="fa-solid fa-edit"
                                     />
                                 </EditButton>
+                                <DeleteButton
+                                    @click="
+                                        () => {
+                                            showModal = true;
+                                            selectedItem = item.passenger.name;
+                                            deleteUrl = `bus/${selectedItem.id}`;
+                                        }
+                                    "
+                                >
+                                    <font-awesome-icon
+                                        icon="fa-solid fa-trash"
+                                    />
+                                </DeleteButton>
                             </td>
                         </tr>
                         <tr
@@ -465,5 +493,12 @@ const toggleOrder = (field) => {
                 </table>
             </div>
         </div>
+
+        <DeleteModal
+            :delete-url="deleteUrl"
+            :show="showModal"
+            :to-delete="selectedItem"
+            @close="showModal = false"
+        />
     </div>
 </template>

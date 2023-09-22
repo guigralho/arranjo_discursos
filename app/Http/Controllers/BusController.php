@@ -122,9 +122,18 @@ class BusController extends Controller
         return Redirect::route('bus.index');
     }
 
-    public function destroy(Bus $bus)
+    public function destroy(Bus $bu)
     {
-        $this->busService->delete($bus);
+        $this->busService->delete($bu);
+
+        Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
+
+        return Redirect::back();
+    }
+
+    public function deleteAll()
+    {
+        Bus::truncate();
 
         Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
