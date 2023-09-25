@@ -81,8 +81,17 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
                                 <p
                                     class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
                                 >
-                                    {{ item.number }} -
-                                    {{ item.theme }}
+                                    {{ item.name }}
+                                </p>
+                                <p
+                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                >
+                                    {{ item.doc }}
+                                </p>
+                                <p
+                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                >
+                                    {{ item.phone }}
                                 </p>
                                 <p
                                     class="text-sm text-gray-500 dark:text-gray-400"
@@ -92,7 +101,9 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
                                 </p>
                                 <div class="mt-3 flex gap-3">
                                     <EditLink
-                                        :href="route('speeches.show', item.id)"
+                                        :href="
+                                            route('passengers.show', item.id)
+                                        "
                                         class="grow"
                                     >
                                         Detalhes
@@ -120,9 +131,9 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
         </div>
 
         <DeleteModal
-            :delete-url="`speeches/${selectedItem.id}`"
+            :delete-url="`passengers/${selectedItem.id}`"
             :show="showModal"
-            :to-delete="`Tema ${selectedItem.number} - ${selectedItem.theme}`"
+            :to-delete="selectedItem.name"
             @close="showModal = false"
         />
     </div>
