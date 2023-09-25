@@ -19,7 +19,7 @@ let props = defineProps({
     search: String,
     filters: Object,
 });
-
+console.log(props.list.data);
 let page = ref(props.filters.page);
 let search = ref(props.filters.search);
 let friday = ref(props.filters.friday);
@@ -273,7 +273,7 @@ const toggleOrder = (field) => {
                     <tbody>
                         <tr
                             v-for="item in list.data"
-                            v-if="list.total"
+                            v-if="list.meta.total"
                             :key="item.id"
                             class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
                         >

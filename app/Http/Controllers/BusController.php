@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\BusListExport;
 use App\Http\Requests\BusRequest;
+use App\Http\Resources\BusResource;
 use App\Models\Bus;
 use App\Models\Passenger;
 use App\Services\BusService;
@@ -61,7 +62,7 @@ class BusController extends Controller
 
         return Inertia::render('Bus/List', [
             'name' => 'Oradores',
-            'list' => $list,
+            'list' => BusResource::collection($list),
             'totais' => $totais,
             'filters' => $this->request->only(['search', 'friday', 'saturday', 'sunday', 'orderField', 'orderDir', 'page'])
         ]);
@@ -99,6 +100,7 @@ class BusController extends Controller
             ->with(['passenger'])
             ->first();
 
+        $bus = new BusResource($bus);
         $passengers = Passenger::query()->orderBy('name')->get();
 
         return Inertia::render('Bus/Show', compact('bus', 'passengers'));
@@ -106,6 +108,7 @@ class BusController extends Controller
 
     public function update(BusRequest $busRequest, Bus $bu)
     {
+
         $bu->passenger_id = $busRequest->passenger_id;
         $bu->friday = $busRequest->friday;
         $bu->saturday = $busRequest->saturday;

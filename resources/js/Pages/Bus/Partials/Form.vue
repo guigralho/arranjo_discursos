@@ -21,6 +21,16 @@ defineProps({
 onMounted(() => {
     initTE({ Select });
 });
+
+function priceFormat(price) {
+    // Replace all occurrences of '.' with an empty string
+    let valueFormatted = price.replace(/\./g, "");
+
+    // Replace ',' with '.'
+    valueFormatted = valueFormatted.replace(",", ".");
+
+    return valueFormatted;
+}
 </script>
 
 <template>
@@ -152,7 +162,7 @@ onMounted(() => {
                         >
                             {{
                                 (
-                                    form.amount -
+                                    priceFormat(form.amount) -
                                     (form.friday +
                                         form.saturday +
                                         form.sunday) *

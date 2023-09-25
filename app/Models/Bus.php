@@ -12,7 +12,7 @@ class Bus extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $appends = ['total', 'saldo'];
+    protected $appends = ['total', 'saldo', 'formatted_amount'];
 
     /**
      * @return void
@@ -57,8 +57,8 @@ class Bus extends Model
         return $this->amount - $this->total;
     }
 
-    public function getAmountAttribute($val)
+    public function getFormattedAmountAttribute()
     {
-        return (float)$val;
+        return number_format($this->amount, 2, ',', '.');
     }
 }
