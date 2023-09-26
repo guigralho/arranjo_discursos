@@ -58,7 +58,7 @@ class BusController extends Controller
         $totais->friday = $totais->friday ?? 0;
         $totais->saturday = $totais->saturday ?? 0;
         $totais->sunday = $totais->sunday ?? 0;
-        $totais->amount = $totais->amount ?? 0;
+        $totais->amount = (float)$totais->amount ?? 0;
 
         return Inertia::render('Bus/List', [
             'name' => 'Oradores',

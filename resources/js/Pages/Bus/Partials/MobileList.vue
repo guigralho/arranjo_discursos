@@ -4,12 +4,20 @@ import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import EditLink from "@/Components/Buttons/EditLink.vue";
 import { ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
+import { usePage } from "@inertiajs/inertia-vue3";
 
-defineProps({
+const props = defineProps({
     list: Object,
+    totais: Object,
     orderField: String,
     orderDir: String,
 });
+
+const pagar =
+    (parseInt(props.totais.friday) +
+        parseInt(props.totais.saturday) +
+        parseInt(props.totais.sunday)) *
+    usePage().props.value.valor_onibus;
 
 let showModal = ref(false);
 let selectedItem = ref({});
@@ -23,10 +31,76 @@ let selectedItem = ref({});
             >
                 <div class="flow-root">
                     <ul
-                        v-if="list.total"
+                        v-if="list.meta.total"
                         class="divide-y divide-gray-200 dark:divide-gray-700"
                         role="list"
                     >
+                        <li class="p-4 sm:p-4">
+                            <div class="flex flex-col gap-2">
+                                <div class="flex justify-between">
+                                    <p
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    >
+                                        Sexta: {{ totais.friday }}
+                                    </p>
+                                    <p
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    >
+                                        Sábado: {{ totais.saturday }}
+                                    </p>
+                                    <p
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    >
+                                        Domingo: {{ totais.sunday }}
+                                    </p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    >
+                                        A pagar:
+                                        {{
+                                            pagar.toLocaleString("pt-BR", {
+                                                style: "currency",
+                                                currency: "BRL",
+                                            })
+                                        }}
+                                    </p>
+                                    <p
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    >
+                                        Pago:
+                                        {{
+                                            totais.amount.toLocaleString(
+                                                "pt-BR",
+                                                {
+                                                    style: "currency",
+                                                    currency: "BRL",
+                                                }
+                                            )
+                                        }}
+                                    </p>
+                                    <p
+                                        :class="
+                                            totais.amount - pagar < 0
+                                                ? 'text-red-500'
+                                                : 'text-gray-900 dark:text-gray-100'
+                                        "
+                                        class="inline-flex items-center text-base font-semibold"
+                                    >
+                                        Saldo:
+                                        {{
+                                            (
+                                                totais.amount - pagar
+                                            ).toLocaleString("pt-BR", {
+                                                style: "currency",
+                                                currency: "BRL",
+                                            })
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
                         <li
                             v-for="item in list.data"
                             :key="item.id"

@@ -16,6 +16,7 @@ import {
     faChevronLeft,
     faChevronRight,
     faCircleCheck,
+    faCircleInfo,
     faEdit,
     faFileArrowDown,
     faFileLines,
@@ -55,6 +56,7 @@ library.add(
     faCircleUser,
     faUsers,
     faFileArrowDown,
+    faCircleInfo,
     faList,
     faBus,
     faFileLines

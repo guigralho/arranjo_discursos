@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Head, Link, usePage } from "@inertiajs/inertia-vue3";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import { ref, watch } from "vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -19,7 +19,7 @@ let props = defineProps({
     search: String,
     filters: Object,
 });
-console.log(props.list.data);
+
 let page = ref(props.filters.page);
 let search = ref(props.filters.search);
 let friday = ref(props.filters.friday);
@@ -30,6 +30,12 @@ let orderField = ref(props.filters.orderField);
 let deleteUrl = ref("");
 let showModal = ref(false);
 let selectedItem = ref("");
+
+const pagar =
+    (parseInt(props.totais.friday) +
+        parseInt(props.totais.saturday) +
+        parseInt(props.totais.sunday)) *
+    usePage().props.value.valor_onibus;
 
 watch(
     [search, friday, saturday, sunday, orderDir, orderField],
@@ -180,11 +186,17 @@ const toggleOrder = (field) => {
     </div>
 
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
+        <div>
+            <p class="text-gray-800 dark:text-gray-100">
+                Chave pix: 11966615727
+            </p>
+        </div>
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
             <MobileList
                 :list="list"
                 :order-dir="orderDir"
                 :order-field="orderField"
+                :totais="totais"
                 @toggle-order="toggleOrder"
             />
             <div
@@ -443,12 +455,7 @@ const toggleOrder = (field) => {
                             <td class="text-center">{{ totais.sunday }}</td>
                             <td class="px-5 py-5 text-sm">
                                 {{
-                                    (
-                                        (parseInt(totais.friday) +
-                                            parseInt(totais.saturday) +
-                                            parseInt(totais.sunday)) *
-                                        $inertia.page.props.valor_onibus
-                                    ).toLocaleString("pt-BR", {
+                                    pagar.toLocaleString("pt-BR", {
                                         style: "currency",
                                         currency: "BRL",
                                     })
@@ -466,28 +473,20 @@ const toggleOrder = (field) => {
                             <td></td>
                             <td
                                 :class="
-                                    totais.amount -
-                                        (parseInt(totais.friday) +
-                                            parseInt(totais.saturday) +
-                                            parseInt(totais.sunday)) *
-                                            $inertia.page.props.valor_onibus <
-                                    0
+                                    totais.amount - pagar < 0
                                         ? 'text-red-500'
                                         : ''
                                 "
                                 class="px-5 py-5 text-sm"
                             >
                                 {{
-                                    (
-                                        totais.amount -
-                                        (parseInt(totais.friday) +
-                                            parseInt(totais.saturday) +
-                                            parseInt(totais.sunday)) *
-                                            $inertia.page.props.valor_onibus
-                                    ).toLocaleString("pt-BR", {
-                                        style: "currency",
-                                        currency: "BRL",
-                                    })
+                                    (totais.amount - pagar).toLocaleString(
+                                        "pt-BR",
+                                        {
+                                            style: "currency",
+                                            currency: "BRL",
+                                        }
+                                    )
                                 }}
                             </td>
                             <td></td>
