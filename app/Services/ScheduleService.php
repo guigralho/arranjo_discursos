@@ -121,7 +121,7 @@ class ScheduleService
 
         if (!$schedule->toReceive()->exists()) {
             foreach ($dt->daysUntil($dt2) as $item) {
-                if ($item->dayOfWeek === Carbon::SUNDAY) {
+                if ($item->dayOfWeek === Carbon::SATURDAY) {
                     $schedule->toReceive()->create([
                         'date' => $item->format('Y-m-d'),
                     ]);
