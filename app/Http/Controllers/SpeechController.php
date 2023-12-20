@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SpeechRequest;
 use App\Models\Speech;
 use App\Services\SpeechService;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -37,7 +38,10 @@ class SpeechController extends Controller
             ->list($search)
             ->select('speeches.*')
             ->with(['speakers', 'lastMade'])
-            ->join('receive_speakers', 'receive_speakers.speech_id', '=', 'speeches.id', 'left')
+            ->leftJoin('receive_speakers', function (JoinClause $join) {
+                $join->on('receive_speakers.speech_id', '=', 'speeches.id')
+                    ->where('receive_speakers.congregation_id', '=', auth()->user()->congregation_id);
+            })
             ->groupBy('speeches.id');
 
         if ($field == 'max(receive_speakers.date)') {
