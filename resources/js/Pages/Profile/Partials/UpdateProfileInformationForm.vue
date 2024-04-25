@@ -4,6 +4,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
+import SelectInput from "@/Components/SelectInput.vue";
 
 const props = defineProps({
     mustVerifyEmail: Boolean,
@@ -15,6 +16,7 @@ const user = usePage().props.value.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    meeting_day: user.meeting_day,
 });
 </script>
 
@@ -64,6 +66,23 @@ const form = useForm({
                 />
 
                 <InputError :message="form.errors.email" class="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel for="email" value="Dia de reunião" />
+
+                <SelectInput
+                    id="day"
+                    ref="dayInput"
+                    v-model="form.meeting_day"
+                    class="mt-1 block w-full"
+                >
+                    <option value="">Selecione...</option>
+                    <option value="6">Sábado</option>
+                    <option value="0">Domingo</option>
+                </SelectInput>
+
+                <InputError :message="form.errors.meeting_day" class="mt-2" />
             </div>
 
             <div

@@ -119,9 +119,9 @@ class ScheduleService
             }
         }
 
-        if (!$schedule->toReceive()->exists()) {
+        if (!$schedule->toReceive()->exists() && request()->user()->meeting_day != '') {
             foreach ($dt->daysUntil($dt2) as $item) {
-                if ($item->dayOfWeek === Carbon::SATURDAY) {
+                if ($item->dayOfWeek === request()->user()->meeting_day) {
                     $schedule->toReceive()->create([
                         'date' => $item->format('Y-m-d'),
                     ]);

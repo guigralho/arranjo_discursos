@@ -87,7 +87,7 @@ class ScheduleController extends Controller
 
     public function update(ScheduleRequest $scheduleRequest, Schedule $schedule)
     {
-        $schedule->month = $scheduleRequest->formatted_month;
+        $schedule->month = '01/' . $scheduleRequest->formatted_month;
         $schedule->congregation = $scheduleRequest->congregation;
         $schedule->day = $scheduleRequest->day;
         $schedule->hour = $scheduleRequest->hour;

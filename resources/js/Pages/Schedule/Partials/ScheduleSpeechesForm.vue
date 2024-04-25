@@ -4,8 +4,9 @@ import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
+import Datepicker from "flowbite-datepicker/Datepicker";
 import { useForm } from "@inertiajs/inertia-vue3";
-import { onMounted } from "vue";
+import { onMounted, onUpdated } from "vue";
 import debounce from "lodash/debounce";
 import axios from "axios";
 
@@ -89,6 +90,18 @@ const generateWhatsappLink = (item) => {
 onMounted(() => {
     fillDates();
 });
+
+onUpdated(() => {
+    // the DOM element will be assigned to the ref after initial render
+    const inputs = document.getElementsByClassName("js-datepicker");
+    Array.prototype.forEach.call(inputs, function (el) {
+        // Do stuff here
+        new Datepicker(el, {
+            format: "dd/mm/yyyy",
+            autohide: true,
+        });
+    });
+});
 </script>
 <template>
     <div class="mt-6">
@@ -113,7 +126,8 @@ onMounted(() => {
                                 :ref="`date${key}`"
                                 v-model="item.date"
                                 autocomplete="off"
-                                class="mt-1 block w-full"
+                                class="js-datepicker mt-1 block w-full"
+                                datepicker
                                 type="text"
                             />
 

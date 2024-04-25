@@ -13,7 +13,7 @@ class Schedule extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $appends = ['translated_month', 'formatted_month'];
+    protected $appends = ['translated_month', 'formatted_month', 'month_year'];
 
     /**
      * @return void
@@ -62,6 +62,11 @@ class Schedule extends Model
     public function getFormattedMonthAttribute()
     {
         return Carbon::parse($this->month)->format('d/m/Y');
+    }
+
+    public function getMonthYearAttribute()
+    {
+        return Carbon::parse($this->month)->format('m/Y');
     }
 
     public function getTranslatedMonthAttribute()

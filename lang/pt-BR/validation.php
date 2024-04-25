@@ -206,6 +206,7 @@ return [
         'year' => 'ano',
         'zip_code' => 'cep',
         'speech_id' => 'tema',
+        'meeting_day' => 'dia de reunião',
         'weeks.*.date' => 'data',
         'weeks.*.speech' => 'tema',
         'weeks.*.speaker' => 'orador',

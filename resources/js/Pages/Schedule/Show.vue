@@ -14,7 +14,7 @@ const props = defineProps({
 });
 
 const form = useForm({
-    formatted_month: props.schedule.formatted_month,
+    formatted_month: props.schedule.month_year,
     congregation: props.schedule.congregation,
     day: props.schedule.day,
     hour: props.schedule.hour,
