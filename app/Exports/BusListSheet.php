@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Bus;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -14,7 +15,7 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class BusListSheet implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithStyles, WithHeadings
+class BusListSheet implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithStyles, WithHeadings, WithColumnWidths
 {
     private $title;
 
@@ -35,6 +36,14 @@ class BusListSheet implements FromQuery, WithTitle, ShouldAutoSize, WithMapping,
             ::query()
             ->with(['passenger'])
             ->where($this->field, 1);
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 55,
+            'B' => 45,
+        ];
     }
 
     public function headings(): array
