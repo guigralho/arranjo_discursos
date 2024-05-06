@@ -60,7 +60,7 @@ let selectedItem = ref({});
                                     >
                                         A pagar:
                                         {{
-                                            pagar.toLocaleString("pt-BR", {
+                                            totais.total.toLocaleString("pt-BR", {
                                                 style: "currency",
                                                 currency: "BRL",
                                             })
@@ -82,7 +82,7 @@ let selectedItem = ref({});
                                     </p>
                                     <p
                                         :class="
-                                            totais.amount - pagar < 0
+                                            totais.amount - totais.total < 0
                                                 ? 'text-red-500'
                                                 : 'text-gray-900 dark:text-gray-100'
                                         "
@@ -91,7 +91,7 @@ let selectedItem = ref({});
                                         Saldo:
                                         {{
                                             (
-                                                totais.amount - pagar
+                                                totais.amount - totais.total
                                             ).toLocaleString("pt-BR", {
                                                 style: "currency",
                                                 currency: "BRL",
