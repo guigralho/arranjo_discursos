@@ -102,6 +102,10 @@ onUpdated(() => {
         });
     });
 });
+
+const changeVal = (val, item) => {
+    item.date = val;
+};
 </script>
 <template>
     <div class="mt-6">
@@ -129,6 +133,7 @@ onUpdated(() => {
                                 class="js-datepicker mt-1 block w-full"
                                 datepicker
                                 type="text"
+                                @focusout="changeVal($event.target.value, item)"
                             />
 
                             <InputError

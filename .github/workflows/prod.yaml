@@ -47,5 +47,5 @@ jobs:
             rm -rf node_modules/
             npm install
             npm run build
-            chmod -R 777 storage/clockwork/
+            chmod -R 777 storage/
             php artisan up

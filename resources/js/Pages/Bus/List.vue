@@ -453,7 +453,7 @@ const toggleOrder = (field) => {
                             <td class="text-center">{{ totais.sunday }}</td>
                             <td class="px-5 py-5 text-sm">
                                 {{
-                                    pagar.toLocaleString("pt-BR", {
+                                    totais.total.toLocaleString("pt-BR", {
                                         style: "currency",
                                         currency: "BRL",
                                     })
@@ -471,14 +471,14 @@ const toggleOrder = (field) => {
                             <td></td>
                             <td
                                 :class="
-                                    totais.amount - pagar < 0
+                                    totais.amount - totais.total < 0
                                         ? 'text-red-500'
                                         : ''
                                 "
                                 class="px-5 py-5 text-sm"
                             >
                                 {{
-                                    (totais.amount - pagar).toLocaleString(
+                                    (totais.amount - totais.total).toLocaleString(
                                         "pt-BR",
                                         {
                                             style: "currency",
