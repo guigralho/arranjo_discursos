@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import { ref, watch } from "vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -86,8 +86,6 @@ const toggleOrder = (field) => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
-
     <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div
             class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
@@ -421,7 +419,7 @@ const toggleOrder = (field) => {
                                         () => {
                                             showModal = true;
                                             selectedItem = item.passenger.name;
-                                            deleteUrl = `bus/${selectedItem.id}`;
+                                            deleteUrl = `bus/${item.id}`;
                                         }
                                     "
                                 >

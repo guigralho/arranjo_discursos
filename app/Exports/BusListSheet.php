@@ -90,7 +90,7 @@ class BusListSheet implements FromView, WithTitle, ShouldAutoSize, WithColumnWid
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THICK,
                         'color' => [
-                            'rgb' => '00000'
+                            'rgb' => '000000'
                         ]
                     ]
                 ],
@@ -100,37 +100,20 @@ class BusListSheet implements FromView, WithTitle, ShouldAutoSize, WithColumnWid
                     'horizontal' => Alignment::HORIZONTAL_CENTER,
                     'vertical' => Alignment::VERTICAL_CENTER,
                 ],
+            ],
+            'A6:A29' => [
                 'borders' => [
                     'left' => [
-                        'borderStyle' => Border::BORDER_THICK,
-                        'color' => [
-                            'rgb' => '00000'
-                        ]
-                    ],
-                    'right' => [
-                        'borderStyle' => Border::BORDER_THICK,
-                        'color' => [
-                            'rgb' => '00000'
-                        ]
+                        'borderStyle' => Border::BORDER_THICK
                     ],
                 ],
             ],
-            'A7:A29' => [
-                'borders' => [
-                    'left' => [
-                        'borderStyle' => Border::BORDER_THICK,
-                        'color' => [
-                            'rgb' => '00000'
-                        ]
-                    ],
-                ],
-            ],
-            'F7:F29' => [
+            'F6:F29' => [
                 'borders' => [
                     'right' => [
                         'borderStyle' => Border::BORDER_THICK,
                         'color' => [
-                            'rgb' => '00000'
+                            'rgb' => '000000'
                         ]
                     ],
                 ],
@@ -140,7 +123,7 @@ class BusListSheet implements FromView, WithTitle, ShouldAutoSize, WithColumnWid
                     'bottom' => [
                         'borderStyle' => Border::BORDER_THICK,
                         'color' => [
-                            'rgb' => '00000'
+                            'rgb' => '000000'
                         ]
                     ],
                 ],
