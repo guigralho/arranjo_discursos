@@ -58,7 +58,7 @@
             <td style="text-align: center;background-color: #4472c4;font-weight: bold;width: 4%;color: #ffffff;height: 30px;">{{ $i+1 }}</td>
             <td style="width: 23%;text-align: center;">{{ data_get($passengers, $i.'.passenger.name', '') }}</td>
             <td style="width: 23%;text-align: center;">{{ data_get($passengers, $i.'.passenger.doc', '') }}</td>
-            <td style="text-align: center;background-color: #4472c4;font-weight: bold;width: 4%;color: #ffffff;">{{ $i+23 }}</td>
+            <td style="text-align: center;background-color: #4472c4;font-weight: bold;width: 4%;color: #ffffff;">{{ $i+24 }}</td>
             <td style="width: 23%;text-align: center;">{{ data_get($passengers, ($i+23).'.passenger.name', '') }}</td>
             <td style="width: 23%;text-align: center;">{{ data_get($passengers, ($i+23).'.passenger.doc', '') }}</td>
         </tr>
