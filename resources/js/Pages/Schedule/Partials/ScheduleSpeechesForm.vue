@@ -81,7 +81,9 @@ const generateWhatsappLink = (item) => {
         link += `*Congregação:* ${props.schedule?.congregation}%0a`;
         link += `*Endereço:* ${props.schedule?.address}%0a`;
         link += `*Horário:* ${props.schedule?.hour}%0a`;
-        link += `*Tema:* ${disc.number} - ${disc.theme}`;
+        link += `*Contato:* ${props.schedule?.contact} - ${props.schedule?.phone}%0a`;
+        link += `*Tema:* ${disc.number} - ${disc.theme}%0a%0a`;
+        link += `Por favor, me confirme se poderá fazer o discurso nesse dia.`;
     }
 
     return link;
