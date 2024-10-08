@@ -23,14 +23,16 @@ class ScheduleController extends Controller
     {
         $search = [];
 
-        if ($this->request->has('search'))
+        if ($this->request->has('search')) {
             $search['searchString'] = $this->request->get('search');
+        }
 
-        if ($this->request->has('searchDate'))
+        if ($this->request->has('searchDate')) {
             $search['searchDate'] = $this->request->get('searchDate');
+        }
 
         $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'month';
-        $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'desc';
+        $dir   = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'desc';
 
         $list = $this->scheduleService
             ->list($search)
@@ -40,22 +42,22 @@ class ScheduleController extends Controller
             ->onEachSide(1);
 
         return Inertia::render('Schedule/List', [
-            'name' => 'Arranjos',
-            'list' => $list,
+            'name'    => 'Arranjos',
+            'list'    => $list,
             'filters' => $this->request->only(['search', 'searchDate', 'orderField', 'orderDir', 'page'])
         ]);
     }
 
     public function store(ScheduleRequest $scheduleRequest)
     {
-        $schedule = new Schedule();
-        $schedule->month = $scheduleRequest->formatted_month;
+        $schedule               = new Schedule();
+        $schedule->month        = '01/'.$scheduleRequest->formatted_month;
         $schedule->congregation = $scheduleRequest->congregation;
-        $schedule->day = $scheduleRequest->day;
-        $schedule->hour = $scheduleRequest->hour;
-        $schedule->address = $scheduleRequest->address;
-        $schedule->contact = $scheduleRequest->contact;
-        $schedule->phone = $scheduleRequest->phone;
+        $schedule->day          = $scheduleRequest->day;
+        $schedule->hour         = $scheduleRequest->hour;
+        $schedule->address      = $scheduleRequest->address;
+        $schedule->contact      = $scheduleRequest->contact;
+        $schedule->phone        = $scheduleRequest->phone;
 
         $schedule->user_created_id = $scheduleRequest->user()->id;
 
@@ -75,7 +77,7 @@ class ScheduleController extends Controller
 
     public function show($schedule)
     {
-        $name = 'Alterar arranjo';
+        $name     = 'Alterar arranjo';
         $schedule = Schedule::whereId($schedule)
             ->with(['userCreated', 'toReceive', 'toSend'])
             ->first();
@@ -87,13 +89,13 @@ class ScheduleController extends Controller
 
     public function update(ScheduleRequest $scheduleRequest, Schedule $schedule)
     {
-        $schedule->month = '01/' . $scheduleRequest->formatted_month;
+        $schedule->month        = '01/'.$scheduleRequest->formatted_month;
         $schedule->congregation = $scheduleRequest->congregation;
-        $schedule->day = $scheduleRequest->day;
-        $schedule->hour = $scheduleRequest->hour;
-        $schedule->address = $scheduleRequest->address;
-        $schedule->contact = $scheduleRequest->contact;
-        $schedule->phone = $scheduleRequest->phone;
+        $schedule->day          = $scheduleRequest->day;
+        $schedule->hour         = $scheduleRequest->hour;
+        $schedule->address      = $scheduleRequest->address;
+        $schedule->contact      = $scheduleRequest->contact;
+        $schedule->phone        = $scheduleRequest->phone;
 
         $schedule->user_updated_id = $scheduleRequest->user()->id;
 
@@ -123,9 +125,9 @@ class ScheduleController extends Controller
 
         foreach ($this->request->get('weeks') as $week) {
             $schedule->toReceive()->create([
-                'speech_id' => $week['speech'],
-                'date' => dateConverter($week['date']),
-                'speaker' => $week['speaker'],
+                'speech_id'  => $week['speech'],
+                'date'       => dateConverter($week['date']),
+                'speaker'    => $week['speaker'],
                 'created_at' => now()
             ]);
         }
@@ -145,8 +147,8 @@ class ScheduleController extends Controller
 
         foreach ($this->request->get('weeks') as $week) {
             $schedule->toSend()->create([
-                'speech_id' => $week['speech'],
-                'date' => dateConverter($week['date']),
+                'speech_id'  => $week['speech'],
+                'date'       => dateConverter($week['date']),
                 'speaker_id' => $week['speaker'],
                 'created_at' => now()
             ]);
@@ -164,6 +166,7 @@ class ScheduleController extends Controller
             ->first();
 
         $pdf = Pdf::loadView('pdfs.quadro', $schedule->toArray());
+
         return $pdf->download('quadro.pdf');
     }
 }
