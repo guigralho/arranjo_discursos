@@ -25,17 +25,21 @@ class BusController extends Controller
     {
         $search = [];
 
-        if ($this->request->has('search'))
+        if ($this->request->has('search')) {
             $search['searchString'] = $this->request->get('search');
+        }
 
-        if ($this->request->has('friday'))
+        if ($this->request->has('friday')) {
             $search['searchFriday'] = $this->request->get('friday') == 'true' ? 1 : 0;
+        }
 
-        if ($this->request->has('saturday'))
+        if ($this->request->has('saturday')) {
             $search['searchSaturday'] = $this->request->get('saturday') == 'true' ? 1 : 0;
+        }
 
-        if ($this->request->has('sunday'))
+        if ($this->request->has('sunday')) {
             $search['searchSunday'] = $this->request->get('sunday') == 'true' ? 1 : 0;
+        }
 
         $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'buses.id';
         $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
@@ -58,13 +62,15 @@ class BusController extends Controller
         $totais->friday = $totais->friday ?? 0;
         $totais->saturday = $totais->saturday ?? 0;
         $totais->sunday = $totais->sunday ?? 0;
-        $totais->amount = (float)$totais->amount ?? 0;
+        $totais->amount = (float) $totais->amount ?? 0;
 
         return Inertia::render('Bus/List', [
             'name' => 'Oradores',
             'list' => BusResource::collection($list),
             'totais' => $totais,
-            'filters' => $this->request->only(['search', 'friday', 'saturday', 'sunday', 'orderField', 'orderDir', 'page'])
+            'filters' => $this->request->only([
+                'search', 'friday', 'saturday', 'sunday', 'orderField', 'orderDir', 'page',
+            ]),
         ]);
     }
 
@@ -108,7 +114,6 @@ class BusController extends Controller
 
     public function update(BusRequest $busRequest, Bus $bu)
     {
-
         $bu->passenger_id = $busRequest->passenger_id;
         $bu->friday = $busRequest->friday;
         $bu->saturday = $busRequest->saturday;
@@ -136,7 +141,7 @@ class BusController extends Controller
 
     public function deleteAll()
     {
-        Bus::truncate();
+        Bus::delete();
 
         Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
