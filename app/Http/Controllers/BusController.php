@@ -141,7 +141,7 @@ class BusController extends Controller
 
     public function deleteAll()
     {
-        Bus::delete();
+        DB::table('buses')->delete();
 
         Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
