@@ -50,7 +50,7 @@ class BusController extends Controller
             ->select('buses.*')
             ->join('passengers', 'buses.passenger_id', '=', 'passengers.id', 'left')
             ->orderBy(DB::raw($field), $dir)
-            ->paginate($this->request->get('perPage', 50))
+            ->paginate($this->request->get('perPage', 100))
             ->withQueryString()
             ->onEachSide(1);
 
