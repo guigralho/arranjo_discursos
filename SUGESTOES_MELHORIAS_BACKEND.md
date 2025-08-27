@@ -60,15 +60,25 @@ class SpeechController extends Controller
 }
 ```
 
-### 4. **Eager Loading Optimization**
+### 4. **Eager Loading Optimization** ✅ **CONCLUÍDO**
+**Problema encontrado:**
 ```php
-// SpeakerController.php - linha 36
+// SpeakerController.php - linha 35
+->select('speakers.*')
 ->with(['lastSpeechMade'])
-
-// Melhorar com select específico
-->with(['lastSpeechMade:speaker_id,date,speech_id'])
-->select('speakers.id', 'speakers.name', 'speakers.privilege', 'speakers.phone')
 ```
+
+**Solução Implementada:**
+```php
+// ✅ IMPLEMENTADO - SpeakerController.php
+->select('speakers.id', 'speakers.name', 'speakers.privilege', 'speakers.phone')
+->with(['lastSpeechMade:speaker_id,date,speech_id'])
+```
+
+**Melhorias Implementadas:**
+- ✅ Otimizado eager loading com campos específicos: `lastSpeechMade:speaker_id,date,speech_id`
+- ✅ Reduzido select principal para campos específicos necessários
+- ✅ Redução significativa na transferência de dados desnecessários
 
 ## 🏗️ Melhorias de Arquitetura
 

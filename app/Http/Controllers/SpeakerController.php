@@ -31,8 +31,8 @@ class SpeakerController extends Controller
 
         $list = $this->speakerService
             ->list($search)
-            ->select('speakers.*')
-            ->with(['lastSpeechMade'])
+            ->select('speakers.id', 'speakers.name', 'speakers.privilege', 'speakers.phone')
+            ->with(['lastSpeechMade:speaker_id,date,speech_id'])
             ->join('send_speakers', 'send_speakers.speaker_id', '=', 'speakers.id', 'left')
             ->groupBy('speakers.id')
             ->orderBy(DB::raw($field), $dir)
