@@ -8,13 +8,12 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 ## Foundational Context
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.2.5
-- inertiajs/inertia-laravel (INERTIA) - v1
-- laravel/framework (LARAVEL) - v12
+- php - 8.1.14
+- inertiajs/inertia-laravel (INERTIA) - v0
+- laravel/framework (LARAVEL) - v10
 - laravel/prompts (PROMPTS) - v0
 - tightenco/ziggy (ZIGGY) - v1
 - laravel/pint (PINT) - v1
-- @inertiajs/vue3 (INERTIA) - v1
 - tailwindcss (TAILWINDCSS) - v3
 - vue (VUE) - v3
 
@@ -127,18 +126,6 @@ Route::get('/users', function () {
 </code-snippet>
 
 
-=== inertia-laravel/v1 rules ===
-
-## Inertia v1
-
-- Inertia v1 does _not_ come with these features. Do not recommend using these Inertia v2 features directly.
-    - Polling
-    - Prefetching
-    - Deferred props
-    - Infinite scrolling using merging props and `WhenVisible`
-    - Lazy loading data on scroll
-
-
 === laravel/core rules ===
 
 ## Do Things the Laravel Way
@@ -185,28 +172,18 @@ Route::get('/users', function () {
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
 
-=== laravel/v12 rules ===
+=== laravel/v10 rules ===
 
-## Laravel 12
+## Laravel 10
 
 - Use the `search-docs` tool to get version specific documentation.
-- This project upgraded from Laravel 10 without migrating to the new streamlined Laravel file structure.
-- This is **perfectly fine** and recommended by Laravel. Follow the existing structure from Laravel 10. We do not to need migrate to the new Laravel structure unless the user explicitly requests that.
-
-### Laravel 10 Structure
-- Middleware typically lives in `app/Http/Middleware/` and service providers in `app/Providers/`.
-- There is no `bootstrap/app.php` application configuration in a Laravel 10 structure:
-    - Middleware registration happens in `app/Http/Kernel.php`
+- Middleware typically live in `app/Http/Middleware/` and service providers in `app/Providers/`.
+- There is no `bootstrap/app.php` application configuration in Laravel 10:
+    - Middleware registration is in `app/Http/Kernel.php`
     - Exception handling is in `app/Exceptions/Handler.php`
-    - Console commands and schedule register in `app/Console/Kernel.php`
+    - Console commands and schedule registration is in `app/Console/Kernel.php`
     - Rate limits likely exist in `RouteServiceProvider` or `app/Http/Kernel.php`
-
-### Database
-- When modifying a column, the migration must include all of the attributes that were previously defined on the column. Otherwise, they will be dropped and lost.
-- Laravel 11 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
-
-### Models
-- Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
+- When using Eloquent model casts, you must use `protected $casts = [];` and not the `casts()` method. The `casts()` method isn't available on models in Laravel 10.
 
 
 === pint/core rules ===
@@ -215,56 +192,6 @@ Route::get('/users', function () {
 
 - You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
-
-
-=== inertia-vue/core rules ===
-
-## Inertia + Vue
-
-- Vue components must have a single root element.
-- Use `router.visit()` or `<Link>` for navigation instead of traditional links.
-
-<code-snippet lang="vue" name="Inertia Client Navigation">
-    import { Link } from '@inertiajs/vue3'
-
-    <Link href="/">Home</Link>
-</code-snippet>
-
-- For form handling, use `router.post` and related methods. Do not use regular forms.
-
-
-<code-snippet lang="vue" name="Inertia Vue Form Example">
-    <script setup>
-    import { reactive } from 'vue'
-    import { router } from '@inertiajs/vue3'
-    import { usePage } from '@inertiajs/vue3'
-
-    const page = usePage()
-
-    const form = reactive({
-      first_name: null,
-      last_name: null,
-      email: null,
-    })
-
-    function submit() {
-      router.post('/users', form)
-    }
-    </script>
-
-    <template>
-        <h1>Create {{ page.modelName }}</h1>
-        <form @submit.prevent="submit">
-            <label for="first_name">First name:</label>
-            <input id="first_name" v-model="form.first_name" />
-            <label for="last_name">Last name:</label>
-            <input id="last_name" v-model="form.last_name" />
-            <label for="email">Email:</label>
-            <input id="email" v-model="form.email" />
-            <button type="submit">Submit</button>
-        </form>
-    </template>
-</code-snippet>
 
 
 === tailwindcss/core rules ===

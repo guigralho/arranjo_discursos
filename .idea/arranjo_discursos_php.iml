@@ -144,6 +144,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/itsgoingd/clockwork" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php83" />
       <excludeFolder url="file://$MODULE_DIR$/storage/clockwork" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/boost" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/mcp" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/roster" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
