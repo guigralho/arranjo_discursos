@@ -50,7 +50,7 @@ class BusController extends Controller
             ->select('buses.*')
             ->join('passengers', 'buses.passenger_id', '=', 'passengers.id', 'left')
             ->orderBy(DB::raw($field), $dir)
-            ->paginate($this->request->get('perPage', 50))
+            ->paginate($this->request->get('perPage', 100))
             ->withQueryString()
             ->onEachSide(1);
 
@@ -141,7 +141,7 @@ class BusController extends Controller
 
     public function deleteAll()
     {
-        Bus::delete();
+        DB::table('buses')->delete();
 
         Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
 
