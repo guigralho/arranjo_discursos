@@ -56,7 +56,7 @@
                     <thead>
                         <tr>
                             <th>Congregação</th>
-                            <th>{{ $congregation }}</th>
+                            <th>{{ data_get($receive, 'is_guest') ? 'Convite' : $congregation }}</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -4,6 +4,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 import Datepicker from "flowbite-datepicker/Datepicker";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { onMounted, onUpdated } from "vue";
@@ -42,6 +43,7 @@ const fillDates = () => {
             speech: item.speech_id,
             speaker:
                 props.speakers === undefined ? item.speaker : item.speaker_id,
+            is_guest: item.is_guest || false,
         });
     });
 };
@@ -202,6 +204,14 @@ const changeVal = (val, item) => {
                                 :message="form.errors[`weeks.${key}.speech`]"
                                 class="mt-2"
                             />
+                        </div>
+
+                        <div v-if="title === 'Receber'" class="flex items-center space-x-2">
+                            <Checkbox
+                                :id="`guest${key + title}`"
+                                v-model:checked="item.is_guest"
+                            />
+                            <InputLabel :for="`guest${key + title}`" value="É um convite?" />
                         </div>
 
                         <a

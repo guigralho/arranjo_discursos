@@ -15,6 +15,7 @@ class ReceiveSpeakers extends Model
         'speech_id',
         'date',
         'speaker',
+        'is_guest',
     ];
 
     protected static function booted()
@@ -23,7 +24,7 @@ class ReceiveSpeakers extends Model
             $speaker->congregation_id = auth()->user()->congregation_id;
         });
 
-        static::addGlobalScope(new CongregationScope());
+        static::addGlobalScope(new CongregationScope);
     }
 
     /**
