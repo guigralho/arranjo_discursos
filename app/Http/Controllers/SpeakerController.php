@@ -16,16 +16,15 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SpeakerController extends Controller
 {
-    public function __construct(public SpeakerService $speakerService, public Request $request)
-    {
-    }
+    public function __construct(public SpeakerService $speakerService, public Request $request) {}
 
     public function index()
     {
         $search = [];
 
-        if ($this->request->has('search'))
+        if ($this->request->has('search')) {
             $search['searchString'] = $this->request->get('search');
+        }
 
         $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'speakers.id';
         $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
@@ -44,14 +43,14 @@ class SpeakerController extends Controller
         return Inertia::render('Speaker/List', [
             'name' => 'Oradores',
             'list' => $list,
-            'filters' => $this->request->only(['search', 'orderField', 'orderDir', 'page'])
+            'filters' => $this->request->only(['search', 'orderField', 'orderDir', 'page']),
         ]);
     }
 
     public function store(SpeakerRequest $speakerRequest)
     {
 
-        $speaker = new Speaker();
+        $speaker = new Speaker;
         $speaker->privilege = $speakerRequest->privilege;
         $speaker->name = $speakerRequest->name;
         $speaker->phone = $speakerRequest->phone;
@@ -75,11 +74,26 @@ class SpeakerController extends Controller
     public function show($speaker)
     {
         $name = 'Alterar orador';
-        $speaker = Speaker::whereId($speaker)->with('userCreated')->with('userUpdated')->first();
+        $speaker = Speaker::whereId($speaker)
+            ->with(['userCreated:id,name', 'userUpdated:id,name'])
+            ->select(['id', 'name', 'privilege', 'phone', 'user_created_id', 'user_updated_id', 'created_at', 'updated_at'])
+            ->first();
 
-        $speeches = Speech::query()->whereNotIn('id', $speaker->speeches()->get()->pluck('pivot.speech_id'))->get();
+        $speeches = Speech::query()
+            ->whereNotExists(function ($query) use ($speaker) {
+                $query->selectRaw('1')
+                    ->from('speaker_speech')
+                    ->whereColumn('speeches.id', 'speaker_speech.speech_id')
+                    ->where('speaker_speech.speaker_id', $speaker->id);
+            })
+            ->select(['id', 'number', 'theme'])
+            ->orderBy('number')
+            ->get();
 
-        $mySpeeches = $speaker->speeches()->orderBy('number')->paginate(10);
+        $mySpeeches = $speaker->speeches()
+            ->select(['speeches.id', 'speeches.number', 'speeches.theme'])
+            ->orderBy('number')
+            ->paginate(10);
 
         return Inertia::render('Speaker/Show', compact('name', 'speaker', 'mySpeeches', 'speeches'));
     }
@@ -125,5 +139,4 @@ class SpeakerController extends Controller
 
         return Excel::download($export, 'relação_discursos.xlsx');
     }
-
 }
