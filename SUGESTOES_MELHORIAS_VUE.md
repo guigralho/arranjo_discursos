@@ -115,7 +115,8 @@ export const useAuthStore = defineStore('auth', {
 
 ## 🎨 Melhorias de UX/UI
 
-### 1. **Loading States Consistentes**
+### 1. **Loading States Consistentes** ✅ IMPLEMENTADO
+**Status:** Implementado composable `useLoading.js` + componente `LoadingButton.vue` + `GlobalLoading.vue`
 ```javascript
 // composables/useLoading.js
 export function useLoading() {

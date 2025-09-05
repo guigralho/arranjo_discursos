@@ -2,6 +2,7 @@
 import Navbar from "@/Components/Navbar.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import SuccessAlert from "@/Components/SuccessAlert.vue";
+import GlobalLoading from "@/Components/GlobalLoading.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { Link } from "@inertiajs/inertia-vue3";
 </script>
@@ -18,6 +19,7 @@ import { Link } from "@inertiajs/inertia-vue3";
                 <SuccessAlert />
                 <slot />
             </main>
+            <GlobalLoading />
         </div>
     </div>
 </template>

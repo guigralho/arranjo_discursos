@@ -3,7 +3,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import SaveButton from "@/Components/Buttons/SaveButton.vue";
+import LoadingButton from "@/Components/LoadingButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Datepicker from "flowbite-datepicker/Datepicker";
 import { onMounted } from "vue";
@@ -161,13 +161,14 @@ const changeVal = (val) => {
                 type="button"
                 >Voltar</PrimaryButton
             >
-            <SaveButton :disabled="form.processing" class="flex-1 sm:flex-none">
-                <p v-if="!form.processing">Salvar</p>
-                <p v-else>
-                    <font-awesome-icon icon="fa-solid fa-spinner" spin />
-                    Aguarde...
-                </p>
-            </SaveButton>
+            <LoadingButton 
+                :loading="form.processing" 
+                text="Salvar" 
+                loading-text="Salvando..." 
+                type="submit"
+                variant="primary"
+                class="flex-1 sm:flex-none"
+            />
 
             <a
                 v-if="data?.id"

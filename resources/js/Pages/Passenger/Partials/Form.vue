@@ -3,7 +3,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import SaveButton from "@/Components/Buttons/SaveButton.vue";
+import LoadingButton from "@/Components/LoadingButton.vue";
 
 defineProps({
     submit: Function,
@@ -83,13 +83,13 @@ const back = () => {
                 @click="back"
                 >Voltar
             </PrimaryButton>
-            <SaveButton :disabled="form.processing">
-                <p v-if="!form.processing">Salvar</p>
-                <p v-else>
-                    <font-awesome-icon icon="fa-solid fa-spinner" spin />
-                    Aguarde...
-                </p>
-            </SaveButton>
+            <LoadingButton 
+                :loading="form.processing" 
+                text="Salvar" 
+                loading-text="Salvando..." 
+                type="submit"
+                variant="primary"
+            />
         </div>
     </form>
 </template>

@@ -1,9 +1,9 @@
 <script setup>
 import Modal from "./Modal.vue";
-import DeleteButton from "./Buttons/DeleteLink.vue";
+import LoadingButton from "./LoadingButton.vue";
 import PrimaryButton from "./Buttons/PrimaryButton.vue";
 import { Inertia } from "@inertiajs/inertia";
-import { ref } from "vue";
+import { useLoading } from "@/composables/useLoading";
 
 const props = defineProps({
     show: {
@@ -26,21 +26,25 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-let disabledDeleteButton = ref(false);
+const { isLoadingKey, withLoading } = useLoading();
 
-const deleteRow = () => {
-    Inertia.delete(props.deleteUrl, {
-        preserveState: true,
-        preserveScroll: true,
-        replace: true,
-        onSuccess: () => {
-            emit("close");
-            disabledDeleteButton.value = false;
-        },
-        onBefore: () => {
-            disabledDeleteButton.value = true;
-        },
-    });
+const deleteRow = async () => {
+    await withLoading(async () => {
+        return new Promise((resolve, reject) => {
+            Inertia.delete(props.deleteUrl, {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                onSuccess: () => {
+                    emit("close");
+                    resolve();
+                },
+                onError: () => {
+                    reject();
+                }
+            });
+        });
+    }, 'delete');
 };
 </script>
 <template>
@@ -53,16 +57,18 @@ const deleteRow = () => {
             <i>{{ toDelete }}</i>
         </p>
         <div class="mt-6 flex flex-row justify-evenly space-x-2">
-            <DeleteButton
-                :disabled="disabledDeleteButton"
-                class="flex-1 uppercase"
-                method="delete"
+            <LoadingButton
+                :loading="isLoadingKey('delete')"
+                class="flex-1 uppercase bg-red-600 hover:bg-red-700"
+                text="Sim"
+                loading-text="Excluindo..."
                 @click="deleteRow"
+            />
+            <PrimaryButton 
+                class="flex-1" 
+                :disabled="isLoadingKey('delete')"
+                @click="emit('close')"
             >
-                <p v-if="!disabledDeleteButton">Sim</p>
-                <p v-if="disabledDeleteButton">Aguarde...</p>
-            </DeleteButton>
-            <PrimaryButton class="flex-1" @click="emit('close')">
                 <p>Não</p>
             </PrimaryButton>
         </div>
