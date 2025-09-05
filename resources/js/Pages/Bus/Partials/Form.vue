@@ -5,8 +5,7 @@ import Checkbox from "@/Components/Checkbox.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { onMounted } from "vue";
-import { initTE, Select } from "tw-elements";
+import SearchableSelect from "@/Components/SearchableSelect.vue";
 
 defineProps({
     submit: Function,
@@ -16,10 +15,6 @@ defineProps({
         type: Object,
         default: null,
     },
-});
-
-onMounted(() => {
-    initTE({ Select });
 });
 
 function priceFormat(price) {
@@ -40,20 +35,15 @@ function priceFormat(price) {
                 <fieldset>
                     <InputLabel for="passenger_id" value="Nome" />
 
-                    <select
+                    <SearchableSelect
                         v-model="form.passenger_id"
-                        data-te-select-filter="true"
-                        data-te-select-init
-                        data-te-select-placeholder="Selecione..."
-                    >
-                        <option
-                            v-for="passenger in passengers"
-                            :key="passenger.id"
-                            :value="passenger.id"
-                        >
-                            {{ passenger.name }}
-                        </option>
-                    </select>
+                        :options="passengers"
+                        placeholder="Selecione um passageiro..."
+                        search-placeholder="Pesquisar passageiro..."
+                        display-key="name"
+                        value-key="id"
+                        class="mt-1"
+                    />
 
                     <InputError
                         :message="form.errors.passenger_id"

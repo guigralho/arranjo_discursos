@@ -30,7 +30,7 @@ import {
     faTimesCircle,
     faTrash,
     faUsers,
-    faUserSecret,
+    faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
