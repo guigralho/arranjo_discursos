@@ -3,28 +3,30 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
-import { onMounted, ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import debounce from "lodash/debounce";
+import { onMounted, ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import Datepicker from "flowbite-datepicker/Datepicker";
+import { useDebounceSearch } from "@/composables/useDebounceSearch";
 
-let props = defineProps({
+const props = defineProps({
     name: String,
     list: Object,
     search: String,
     filters: Object,
 });
 
-let page = ref(props.filters.page);
-let search = ref(props.filters.search);
-let searchDate = ref(props.filters.searchDate);
-let orderDir = ref(props.filters.orderDir);
-let orderField = ref(props.filters.orderField);
-let showModal = ref(false);
-let selectedItem = ref({});
+const { filters, updateFilter } = useDebounceSearch('/schedules', {
+    page: props.filters.page,
+    search: props.filters.search,
+    searchDate: props.filters.searchDate,
+    orderDir: props.filters.orderDir,
+    orderField: props.filters.orderField,
+});
+
+const showModal = ref(false);
+const selectedItem = ref({});
 
 onMounted(() => {
     Datepicker.locales.pt = {
@@ -54,46 +56,22 @@ onMounted(() => {
     });
 });
 
-watch(
-    [search, searchDate, orderDir, orderField],
-    debounce(function (
-        [valueSearch, valueSearchDate, valueOrderDir, valueOrderField],
-        [oldValSearch]
-    ) {
-        if (valueSearch !== oldValSearch) {
-            page.value = 1;
-        }
-        Inertia.get(
-            "/schedules",
-            {
-                search: valueSearch,
-                searchDate: valueSearchDate,
-                orderDir: valueOrderDir,
-                orderField: valueOrderField,
-                page: page.value,
-            },
-            { preserveState: true, replace: true }
-        );
-    },
-    300)
-);
 
 const toggleOrder = (field) => {
-    orderField.value = field;
+    updateFilter('orderField', field);
 
-    if (orderDir.value === undefined) {
-        orderDir.value = "asc";
-    } else if (orderDir.value === "asc") {
-        orderDir.value = "desc";
-    } else if (orderDir.value === "desc") {
-        orderDir.value = undefined;
-
-        orderField.value = "";
+    if (filters.value.orderDir === undefined) {
+        updateFilter('orderDir', "asc");
+    } else if (filters.value.orderDir === "asc") {
+        updateFilter('orderDir', "desc");
+    } else if (filters.value.orderDir === "desc") {
+        updateFilter('orderDir', undefined);
+        updateFilter('orderField', "");
     }
 };
 
 const changeVal = (val) => {
-    searchDate.value = val;
+    updateFilter('searchDate', val);
 };
 </script>
 
@@ -107,7 +85,7 @@ const changeVal = (val) => {
             <div class="flex flex-col gap-4 md:w-full md:flex-row">
                 <div class="relative">
                     <TextInput
-                        v-model="search"
+                        v-model="filters.search"
                         autocomplete="off"
                         class="dark:bg-gray-800 dark:text-gray-200"
                         name="search"
@@ -118,7 +96,7 @@ const changeVal = (val) => {
                 <div class="relative">
                     <TextInput
                         id="datepickerId"
-                        v-model="searchDate"
+                        v-model="filters.searchDate"
                         autocomplete="off"
                         class="dark:bg-gray-800 dark:text-gray-200"
                         name="searchDate"
@@ -147,8 +125,8 @@ const changeVal = (val) => {
                                 <p class="flex items-center gap-2">
                                     Data
                                     <SortIcons
-                                        :order-dir="orderDir"
-                                        :update-icon="orderField === 'month'"
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="filters.orderField === 'month'"
                                     />
                                 </p>
                             </th>
@@ -159,8 +137,8 @@ const changeVal = (val) => {
                             >
                                 Congregação
                                 <SortIcons
-                                    :order-dir="orderDir"
-                                    :update-icon="orderField === 'congregation'"
+                                    :order-dir="filters.orderDir"
+                                    :update-icon="filters.orderField === 'congregation'"
                                 />
                             </th>
                             <th
@@ -170,8 +148,8 @@ const changeVal = (val) => {
                             >
                                 Dia
                                 <SortIcons
-                                    :order-dir="orderDir"
-                                    :update-icon="orderField === 'day'"
+                                    :order-dir="filters.orderDir"
+                                    :update-icon="filters.orderField === 'day'"
                                 />
                             </th>
                             <th
@@ -181,8 +159,8 @@ const changeVal = (val) => {
                             >
                                 Hora
                                 <SortIcons
-                                    :order-dir="orderDir"
-                                    :update-icon="orderField === 'hour'"
+                                    :order-dir="filters.orderDir"
+                                    :update-icon="filters.orderField === 'hour'"
                                 />
                             </th>
                             <th

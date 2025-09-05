@@ -3,62 +3,41 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
-import { ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import debounce from "lodash/debounce";
+import { ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
+import { useDebounceSearch } from "@/composables/useDebounceSearch";
 
-let props = defineProps({
+const props = defineProps({
     name: String,
     list: Object,
     search: String,
     filters: Object,
 });
 
-let page = ref(props.filters.page);
-let search = ref(props.filters.search);
-let orderDir = ref(props.filters.orderDir);
-let orderField = ref(props.filters.orderField);
-let showModal = ref(false);
-let selectedItem = ref({});
-let ids = ref([]);
+const { filters, updateFilter } = useDebounceSearch('/speakers', {
+    page: props.filters.page,
+    search: props.filters.search,
+    orderDir: props.filters.orderDir,
+    orderField: props.filters.orderField,
+});
 
-watch(
-    [search, orderDir, orderField],
-    debounce(function (
-        [valueSearch, valueOrderDir, valueOrderField],
-        [oldValSearch]
-    ) {
-        if (valueSearch !== oldValSearch) {
-            page.value = 1;
-        }
-        Inertia.get(
-            "/speakers",
-            {
-                search: valueSearch,
-                orderDir: valueOrderDir,
-                orderField: valueOrderField,
-                page: page.value,
-            },
-            { preserveState: true, replace: true }
-        );
-    },
-    300)
-);
+const showModal = ref(false);
+const selectedItem = ref({});
+const ids = ref([]);
+
 
 const toggleOrder = (field) => {
-    orderField.value = field;
+    updateFilter('orderField', field);
 
-    if (orderDir.value === undefined) {
-        orderDir.value = "asc";
-    } else if (orderDir.value === "asc") {
-        orderDir.value = "desc";
-    } else if (orderDir.value === "desc") {
-        orderDir.value = undefined;
-
-        orderField.value = "";
+    if (filters.value.orderDir === undefined) {
+        updateFilter('orderDir', "asc");
+    } else if (filters.value.orderDir === "asc") {
+        updateFilter('orderDir', "desc");
+    } else if (filters.value.orderDir === "desc") {
+        updateFilter('orderDir', undefined);
+        updateFilter('orderField', "");
     }
 };
 </script>
@@ -73,7 +52,7 @@ const toggleOrder = (field) => {
             <div class="flex flex-col gap-4 md:w-full md:flex-row">
                 <div class="relative">
                     <TextInput
-                        v-model="search"
+                        v-model="filters.search"
                         autocomplete="off"
                         class="dark:bg-gray-800 dark:text-gray-200"
                         name="search"
@@ -112,9 +91,9 @@ const toggleOrder = (field) => {
                                 <p class="flex items-center gap-2">
                                     Privilégio
                                     <SortIcons
-                                        :order-dir="orderDir"
+                                        :order-dir="filters.orderDir"
                                         :update-icon="
-                                            orderField === 'privilege'
+                                            filters.orderField === 'privilege'
                                         "
                                     />
                                 </p>
@@ -126,8 +105,8 @@ const toggleOrder = (field) => {
                             >
                                 Nome
                                 <SortIcons
-                                    :order-dir="orderDir"
-                                    :update-icon="orderField === 'name'"
+                                    :order-dir="filters.orderDir"
+                                    :update-icon="filters.orderField === 'name'"
                                 />
                             </th>
                             <th
@@ -137,9 +116,9 @@ const toggleOrder = (field) => {
                             >
                                 Último discurso
                                 <SortIcons
-                                    :order-dir="orderDir"
+                                    :order-dir="filters.orderDir"
                                     :update-icon="
-                                        orderField === 'max(send_speakers.date)'
+                                        filters.orderField === 'max(send_speakers.date)'
                                     "
                                 />
                             </th>

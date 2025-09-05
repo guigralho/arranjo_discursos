@@ -43,7 +43,14 @@ import { useVirtualizer } from '@tanstack/vue-virtual'
 
 ## 🏗️ Melhorias de Estrutura
 
-### 1. **Composables para Lógica Reutilizável**
+### 1. **Composables para Lógica Reutilizável** ✅ IMPLEMENTADO
+**Status:** Implementado em `/resources/js/composables/useDebounceSearch.js` e aplicado em:
+- ✅ `Schedule/List.vue`
+- ✅ `Speech/List.vue`
+- ✅ `Speaker/List.vue`
+- ✅ `Passenger/List.vue`
+- ✅ `Bus/List.vue`
+
 Criar composables para lógica repetitiva:
 
 ```javascript
