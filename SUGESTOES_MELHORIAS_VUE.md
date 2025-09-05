@@ -157,17 +157,6 @@ export function useErrorHandler() {
 }
 ```
 
-### 3. **Skeleton Loading**
-Para melhor percepção de performance:
-```vue
-<template>
-  <div v-if="isLoading" class="animate-pulse">
-    <div class="h-4 bg-gray-300 rounded w-3/4 mb-4"></div>
-    <div class="h-4 bg-gray-300 rounded w-1/2"></div>
-  </div>
-</template>
-```
-
 ## 🔧 Melhorias Técnicas
 
 ### 1. **TypeScript**
