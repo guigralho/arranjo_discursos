@@ -22,7 +22,7 @@ const back = () => {
 <template>
     <form class="space-y-6" @submit.prevent="submit">
         <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
-            <section class="max-w-xl space-y-6">
+            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <InputLabel for="number" value="Número" />
 

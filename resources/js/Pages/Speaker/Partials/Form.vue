@@ -30,7 +30,22 @@ export default {
 <template>
     <form class="space-y-6" @submit.prevent="submit">
         <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
-            <section class="max-w-xl space-y-6">
+            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2">
+                    <InputLabel for="name" value="Orador" />
+
+                    <TextInput
+                        id="name"
+                        ref="nameInput"
+                        v-model="form.name"
+                        autocomplete="off"
+                        class="mt-1 block w-full"
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.name" class="mt-2" />
+                </div>
+
                 <div>
                     <InputLabel for="privilege" value="Privilégio" />
 
@@ -49,21 +64,6 @@ export default {
                 </div>
 
                 <div>
-                    <InputLabel for="name" value="Orador" />
-
-                    <TextInput
-                        id="name"
-                        ref="nameInput"
-                        v-model="form.name"
-                        autocomplete="off"
-                        class="mt-1 block w-full"
-                        type="text"
-                    />
-
-                    <InputError :message="form.errors.name" class="mt-2" />
-                </div>
-
-                <div>
                     <InputLabel for="phone" value="Celular" />
 
                     <TextInput
@@ -79,7 +79,7 @@ export default {
                     <InputError :message="form.errors.phone" class="mt-2" />
                 </div>
 
-                <p class="dark:text-gray-400">
+                <p class="dark:text-gray-400 sm:col-span-2">
                     <i>{{
                         data &&
                         `Atualizado em: ${data.updated_at} por ${data.user_updated?.name}`
@@ -95,13 +95,13 @@ export default {
                 type="button"
                 >Voltar</PrimaryButton
             >
-            <LoadingButton 
-                :loading="form.processing" 
-                text="Salvar" 
-                loading-text="Salvando..." 
+            <LoadingButton
+                :loading="form.processing"
+                class="flex-1 sm:flex-none"
+                loading-text="Salvando..."
+                text="Salvar"
                 type="submit"
                 variant="primary"
-                class="flex-1 sm:flex-none"
             />
         </div>
     </form>

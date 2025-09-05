@@ -161,13 +161,12 @@ const changeVal = (val) => {
                 type="button"
                 >Voltar</PrimaryButton
             >
-            <LoadingButton 
-                :loading="form.processing" 
-                text="Salvar" 
-                loading-text="Salvando..." 
+            <LoadingButton
+                :loading="form.processing"
+                loading-text="Salvando..."
+                text="Salvar"
                 type="submit"
                 variant="primary"
-                class="flex-1 sm:flex-none"
             />
 
             <a

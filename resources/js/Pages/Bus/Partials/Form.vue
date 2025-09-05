@@ -31,18 +31,18 @@ function priceFormat(price) {
 <template>
     <form class="space-y-6" @submit.prevent="submit">
         <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
-            <section class="max-w-xl space-y-6">
+            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <fieldset>
                     <InputLabel for="passenger_id" value="Nome" />
 
                     <SearchableSelect
                         v-model="form.passenger_id"
                         :options="passengers"
+                        class="mt-1"
+                        display-key="name"
                         placeholder="Selecione um passageiro..."
                         search-placeholder="Pesquisar passageiro..."
-                        display-key="name"
                         value-key="id"
-                        class="mt-1"
                     />
 
                     <InputError
@@ -166,7 +166,7 @@ function priceFormat(price) {
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset class="sm:col-span-2">
                     <InputLabel for="obs" value="Observações" />
 
                     <textarea
