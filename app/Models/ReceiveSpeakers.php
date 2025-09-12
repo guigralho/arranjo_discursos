@@ -18,6 +18,10 @@ class ReceiveSpeakers extends Model
         'is_guest',
     ];
 
+    protected $casts = [
+        'is_guest' => 'boolean',
+    ];
+
     protected static function booted()
     {
         static::creating(function ($speaker) {
