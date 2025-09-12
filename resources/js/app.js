@@ -1,28 +1,37 @@
 import "./bootstrap";
 import "../css/app.css";
 
-import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/inertia-vue3";
-import { InertiaProgress } from "@inertiajs/progress";
-import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
+import {createApp, h} from "vue";
+import {createInertiaApp} from "@inertiajs/inertia-vue3";
+import {InertiaProgress} from "@inertiajs/progress";
+import {resolvePageComponent} from "laravel-vite-plugin/inertia-helpers";
+import {ZiggyVue} from "../../vendor/tightenco/ziggy/dist/vue.m";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {
     faAngleDown,
     faAngleUp,
+    faArrowDown,
     faArrowLeft,
+    faArrowUp,
     faBus,
+    faCalendarXmark,
     faChevronLeft,
     faChevronRight,
     faCircleCheck,
     faCircleInfo,
+    faClock,
     faEdit,
+    faEye,
     faFileArrowDown,
     faFileLines,
+    faInbox,
     faList,
+    faMapMarkerAlt,
+    faMicrophone,
     faMoon,
+    faPaperPlane,
     faSort,
     faSortAsc,
     faSortDesc,
@@ -30,12 +39,13 @@ import {
     faSun,
     faTimesCircle,
     faTrash,
+    faUser,
     faUsers,
     faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
+import {faWhatsapp} from "@fortawesome/free-brands-svg-icons";
+import {faCalendar, faCircleUser} from "@fortawesome/free-regular-svg-icons";
 
 library.add(
     faUserSecret,
@@ -61,7 +71,18 @@ library.add(
     faList,
     faBus,
     faFileLines,
-    faArrowLeft
+    faArrowLeft,
+    faCalendar,
+    faCalendarXmark,
+    faClock,
+    faUser,
+    faEye,
+    faMicrophone,
+    faPaperPlane,
+    faMapMarkerAlt,
+    faArrowDown,
+    faInbox,
+    faArrowUp,
 );
 
 const appName =
