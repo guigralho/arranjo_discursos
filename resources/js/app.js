@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
     faAngleDown,
     faAngleUp,
+    faArrowLeft,
     faBus,
     faChevronLeft,
     faChevronRight,
@@ -30,7 +31,7 @@ import {
     faTimesCircle,
     faTrash,
     faUsers,
-    faUserSecret
+    faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
@@ -59,7 +60,8 @@ library.add(
     faCircleInfo,
     faList,
     faBus,
-    faFileLines
+    faFileLines,
+    faArrowLeft
 );
 
 const appName =
@@ -89,9 +91,9 @@ createInertiaApp({
     },
 });
 
-InertiaProgress.init({ 
-    color: "#3B82F6", 
-    showSpinner: false, 
+InertiaProgress.init({
+    color: "#3B82F6",
+    showSpinner: false,
     delay: 100,
-    includeCSS: true
+    includeCSS: true,
 });
