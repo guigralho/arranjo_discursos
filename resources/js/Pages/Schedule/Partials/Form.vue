@@ -177,17 +177,18 @@ const changeVal = (val) => {
 
         <!-- Ações do Formulário -->
         <div
-            class="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50"
+            class="space-y-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50 sm:space-y-0"
         >
-            <PrimaryButton
-                :disabled="form.processing"
-                :href="route('schedules.index')"
-                type="button"
-            >
-                Voltar
-            </PrimaryButton>
+            <div class="grid items-center gap-3 sm:flex sm:flex-wrap">
+                <PrimaryButton
+                    :disabled="form.processing"
+                    :href="route('schedules.index')"
+                    class="col-span-2"
+                    type="button"
+                >
+                    Voltar
+                </PrimaryButton>
 
-            <div class="flex gap-3">
                 <LoadingButton
                     :loading="form.processing"
                     loading-text="Salvando..."
@@ -199,10 +200,13 @@ const changeVal = (val) => {
                 <a
                     v-if="data?.id"
                     :href="route('download-pdf', data?.id)"
-                    class="flex-1 rounded-md bg-sky-800 px-4 py-2 text-center text-xs font-semibold uppercase text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 sm:flex-none"
+                    class="items-center gap-2 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
                     type="button"
                 >
-                    <font-awesome-icon icon="fa-solid fa-file-arrow-down" />
+                    <font-awesome-icon
+                        class="h-4 w-4"
+                        icon="fa-solid fa-file-arrow-down"
+                    />
                     Gerar quadro
                 </a>
             </div>

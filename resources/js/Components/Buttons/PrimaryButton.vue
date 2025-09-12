@@ -27,7 +27,7 @@ defineProps({
         "
         :href="href"
         :type="type"
-        class="w-full gap-1 rounded-md border border-transparent px-4 py-2 text-center text-xs font-semibold uppercase tracking-widest text-gray-800 transition duration-150 ease-in-out hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-400 dark:hover:text-gray-800 sm:w-fit"
+        class="flex-1 gap-1 rounded-md border border-transparent px-4 py-2 text-center text-xs font-semibold uppercase tracking-widest text-gray-800 transition duration-150 ease-in-out hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-400 dark:hover:text-gray-800 sm:w-fit md:flex-none"
     >
         <slot />
     </Component>
