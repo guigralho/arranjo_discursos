@@ -119,7 +119,7 @@ const changeVal = (val, item) => {
                 {{ title }}
             </h2>
             <span
-                class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                class="rounded-full bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
             >
                 {{ form.weeks.length }}
                 {{ form.weeks.length === 1 ? "semana" : "semanas" }}
@@ -148,7 +148,7 @@ const changeVal = (val, item) => {
                         <a
                             v-if="item.speaker && item.speech && schedule"
                             :href="generateWhatsappLink(item)"
-                            class="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
+                            class="inline-flex items-center gap-1 rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
                             target="_blank"
                             title="Enviar convite via WhatsApp"
                         >
@@ -156,6 +156,7 @@ const changeVal = (val, item) => {
                                 class="h-3 w-3"
                                 icon="fa-brands fa-whatsapp"
                             />
+                            Enviar designação
                         </a>
                     </div>
 
