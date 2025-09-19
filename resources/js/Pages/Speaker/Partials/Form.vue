@@ -98,10 +98,10 @@ export default {
             <LoadingButton
                 :loading="form.processing"
                 class="flex-1 sm:flex-none"
+                color="green"
                 loading-text="Salvando..."
                 text="Salvar"
                 type="submit"
-                variant="primary"
             />
         </div>
     </form>

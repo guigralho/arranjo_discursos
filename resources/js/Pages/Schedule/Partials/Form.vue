@@ -191,10 +191,10 @@ const changeVal = (val) => {
 
                 <LoadingButton
                     :loading="form.processing"
+                    color="green"
                     loading-text="Salvando..."
                     text="Salvar"
                     type="submit"
-                    variant="primary"
                 />
 
                 <a

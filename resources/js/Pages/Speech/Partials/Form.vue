@@ -70,10 +70,10 @@ const back = () => {
             >
             <LoadingButton
                 :loading="form.processing"
+                color="green"
                 loading-text="Salvando..."
                 text="Salvar"
                 type="submit"
-                variant="primary"
             />
         </div>
     </form>

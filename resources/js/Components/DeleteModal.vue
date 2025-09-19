@@ -41,10 +41,10 @@ const deleteRow = async () => {
                 },
                 onError: () => {
                     reject();
-                }
+                },
             });
         });
-    }, 'delete');
+    }, "delete");
 };
 </script>
 <template>
@@ -58,14 +58,16 @@ const deleteRow = async () => {
         </p>
         <div class="mt-6 flex flex-row justify-evenly space-x-2">
             <LoadingButton
+                :block="true"
                 :loading="isLoadingKey('delete')"
-                class="flex-1 uppercase bg-red-600 hover:bg-red-700"
-                text="Sim"
+                class="uppercase"
+                color="red"
                 loading-text="Excluindo..."
+                text="Sim"
                 @click="deleteRow"
             />
-            <PrimaryButton 
-                class="flex-1" 
+            <PrimaryButton
+                :block="true"
                 :disabled="isLoadingKey('delete')"
                 @click="emit('close')"
             >
