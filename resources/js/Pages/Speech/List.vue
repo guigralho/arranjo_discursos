@@ -18,7 +18,7 @@ const props = defineProps({
     filters: Object,
 });
 
-const { filters, updateFilter } = useDebounceSearch('/speeches', {
+const { filters, updateFilter } = useDebounceSearch("/speeches", {
     page: props.filters.page,
     search: props.filters.search,
     hasSpeakers: props.filters.hasSpeakers,
@@ -30,17 +30,16 @@ const { filters, updateFilter } = useDebounceSearch('/speeches', {
 const showModal = ref(false);
 const selectedItem = ref({});
 
-
 const toggleOrder = (field) => {
-    updateFilter('orderField', field);
+    updateFilter("orderField", field);
 
     if (filters.value.orderDir === undefined) {
-        updateFilter('orderDir', "asc");
+        updateFilter("orderDir", "asc");
     } else if (filters.value.orderDir === "asc") {
-        updateFilter('orderDir', "desc");
+        updateFilter("orderDir", "desc");
     } else if (filters.value.orderDir === "desc") {
-        updateFilter('orderDir', undefined);
-        updateFilter('orderField', "");
+        updateFilter("orderDir", undefined);
+        updateFilter("orderField", "");
     }
 };
 </script>
@@ -48,7 +47,7 @@ const toggleOrder = (field) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div
             class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
         >
@@ -121,7 +120,9 @@ const toggleOrder = (field) => {
                                     Número
                                     <SortIcons
                                         :order-dir="filters.orderDir"
-                                        :update-icon="filters.orderField === 'number'"
+                                        :update-icon="
+                                            filters.orderField === 'number'
+                                        "
                                     />
                                 </p>
                             </th>
@@ -134,7 +135,9 @@ const toggleOrder = (field) => {
                                     Tema
                                     <SortIcons
                                         :order-dir="filters.orderDir"
-                                        :update-icon="filters.orderField === 'theme'"
+                                        :update-icon="
+                                            filters.orderField === 'theme'
+                                        "
                                     />
                                 </p>
                             </th>
@@ -148,7 +151,8 @@ const toggleOrder = (field) => {
                                     <SortIcons
                                         :order-dir="filters.orderDir"
                                         :update-icon="
-                                            filters.orderField === 'speeches.updated_at'
+                                            filters.orderField ===
+                                            'speeches.updated_at'
                                         "
                                     />
                                 </p>
@@ -178,6 +182,7 @@ const toggleOrder = (field) => {
                                 Preparado?
                             </th>
                             <th
+                                v-if="$inertia.page.props.auth.user.id === 1"
                                 class="w-1/12 px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
                             >
@@ -208,6 +213,7 @@ const toggleOrder = (field) => {
                                 {{ item.speakers.length > 0 ? "Sim" : "Não" }}
                             </td>
                             <td
+                                v-if="$inertia.page.props.auth.user.id === 1"
                                 class="space-x-3 whitespace-nowrap px-5 py-5 text-sm"
                             >
                                 <EditButton
