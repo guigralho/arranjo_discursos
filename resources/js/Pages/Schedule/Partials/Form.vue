@@ -177,7 +177,7 @@ const changeVal = (val) => {
 
         <!-- Ações do Formulário -->
         <div
-            class="space-y-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50 sm:space-y-0"
+            class="space-y-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50 sm:space-y-0 md:flex md:items-center md:justify-between"
         >
             <div class="grid items-center gap-3 sm:flex sm:flex-wrap">
                 <PrimaryButton
@@ -209,6 +209,15 @@ const changeVal = (val) => {
                     />
                     Gerar quadro
                 </a>
+            </div>
+
+            <div>
+                <p class="dark:text-gray-400">
+                    <i>{{
+                        data &&
+                        `Atualizado em: ${data.updated_at} por ${data.user_updated?.name}`
+                    }}</i>
+                </p>
             </div>
         </div>
     </form>

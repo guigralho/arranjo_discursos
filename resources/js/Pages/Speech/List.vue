@@ -89,7 +89,12 @@ const toggleOrder = (field) => {
                     </label>
                 </div>
             </div>
-            <Link :href="route('speeches.create')" class="btn-novo">Novo</Link>
+            <Link
+                v-if="$inertia.page.props.auth.user.id === 1"
+                :href="route('speeches.create')"
+                class="btn-novo"
+                >Novo</Link
+            >
         </div>
 
         <div
