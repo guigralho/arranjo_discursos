@@ -212,9 +212,16 @@ const changeVal = (val) => {
             </div>
 
             <div>
-                <p class="dark:text-gray-400">
+                <p class="text-sm dark:text-gray-400">
                     <i>{{
                         data &&
+                        `Criado em: ${data.created_at} por ${data.user_created?.name}`
+                    }}</i>
+                </p>
+                <p class="text-sm dark:text-gray-400">
+                    <i>{{
+                        data &&
+                        data.user_updated &&
                         `Atualizado em: ${data.updated_at} por ${data.user_updated?.name}`
                     }}</i>
                 </p>

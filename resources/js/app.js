@@ -1,14 +1,14 @@
 import "./bootstrap";
 import "../css/app.css";
 
-import {createApp, h} from "vue";
-import {createInertiaApp} from "@inertiajs/inertia-vue3";
-import {InertiaProgress} from "@inertiajs/progress";
-import {resolvePageComponent} from "laravel-vite-plugin/inertia-helpers";
-import {ZiggyVue} from "../../vendor/tightenco/ziggy/dist/vue.m";
+import { createApp, h } from "vue";
+import { createInertiaApp } from "@inertiajs/inertia-vue3";
+import { InertiaProgress } from "@inertiajs/progress";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
     faAngleDown,
     faAngleUp,
@@ -23,6 +23,7 @@ import {
     faCircleInfo,
     faClock,
     faEdit,
+    faExclamationTriangle,
     faEye,
     faFileArrowDown,
     faFileLines,
@@ -44,8 +45,8 @@ import {
     faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {faWhatsapp} from "@fortawesome/free-brands-svg-icons";
-import {faCalendar, faCircleUser} from "@fortawesome/free-regular-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faCalendar, faCircleUser } from "@fortawesome/free-regular-svg-icons";
 
 library.add(
     faUserSecret,
@@ -83,6 +84,7 @@ library.add(
     faArrowDown,
     faInbox,
     faArrowUp,
+    faExclamationTriangle
 );
 
 const appName =

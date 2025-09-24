@@ -131,6 +131,15 @@ const changeVal = (val, item) => {
             <div
                 class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             >
+                <div v-if="form.weeks.length === 0">
+                    <p class="text-yellow-400 dark:text-yellow-300">
+                        <font-awesome-icon
+                            class="h-3 w-3"
+                            icon="fa-solid fa-exclamation-triangle"
+                        />
+                        Preencha o dia da reunião!
+                    </p>
+                </div>
                 <div
                     v-for="(item, key) in form.weeks"
                     :key="key"
@@ -274,6 +283,7 @@ const changeVal = (val, item) => {
 
             <!-- Botões de ação -->
             <div
+                v-if="form.weeks.length > 0"
                 class="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50"
             >
                 <div class="flex items-center gap-2">
