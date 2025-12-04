@@ -8,6 +8,7 @@ import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import { useDebounceSearch } from "@/composables/useDebounceSearch";
+import { usePersistedSelection } from "@/composables/usePersistedSelection";
 
 const props = defineProps({
     name: String,
@@ -16,7 +17,7 @@ const props = defineProps({
     filters: Object,
 });
 
-const { filters, updateFilter } = useDebounceSearch('/speakers', {
+const { filters, updateFilter } = useDebounceSearch("/speakers", {
     page: props.filters.page,
     search: props.filters.search,
     orderDir: props.filters.orderDir,
@@ -25,19 +26,19 @@ const { filters, updateFilter } = useDebounceSearch('/speakers', {
 
 const showModal = ref(false);
 const selectedItem = ref({});
-const ids = ref([]);
-
+const { selectedIds, clearSelection } =
+    usePersistedSelection("speakers-selection");
 
 const toggleOrder = (field) => {
-    updateFilter('orderField', field);
+    updateFilter("orderField", field);
 
     if (filters.value.orderDir === undefined) {
-        updateFilter('orderDir', "asc");
+        updateFilter("orderDir", "asc");
     } else if (filters.value.orderDir === "asc") {
-        updateFilter('orderDir', "desc");
+        updateFilter("orderDir", "desc");
     } else if (filters.value.orderDir === "desc") {
-        updateFilter('orderDir', undefined);
-        updateFilter('orderField', "");
+        updateFilter("orderDir", undefined);
+        updateFilter("orderField", "");
     }
 };
 </script>
@@ -45,7 +46,7 @@ const toggleOrder = (field) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div
             class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
         >
@@ -60,15 +61,27 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
-                <div class="relative">
+                <div class="flex gap-2">
                     <a
-                        v-if="ids.length > 0"
-                        :href="route('speakers.download-speeches', { ids })"
+                        v-if="selectedIds.length > 0"
+                        :href="
+                            route('speakers.download-speeches', {
+                                ids: selectedIds,
+                            })
+                        "
                         class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
                         type="button"
                     >
                         Baixar temas
                     </a>
+                    <button
+                        v-if="selectedIds.length > 0"
+                        class="w-full flex-shrink-0 rounded-lg bg-red-700 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2 focus:ring-offset-red-200 dark:bg-red-800 dark:hover:bg-red-900 md:w-auto"
+                        type="button"
+                        @click="clearSelection"
+                    >
+                        Limpar seleção
+                    </button>
                 </div>
             </div>
             <Link :href="route('speakers.create')" class="btn-novo">Novo</Link>
@@ -118,7 +131,8 @@ const toggleOrder = (field) => {
                                 <SortIcons
                                     :order-dir="filters.orderDir"
                                     :update-icon="
-                                        filters.orderField === 'max(send_speakers.date)'
+                                        filters.orderField ===
+                                        'max(send_speakers.date)'
                                     "
                                 />
                             </th>
@@ -141,7 +155,7 @@ const toggleOrder = (field) => {
                                 <div class="flex items-center">
                                     <input
                                         id="checkbox-table-1"
-                                        v-model="ids"
+                                        v-model="selectedIds"
                                         :value="item.id"
                                         class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                                         type="checkbox"

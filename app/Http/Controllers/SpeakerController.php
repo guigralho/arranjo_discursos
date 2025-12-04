@@ -36,7 +36,7 @@ class SpeakerController extends Controller
             ->join('send_speakers', 'send_speakers.speaker_id', '=', 'speakers.id', 'left')
             ->groupBy('speakers.id')
             ->orderBy(DB::raw($field), $dir)
-            ->paginate($this->request->get('perPage', 10))
+            ->paginate($this->request->get('perPage', 5))
             ->withQueryString()
             ->onEachSide(1);
 
