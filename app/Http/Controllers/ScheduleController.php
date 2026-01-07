@@ -79,8 +79,8 @@ class ScheduleController extends Controller
         $schedule = Schedule::whereId($schedule)
             ->with(['userCreated', 'toReceive', 'toSend'])
             ->first();
-        $speeches = Speech::get();
-        $speakers = Speaker::get();
+        $speeches = Speech::orderBy('number')->get();
+        $speakers = Speaker::orderBy('name')->get();
 
         return Inertia::render('Schedule/Show', compact('name', 'schedule', 'speeches', 'speakers'));
     }
