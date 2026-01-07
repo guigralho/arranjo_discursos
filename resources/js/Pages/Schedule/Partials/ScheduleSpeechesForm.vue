@@ -112,58 +112,110 @@ const changeVal = (val, item) => {
 };
 </script>
 <template>
-    <div class="mt-6">
-        <h1 class="text-xl font-bold text-gray-700 dark:text-gray-300">
-            {{ title }}
-        </h1>
-        <form @submit.prevent="submit">
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-4 space-y-4">
+        <!-- Cabeçalho -->
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+                {{ title }}
+            </h2>
+            <span
+                class="rounded-full bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+            >
+                {{ form.weeks.length }}
+                {{ form.weeks.length === 1 ? "semana" : "semanas" }}
+            </span>
+        </div>
+
+        <form class="space-y-4" @submit.prevent="submit">
+            <!-- Grid de semanas -->
+            <div
+                class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            >
+                <div v-if="form.weeks.length === 0">
+                    <p class="text-yellow-400 dark:text-yellow-300">
+                        <font-awesome-icon
+                            class="h-3 w-3"
+                            icon="fa-solid fa-exclamation-triangle"
+                        />
+                        Preencha o dia da reunião!
+                    </p>
+                </div>
                 <div
                     v-for="(item, key) in form.weeks"
                     :key="key"
-                    class="flex flex-col gap-4"
+                    class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                 >
+                    <!-- Header do card com número da semana -->
                     <div
-                        class="grid grid-cols-1 gap-4 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8"
+                        class="mb-3 flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-700"
                     >
-                        <div>
-                            <InputLabel :for="`date${key}`" value="Data" />
+                        <span
+                            class="text-xs font-medium text-gray-500 dark:text-gray-400"
+                        >
+                            Semana {{ key + 1 }}
+                        </span>
+                        <a
+                            v-if="item.speaker && item.speech && schedule"
+                            :href="generateWhatsappLink(item)"
+                            class="inline-flex items-center gap-1 rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
+                            target="_blank"
+                            title="Enviar convite via WhatsApp"
+                        >
+                            <font-awesome-icon
+                                class="h-3 w-3"
+                                icon="fa-brands fa-whatsapp"
+                            />
+                            Enviar designação
+                        </a>
+                    </div>
 
+                    <div class="space-y-3">
+                        <!-- Data -->
+                        <div>
+                            <InputLabel
+                                :for="`date${key}`"
+                                class="text-xs"
+                                value="Data"
+                            />
                             <TextInput
                                 :id="`date${key + title}`"
                                 :ref="`date${key}`"
                                 v-model="item.date"
                                 autocomplete="off"
-                                class="js-datepicker mt-1 block w-full"
+                                class="js-datepicker mt-1 block w-full text-sm"
                                 datepicker
                                 type="text"
                                 @focusout="changeVal($event.target.value, item)"
                             />
-
                             <InputError
                                 :message="form.errors[`weeks.${key}.date`]"
-                                class="mt-2"
+                                class="mt-1"
                             />
                         </div>
-                        <div>
-                            <InputLabel :for="`speaker${key}`" value="Orador" />
 
+                        <!-- Orador -->
+                        <div>
+                            <InputLabel
+                                :for="`speaker${key}`"
+                                class="text-xs"
+                                value="Orador"
+                            />
                             <TextInput
                                 v-if="speakers === undefined"
                                 :id="`speaker${key + title}`"
                                 :ref="`speaker${key}`"
                                 v-model="item.speaker"
                                 autocomplete="off"
-                                class="mt-1 block w-full"
+                                class="mt-1 block w-full text-sm"
+                                placeholder="Nome do orador"
                                 type="text"
                             />
-
                             <SelectInput
                                 v-else
                                 :id="`speaker${key + title}`"
                                 :ref="`speaker${key}`"
                                 v-model="item.speaker"
-                                class="mt-1 block w-full"
+                                class="mt-1 block w-full text-sm"
                                 @change="getSpeakerSpeeches($event.target)"
                             >
                                 <option value="">Selecione...</option>
@@ -175,20 +227,24 @@ const changeVal = (val, item) => {
                                     {{ speaker.name }}
                                 </option>
                             </SelectInput>
-
                             <InputError
                                 :message="form.errors[`weeks.${key}.speaker`]"
-                                class="mt-2"
+                                class="mt-1"
                             />
                         </div>
-                        <div>
-                            <InputLabel :for="`speech${key}`" value="Tema" />
 
+                        <!-- Tema -->
+                        <div>
+                            <InputLabel
+                                :for="`speech${key}`"
+                                class="text-xs"
+                                value="Tema"
+                            />
                             <SelectInput
                                 :id="`speech${key + title}`"
                                 :ref="`speech${key}`"
                                 v-model="item.speech"
-                                class="mt-1 block w-full"
+                                class="mt-1 block w-full text-sm"
                             >
                                 <option value="">Selecione...</option>
                                 <option
@@ -199,47 +255,69 @@ const changeVal = (val, item) => {
                                     {{ speech.number }} - {{ speech.theme }}
                                 </option>
                             </SelectInput>
-
                             <InputError
                                 :message="form.errors[`weeks.${key}.speech`]"
-                                class="mt-2"
+                                class="mt-1"
                             />
                         </div>
 
-                        <div v-if="title === 'Receber'" class="flex items-center space-x-2">
+                        <!-- Checkbox para convites (apenas quando title === 'Receber') -->
+                        <div
+                            v-if="title === 'Receber'"
+                            class="flex items-center gap-2 pt-1"
+                        >
                             <Checkbox
                                 :id="`guest${key + title}`"
                                 v-model:checked="item.is_guest"
+                                class="rounded text-blue-600"
                             />
-                            <InputLabel :for="`guest${key + title}`" value="É um convite?" />
+                            <InputLabel
+                                :for="`guest${key + title}`"
+                                class="text-xs text-gray-600 dark:text-gray-400"
+                                value="É um convite?"
+                            />
                         </div>
-
-                        <a
-                            v-if="item.speaker && item.speech && schedule"
-                            :href="generateWhatsappLink(item)"
-                            class="w-fit gap-1 rounded-md border border-transparent bg-green-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-green-900 focus:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-green-900 sm:grow-0"
-                            target="_blank"
-                        >
-                            <font-awesome-icon
-                                icon="fa-brands fa-whatsapp"
-                                size="lg"
-                            />
-                        </a>
                     </div>
                 </div>
             </div>
-            <div class="mt-4 flex items-center gap-4">
-                <SaveButton
-                    :disabled="form.processing"
-                    class="flex-1 sm:flex-none"
-                >
-                    <p v-if="!form.processing">Salvar</p>
-                    <p v-else>
-                        <font-awesome-icon icon="fa-solid fa-spinner" spin />
-                        Aguarde...
-                    </p>
-                </SaveButton>
-                <slot />
+
+            <!-- Botões de ação -->
+            <div
+                v-if="form.weeks.length > 0"
+                class="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50"
+            >
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        {{
+                            form.weeks.filter((w) => w.date && w.speaker).length
+                        }}
+                        de {{ form.weeks.length }} preenchidas
+                    </span>
+                </div>
+
+                <div class="flex gap-3">
+                    <slot />
+                    <SaveButton :disabled="form.processing">
+                        <span
+                            v-if="!form.processing"
+                            class="flex items-center gap-2"
+                        >
+                            <font-awesome-icon
+                                class="h-3 w-3"
+                                icon="fa-solid fa-check"
+                            />
+                            Salvar {{ title }}
+                        </span>
+                        <span v-else class="flex items-center gap-2">
+                            <font-awesome-icon
+                                class="h-3 w-3"
+                                icon="fa-solid fa-spinner"
+                                spin
+                            />
+                            Salvando...
+                        </span>
+                    </SaveButton>
+                </div>
             </div>
         </form>
     </div>

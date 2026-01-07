@@ -51,7 +51,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/speaker-speech/{speaker}', [SpeakerSpeechController::class, 'store'])->name('speaker-speech.store');
     Route::delete('/speaker-speech/{speaker}/{speech}', [SpeakerSpeechController::class, 'destroy'])->name('speaker-speech.destroy');
 
-
     Route::get('/bus/download-list', [BusController::class, 'downloadList'])->name('bus.download-list');
     Route::delete('/bus/delete-all', [BusController::class, 'deleteAll'])->name('bus.delete-all');
     Route::resource('/bus', BusController::class);
@@ -59,4 +58,4 @@ Route::middleware('auth')->group(function () {
     Route::resource('/passengers', PassengerController::class);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

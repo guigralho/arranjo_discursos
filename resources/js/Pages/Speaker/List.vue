@@ -3,62 +3,42 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
-import { ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import debounce from "lodash/debounce";
+import { ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
+import { useDebounceSearch } from "@/composables/useDebounceSearch";
+import { usePersistedSelection } from "@/composables/usePersistedSelection";
 
-let props = defineProps({
+const props = defineProps({
     name: String,
     list: Object,
     search: String,
     filters: Object,
 });
 
-let page = ref(props.filters.page);
-let search = ref(props.filters.search);
-let orderDir = ref(props.filters.orderDir);
-let orderField = ref(props.filters.orderField);
-let showModal = ref(false);
-let selectedItem = ref({});
-let ids = ref([]);
+const { filters, updateFilter } = useDebounceSearch("/speakers", {
+    page: props.filters.page,
+    search: props.filters.search,
+    orderDir: props.filters.orderDir,
+    orderField: props.filters.orderField,
+});
 
-watch(
-    [search, orderDir, orderField],
-    debounce(function (
-        [valueSearch, valueOrderDir, valueOrderField],
-        [oldValSearch]
-    ) {
-        if (valueSearch !== oldValSearch) {
-            page.value = 1;
-        }
-        Inertia.get(
-            "/speakers",
-            {
-                search: valueSearch,
-                orderDir: valueOrderDir,
-                orderField: valueOrderField,
-                page: page.value,
-            },
-            { preserveState: true, replace: true }
-        );
-    },
-    300)
-);
+const showModal = ref(false);
+const selectedItem = ref({});
+const { selectedIds, clearSelection } =
+    usePersistedSelection("speakers-selection");
 
 const toggleOrder = (field) => {
-    orderField.value = field;
+    updateFilter("orderField", field);
 
-    if (orderDir.value === undefined) {
-        orderDir.value = "asc";
-    } else if (orderDir.value === "asc") {
-        orderDir.value = "desc";
-    } else if (orderDir.value === "desc") {
-        orderDir.value = undefined;
-
-        orderField.value = "";
+    if (filters.value.orderDir === undefined) {
+        updateFilter("orderDir", "asc");
+    } else if (filters.value.orderDir === "asc") {
+        updateFilter("orderDir", "desc");
+    } else if (filters.value.orderDir === "desc") {
+        updateFilter("orderDir", undefined);
+        updateFilter("orderField", "");
     }
 };
 </script>
@@ -66,14 +46,14 @@ const toggleOrder = (field) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div
             class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
         >
             <div class="flex flex-col gap-4 md:w-full md:flex-row">
                 <div class="relative">
                     <TextInput
-                        v-model="search"
+                        v-model="filters.search"
                         autocomplete="off"
                         class="dark:bg-gray-800 dark:text-gray-200"
                         name="search"
@@ -81,15 +61,27 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
-                <div class="relative">
+                <div class="flex gap-2">
                     <a
-                        v-if="ids.length > 0"
-                        :href="route('speakers.download-speeches', { ids })"
+                        v-if="selectedIds.length > 0"
+                        :href="
+                            route('speakers.download-speeches', {
+                                ids: selectedIds,
+                            })
+                        "
                         class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
                         type="button"
                     >
                         Baixar temas
                     </a>
+                    <button
+                        v-if="selectedIds.length > 0"
+                        class="w-full flex-shrink-0 rounded-lg bg-red-700 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2 focus:ring-offset-red-200 dark:bg-red-800 dark:hover:bg-red-900 md:w-auto"
+                        type="button"
+                        @click="clearSelection"
+                    >
+                        Limpar seleção
+                    </button>
                 </div>
             </div>
             <Link :href="route('speakers.create')" class="btn-novo">Novo</Link>
@@ -112,9 +104,9 @@ const toggleOrder = (field) => {
                                 <p class="flex items-center gap-2">
                                     Privilégio
                                     <SortIcons
-                                        :order-dir="orderDir"
+                                        :order-dir="filters.orderDir"
                                         :update-icon="
-                                            orderField === 'privilege'
+                                            filters.orderField === 'privilege'
                                         "
                                     />
                                 </p>
@@ -126,8 +118,8 @@ const toggleOrder = (field) => {
                             >
                                 Nome
                                 <SortIcons
-                                    :order-dir="orderDir"
-                                    :update-icon="orderField === 'name'"
+                                    :order-dir="filters.orderDir"
+                                    :update-icon="filters.orderField === 'name'"
                                 />
                             </th>
                             <th
@@ -137,9 +129,10 @@ const toggleOrder = (field) => {
                             >
                                 Último discurso
                                 <SortIcons
-                                    :order-dir="orderDir"
+                                    :order-dir="filters.orderDir"
                                     :update-icon="
-                                        orderField === 'max(send_speakers.date)'
+                                        filters.orderField ===
+                                        'max(send_speakers.date)'
                                     "
                                 />
                             </th>
@@ -162,7 +155,7 @@ const toggleOrder = (field) => {
                                 <div class="flex items-center">
                                     <input
                                         id="checkbox-table-1"
-                                        v-model="ids"
+                                        v-model="selectedIds"
                                         :value="item.id"
                                         class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                                         type="checkbox"

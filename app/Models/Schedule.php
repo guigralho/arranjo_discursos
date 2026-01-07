@@ -21,7 +21,7 @@ class Schedule extends Model
     public static function boot()
     {
         parent::boot();
-        self::observe(new DeleteObserver());
+        self::observe(new DeleteObserver);
     }
 
     protected static function booted()
@@ -30,7 +30,7 @@ class Schedule extends Model
             $speaker->congregation_id = auth()->user()->congregation_id;
         });
 
-        static::addGlobalScope(new CongregationScope());
+        static::addGlobalScope(new CongregationScope);
     }
 
     /**
@@ -76,7 +76,7 @@ class Schedule extends Model
 
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::parse($date)->format('d/m/Y');
+        return Carbon::parse($date)->format('d/m/Y H:i:s');
     }
 
     public function getUpdatedAtAttribute($date)

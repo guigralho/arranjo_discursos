@@ -1,18 +1,17 @@
 <script setup>
 import { Link, usePage } from "@inertiajs/inertia-vue3";
 import EditButton from "@/Components/Buttons/EditLink.vue";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
-import debounce from "lodash/debounce";
-import { Inertia } from "@inertiajs/inertia";
 import MobileList from "@/Pages/Bus/Partials/MobileList.vue";
 import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
+import { useDebounceSearch } from "@/composables/useDebounceSearch";
 
-let props = defineProps({
+const props = defineProps({
     name: String,
     list: Object,
     totais: Object,
@@ -20,16 +19,19 @@ let props = defineProps({
     filters: Object,
 });
 
-let page = ref(props.filters.page);
-let search = ref(props.filters.search);
-let friday = ref(props.filters.friday);
-let saturday = ref(props.filters.saturday);
-let sunday = ref(props.filters.sunday);
-let orderDir = ref(props.filters.orderDir);
-let orderField = ref(props.filters.orderField);
-let deleteUrl = ref("");
-let showModal = ref(false);
-let selectedItem = ref("");
+const { filters, updateFilter } = useDebounceSearch('/bus', {
+    page: props.filters.page,
+    search: props.filters.search,
+    friday: props.filters.friday,
+    saturday: props.filters.saturday,
+    sunday: props.filters.sunday,
+    orderDir: props.filters.orderDir,
+    orderField: props.filters.orderField,
+});
+
+const deleteUrl = ref("");
+const showModal = ref(false);
+const selectedItem = ref("");
 
 const pagar =
     (parseInt(props.totais.friday) +
@@ -37,50 +39,17 @@ const pagar =
         parseInt(props.totais.sunday)) *
     usePage().props.value.valor_onibus;
 
-watch(
-    [search, friday, saturday, sunday, orderDir, orderField],
-    debounce(function (
-        [
-            valueSearch,
-            valueFriday,
-            valueSaturday,
-            valueSunday,
-            valueOrderDir,
-            valueOrderField,
-        ],
-        [oldValSearch]
-    ) {
-        if (valueSearch !== oldValSearch) {
-            page.value = 1;
-        }
-        Inertia.get(
-            "/bus",
-            {
-                search: valueSearch,
-                friday: valueFriday,
-                saturday: valueSaturday,
-                sunday: valueSunday,
-                orderDir: valueOrderDir,
-                orderField: valueOrderField,
-                page: page.value,
-            },
-            { preserveState: true, replace: true }
-        );
-    },
-    300)
-);
 
 const toggleOrder = (field) => {
-    orderField.value = field;
+    updateFilter('orderField', field);
 
-    if (orderDir.value === undefined) {
-        orderDir.value = "asc";
-    } else if (orderDir.value === "asc") {
-        orderDir.value = "desc";
-    } else if (orderDir.value === "desc") {
-        orderDir.value = undefined;
-
-        orderField.value = "";
+    if (filters.value.orderDir === undefined) {
+        updateFilter('orderDir', "asc");
+    } else if (filters.value.orderDir === "asc") {
+        updateFilter('orderDir', "desc");
+    } else if (filters.value.orderDir === "desc") {
+        updateFilter('orderDir', undefined);
+        updateFilter('orderField', "");
     }
 };
 </script>
@@ -93,7 +62,7 @@ const toggleOrder = (field) => {
             <div class="flex flex-col gap-4 md:w-full md:flex-row">
                 <div class="relative">
                     <TextInput
-                        v-model="search"
+                        v-model="filters.search"
                         autocomplete="off"
                         class="dark:bg-gray-800 dark:text-gray-200"
                         name="search"
@@ -106,7 +75,7 @@ const toggleOrder = (field) => {
                         <div class="flex h-6 items-center">
                             <Checkbox
                                 id="sexta"
-                                v-model="friday"
+                                v-model="filters.friday"
                                 name="sexta"
                             />
                         </div>
@@ -123,7 +92,7 @@ const toggleOrder = (field) => {
                         <div class="flex h-6 items-center">
                             <Checkbox
                                 id="sabado"
-                                v-model="saturday"
+                                v-model="filters.saturday"
                                 name="sabado"
                             />
                         </div>
@@ -140,7 +109,7 @@ const toggleOrder = (field) => {
                         <div class="flex h-6 items-center">
                             <Checkbox
                                 id="domingo"
-                                v-model="sunday"
+                                v-model="filters.sunday"
                                 name="domingo"
                             />
                         </div>
@@ -192,7 +161,7 @@ const toggleOrder = (field) => {
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
             <MobileList
                 :list="list"
-                :order-dir="orderDir"
+                :order-dir="filters.orderDir"
                 :order-field="orderField"
                 :totais="totais"
                 @toggle-order="toggleOrder"
@@ -212,9 +181,9 @@ const toggleOrder = (field) => {
                             >
                                 Nome
                                 <SortIcons
-                                    :order-dir="orderDir"
+                                    :order-dir="filters.orderDir"
                                     :update-icon="
-                                        orderField === 'passengers.name'
+                                        filters.orderField === 'passengers.name'
                                     "
                                 />
                             </th>

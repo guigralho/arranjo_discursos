@@ -3,73 +3,43 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
-import { ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import debounce from "lodash/debounce";
+import { ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import MobileList from "@/Pages/Speech/Partials/MobileList.vue";
+import { useDebounceSearch } from "@/composables/useDebounceSearch";
 
-let props = defineProps({
+const props = defineProps({
     name: String,
     list: Object,
     search: String,
     filters: Object,
 });
 
-let page = ref(props.filters.page);
-let search = ref(props.filters.search);
-let hasSpeakers = ref(props.filters.hasSpeakers);
-let moreThan2Years = ref(props.filters.moreThan2Years);
-let orderDir = ref(props.filters.orderDir);
-let orderField = ref(props.filters.orderField);
-let showModal = ref(false);
-let selectedItem = ref({});
+const { filters, updateFilter } = useDebounceSearch("/speeches", {
+    page: props.filters.page,
+    search: props.filters.search,
+    hasSpeakers: props.filters.hasSpeakers,
+    moreThan2Years: props.filters.moreThan2Years,
+    orderDir: props.filters.orderDir,
+    orderField: props.filters.orderField,
+});
 
-watch(
-    [search, orderDir, orderField, hasSpeakers, moreThan2Years],
-    debounce(function (
-        [
-            valueSearch,
-            valueOrderDir,
-            valueOrderField,
-            valueHasSpeakers,
-            valueMoreThan2Years,
-        ],
-        [oldValSearch]
-    ) {
-        if (valueSearch !== oldValSearch) {
-            page.value = 1;
-        }
-        Inertia.get(
-            "/speeches",
-            {
-                search: valueSearch,
-                orderDir: valueOrderDir,
-                orderField: valueOrderField,
-                hasSpeakers: valueHasSpeakers,
-                moreThan2Years: valueMoreThan2Years,
-                page: page.value,
-            },
-            { preserveState: true, replace: true }
-        );
-    },
-    300)
-);
+const showModal = ref(false);
+const selectedItem = ref({});
 
 const toggleOrder = (field) => {
-    orderField.value = field;
+    updateFilter("orderField", field);
 
-    if (orderDir.value === undefined) {
-        orderDir.value = "asc";
-    } else if (orderDir.value === "asc") {
-        orderDir.value = "desc";
-    } else if (orderDir.value === "desc") {
-        orderDir.value = undefined;
-
-        orderField.value = "";
+    if (filters.value.orderDir === undefined) {
+        updateFilter("orderDir", "asc");
+    } else if (filters.value.orderDir === "asc") {
+        updateFilter("orderDir", "desc");
+    } else if (filters.value.orderDir === "desc") {
+        updateFilter("orderDir", undefined);
+        updateFilter("orderField", "");
     }
 };
 </script>
@@ -77,7 +47,7 @@ const toggleOrder = (field) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div
             class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
         >
@@ -86,7 +56,7 @@ const toggleOrder = (field) => {
             >
                 <div class="relative">
                     <TextInput
-                        v-model="search"
+                        v-model="filters.search"
                         autocomplete="off"
                         class="dark:bg-gray-800 dark:text-gray-200"
                         name="search"
@@ -97,7 +67,7 @@ const toggleOrder = (field) => {
                 <div class="relative flex gap-4">
                     <label class="flex items-center">
                         <Checkbox
-                            v-model:checked="hasSpeakers"
+                            v-model:checked="filters.hasSpeakers"
                             class="h-5 w-5"
                         />
                         <span
@@ -108,7 +78,7 @@ const toggleOrder = (field) => {
                     </label>
                     <label class="flex items-center">
                         <Checkbox
-                            v-model:checked="moreThan2Years"
+                            v-model:checked="filters.moreThan2Years"
                             class="h-5 w-5"
                         />
                         <span
@@ -119,7 +89,12 @@ const toggleOrder = (field) => {
                     </label>
                 </div>
             </div>
-            <Link :href="route('speeches.create')" class="btn-novo">Novo</Link>
+            <Link
+                v-if="$inertia.page.props.auth.user.id === 1"
+                :href="route('speeches.create')"
+                class="btn-novo"
+                >Novo</Link
+            >
         </div>
 
         <div
@@ -127,8 +102,8 @@ const toggleOrder = (field) => {
         >
             <MobileList
                 :list="list"
-                :order-dir="orderDir"
-                :order-field="orderField"
+                :order-dir="filters.orderDir"
+                :order-field="filters.orderField"
                 @toggle-order="toggleOrder"
             />
             <div
@@ -149,8 +124,10 @@ const toggleOrder = (field) => {
                                 <p class="flex items-center gap-2">
                                     Número
                                     <SortIcons
-                                        :order-dir="orderDir"
-                                        :update-icon="orderField === 'number'"
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="
+                                            filters.orderField === 'number'
+                                        "
                                     />
                                 </p>
                             </th>
@@ -162,8 +139,10 @@ const toggleOrder = (field) => {
                                 <p class="flex items-center gap-2">
                                     Tema
                                     <SortIcons
-                                        :order-dir="orderDir"
-                                        :update-icon="orderField === 'theme'"
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="
+                                            filters.orderField === 'theme'
+                                        "
                                     />
                                 </p>
                             </th>
@@ -175,9 +154,10 @@ const toggleOrder = (field) => {
                                 <p class="flex items-center gap-2">
                                     Atualizado em
                                     <SortIcons
-                                        :order-dir="orderDir"
+                                        :order-dir="filters.orderDir"
                                         :update-icon="
-                                            orderField === 'speeches.updated_at'
+                                            filters.orderField ===
+                                            'speeches.updated_at'
                                         "
                                     />
                                 </p>
@@ -192,7 +172,7 @@ const toggleOrder = (field) => {
                                 <p class="flex items-center gap-2">
                                     Realizado em
                                     <SortIcons
-                                        :order-dir="orderDir"
+                                        :order-dir="filters.orderDir"
                                         :update-icon="
                                             orderField ===
                                             'max(receive_speakers.date)'
@@ -207,6 +187,7 @@ const toggleOrder = (field) => {
                                 Preparado?
                             </th>
                             <th
+                                v-if="$inertia.page.props.auth.user.id === 1"
                                 class="w-1/12 px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
                             >
@@ -237,6 +218,7 @@ const toggleOrder = (field) => {
                                 {{ item.speakers.length > 0 ? "Sim" : "Não" }}
                             </td>
                             <td
+                                v-if="$inertia.page.props.auth.user.id === 1"
                                 class="space-x-3 whitespace-nowrap px-5 py-5 text-sm"
                             >
                                 <EditButton

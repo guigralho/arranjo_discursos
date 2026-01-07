@@ -12,16 +12,27 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
     faAngleDown,
     faAngleUp,
+    faArrowDown,
+    faArrowLeft,
+    faArrowUp,
     faBus,
+    faCalendarXmark,
     faChevronLeft,
     faChevronRight,
     faCircleCheck,
     faCircleInfo,
+    faClock,
     faEdit,
+    faExclamationTriangle,
+    faEye,
     faFileArrowDown,
     faFileLines,
+    faInbox,
     faList,
+    faMapMarkerAlt,
+    faMicrophone,
     faMoon,
+    faPaperPlane,
     faSort,
     faSortAsc,
     faSortDesc,
@@ -29,12 +40,13 @@ import {
     faSun,
     faTimesCircle,
     faTrash,
+    faUser,
     faUsers,
     faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
+import { faCalendar, faCircleUser } from "@fortawesome/free-regular-svg-icons";
 
 library.add(
     faUserSecret,
@@ -59,7 +71,20 @@ library.add(
     faCircleInfo,
     faList,
     faBus,
-    faFileLines
+    faFileLines,
+    faArrowLeft,
+    faCalendar,
+    faCalendarXmark,
+    faClock,
+    faUser,
+    faEye,
+    faMicrophone,
+    faPaperPlane,
+    faMapMarkerAlt,
+    faArrowDown,
+    faInbox,
+    faArrowUp,
+    faExclamationTriangle
 );
 
 const appName =
@@ -89,4 +114,9 @@ createInertiaApp({
     },
 });
 
-InertiaProgress.init({ color: "#fff", showSpinner: true });
+InertiaProgress.init({
+    color: "#3B82F6",
+    showSpinner: false,
+    delay: 100,
+    includeCSS: true,
+});

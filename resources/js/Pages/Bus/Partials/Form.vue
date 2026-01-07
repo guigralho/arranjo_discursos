@@ -5,8 +5,7 @@ import Checkbox from "@/Components/Checkbox.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { onMounted } from "vue";
-import { initTE, Select } from "tw-elements";
+import SearchableSelect from "@/Components/SearchableSelect.vue";
 
 defineProps({
     submit: Function,
@@ -16,10 +15,6 @@ defineProps({
         type: Object,
         default: null,
     },
-});
-
-onMounted(() => {
-    initTE({ Select });
 });
 
 function priceFormat(price) {
@@ -36,24 +31,19 @@ function priceFormat(price) {
 <template>
     <form class="space-y-6" @submit.prevent="submit">
         <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
-            <section class="max-w-xl space-y-6">
+            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <fieldset>
                     <InputLabel for="passenger_id" value="Nome" />
 
-                    <select
+                    <SearchableSelect
                         v-model="form.passenger_id"
-                        data-te-select-filter="true"
-                        data-te-select-init
-                        data-te-select-placeholder="Selecione..."
-                    >
-                        <option
-                            v-for="passenger in passengers"
-                            :key="passenger.id"
-                            :value="passenger.id"
-                        >
-                            {{ passenger.name }}
-                        </option>
-                    </select>
+                        :options="passengers"
+                        class="mt-1"
+                        display-key="name"
+                        placeholder="Selecione um passageiro..."
+                        search-placeholder="Pesquisar passageiro..."
+                        value-key="id"
+                    />
 
                     <InputError
                         :message="form.errors.passenger_id"
@@ -176,7 +166,7 @@ function priceFormat(price) {
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset class="sm:col-span-2">
                     <InputLabel for="obs" value="Observações" />
 
                     <textarea

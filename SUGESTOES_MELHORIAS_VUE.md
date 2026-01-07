@@ -43,7 +43,14 @@ import { useVirtualizer } from '@tanstack/vue-virtual'
 
 ## 🏗️ Melhorias de Estrutura
 
-### 1. **Composables para Lógica Reutilizável**
+### 1. **Composables para Lógica Reutilizável** ✅ IMPLEMENTADO
+**Status:** Implementado em `/resources/js/composables/useDebounceSearch.js` e aplicado em:
+- ✅ `Schedule/List.vue`
+- ✅ `Speech/List.vue`
+- ✅ `Speaker/List.vue`
+- ✅ `Passenger/List.vue`
+- ✅ `Bus/List.vue`
+
 Criar composables para lógica repetitiva:
 
 ```javascript
@@ -108,7 +115,8 @@ export const useAuthStore = defineStore('auth', {
 
 ## 🎨 Melhorias de UX/UI
 
-### 1. **Loading States Consistentes**
+### 1. **Loading States Consistentes** ✅ IMPLEMENTADO
+**Status:** Implementado composable `useLoading.js` + componente `LoadingButton.vue` + `GlobalLoading.vue`
 ```javascript
 // composables/useLoading.js
 export function useLoading() {
@@ -147,17 +155,6 @@ export function useErrorHandler() {
   
   return { errors, handleError, clearErrors }
 }
-```
-
-### 3. **Skeleton Loading**
-Para melhor percepção de performance:
-```vue
-<template>
-  <div v-if="isLoading" class="animate-pulse">
-    <div class="h-4 bg-gray-300 rounded w-3/4 mb-4"></div>
-    <div class="h-4 bg-gray-300 rounded w-1/2"></div>
-  </div>
-</template>
 ```
 
 ## 🔧 Melhorias Técnicas

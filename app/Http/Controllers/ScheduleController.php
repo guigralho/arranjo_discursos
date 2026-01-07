@@ -77,7 +77,7 @@ class ScheduleController extends Controller
     {
         $name = 'Alterar arranjo';
         $schedule = Schedule::whereId($schedule)
-            ->with(['userCreated', 'toReceive', 'toSend'])
+            ->with(['userCreated', 'userUpdated', 'toReceive', 'toSend'])
             ->first();
         $speeches = Speech::orderBy('number')->get();
         $speakers = Speaker::orderBy('name')->get();
