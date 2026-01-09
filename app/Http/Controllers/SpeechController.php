@@ -14,22 +14,23 @@ use Inertia\Inertia;
 
 class SpeechController extends Controller
 {
-    public function __construct(public SpeechService $speechService, public Request $request)
-    {
-    }
+    public function __construct(public SpeechService $speechService, public Request $request) {}
 
     public function index()
     {
         $search = [];
 
-        if ($this->request->has('search'))
+        if ($this->request->has('search')) {
             $search['searchString'] = $this->request->get('search');
+        }
 
-        if ($this->request->filled('hasSpeakers'))
+        if ($this->request->filled('hasSpeakers')) {
             $search['hasSpeakers'] = $this->request->get('hasSpeakers');
+        }
 
-        if ($this->request->filled('moreThan2Years'))
+        if ($this->request->filled('moreThan2Years')) {
             $search['moreThan2Years'] = $this->request->get('moreThan2Years');
+        }
 
         $field = $this->request->filled('orderField') ? $this->request->get('orderField') : 'speeches.id';
         $dir = $this->request->filled('orderDir') ? $this->request->get('orderDir') : 'asc';
@@ -58,14 +59,14 @@ class SpeechController extends Controller
         return Inertia::render('Speech/List', [
             'name' => 'Discursos',
             'list' => $list,
-            'filters' => $this->request->only(['search', 'orderField', 'orderDir', 'page', 'hasSpeakers'])
+            'filters' => $this->request->only(['search', 'orderField', 'orderDir', 'page', 'hasSpeakers']),
         ]);
     }
 
     public function store(SpeechRequest $speechRequest)
     {
 
-        $speech = new Speech();
+        $speech = new Speech;
         $speech->number = $speechRequest->number;
         $speech->theme = $speechRequest->theme;
 
@@ -91,7 +92,7 @@ class SpeechController extends Controller
 
         return Inertia::render('Speech/Show', [
             'name' => 'Alterar discurso',
-            'speech' => $speech
+            'speech' => $speech,
         ]);
     }
 
