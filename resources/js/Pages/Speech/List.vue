@@ -174,7 +174,7 @@ const toggleOrder = (field) => {
                                     <SortIcons
                                         :order-dir="filters.orderDir"
                                         :update-icon="
-                                            orderField ===
+                                            filters.orderField ===
                                             'max(receive_speakers.date)'
                                         "
                                     />
