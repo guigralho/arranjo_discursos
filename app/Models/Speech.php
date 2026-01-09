@@ -49,11 +49,11 @@ class Speech extends Model
 
     public function getCreatedAtAttribute($date)
     {
-        return Carbon::parse($date)->format('d/m/Y');
+        return $date ? Carbon::parse($date)->format('d/m/Y') : null;
     }
 
     public function getUpdatedAtAttribute($date)
     {
-        return Carbon::parse($date)->format('d/m/Y H:i:s');
+        return $date ? Carbon::parse($date)->format('d/m/Y H:i:s') : null;
     }
 }
