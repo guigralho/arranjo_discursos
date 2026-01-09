@@ -8,10 +8,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class SpeakerSpeechesExport implements FromView, ShouldAutoSize
 {
-
-    public function __construct(public $speakers)
-    {
-    }
+    public function __construct(public $speakers) {}
 
     /**
      * @return \Illuminate\Support\Collection
