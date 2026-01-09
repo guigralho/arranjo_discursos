@@ -19,7 +19,8 @@ class SpeakerSpeechesExport implements FromView, ShouldAutoSize
     public function view(): View
     {
         return view('exports.speakers', [
-            'speakers' => $this->speakers
+            'speakers' => $this->speakers,
+            'congregation_name' => auth()->user()->congregation_id == '' ? 'Vila Medeiros' : auth()->user()->congregation_id,
         ]);
     }
 }

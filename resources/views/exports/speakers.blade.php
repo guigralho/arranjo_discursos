@@ -1,7 +1,7 @@
 <table>
     <tbody>
     <tr>
-        <td style="text-align: center; font-size: 14px; font-weight: bold">Oradores - Congregação Vila Medeiros</td>
+        <td style="text-align: center; font-size: 14px; font-weight: bold">Oradores - Congregação {{ $congregation_name }}</td>
     </tr>
     @foreach($speakers as $speaker)
         <tr>
