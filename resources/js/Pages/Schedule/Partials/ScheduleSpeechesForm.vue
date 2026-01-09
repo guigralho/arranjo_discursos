@@ -13,11 +13,12 @@ import axios from "axios";
 
 const props = defineProps({
     title: String,
-    route: String,
+    saveRoute: String,
     dates: Object,
     speeches: Object,
     speakers: Object,
     schedule: Object,
+    scheduleId: Number,
 });
 
 const form = useForm({
@@ -25,7 +26,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(props.route, {
+    form.post(props.saveRoute, {
         preserveScroll: true,
         onSuccess: () => {},
         onError: () => {
@@ -317,6 +318,21 @@ const changeVal = (val, item) => {
                             Salvando...
                         </span>
                     </SaveButton>
+
+                    <a
+                        v-if="title === 'Receber'"
+                        :href="
+                            route('download-receive-speakers-csv', scheduleId)
+                        "
+                        class="items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
+                        type="button"
+                    >
+                        <font-awesome-icon
+                            class="h-4 w-4"
+                            icon="fa-solid fa-file-arrow-down"
+                        />
+                        Baixar csv
+                    </a>
                 </div>
             </div>
         </form>

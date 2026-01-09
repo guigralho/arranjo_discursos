@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReceiveSpeakersExport;
+use App\Exports\ScheduleExport;
 use App\Http\Requests\ScheduleRequest;
 use App\Models\Schedule;
 use App\Models\Speaker;
@@ -12,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ScheduleController extends Controller
 {
@@ -167,5 +170,22 @@ class ScheduleController extends Controller
         $pdf = Pdf::loadView('pdfs.quadro', $schedule->toArray());
 
         return $pdf->download('quadro.pdf');
+    }
+
+    public function downloadCsv($schedule)
+    {
+        $schedule = Schedule::whereId($schedule)
+            ->first();
+
+        return Excel::download(new ScheduleExport($schedule), 'schedule.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function downloadReceiveSpeakersCsv($schedule)
+    {
+        $schedule = Schedule::whereId($schedule)
+            ->with(['toReceive.speech'])
+            ->first();
+
+        return Excel::download(new ReceiveSpeakersExport($schedule), 'receive_speakers.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 }

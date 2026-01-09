@@ -200,7 +200,7 @@ const changeVal = (val) => {
                 <a
                     v-if="data?.id"
                     :href="route('download-pdf', data?.id)"
-                    class="items-center gap-2 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
+                    class="items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
                     type="button"
                 >
                     <font-awesome-icon
@@ -208,6 +208,19 @@ const changeVal = (val) => {
                         icon="fa-solid fa-file-arrow-down"
                     />
                     Gerar quadro
+                </a>
+
+                <a
+                    v-if="data?.id"
+                    :href="route('download-csv', data?.id)"
+                    class="items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
+                    type="button"
+                >
+                    <font-awesome-icon
+                        class="h-4 w-4"
+                        icon="fa-solid fa-file-arrow-down"
+                    />
+                    Baixar csv
                 </a>
             </div>
 

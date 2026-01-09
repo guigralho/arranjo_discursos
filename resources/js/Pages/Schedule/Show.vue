@@ -1,8 +1,7 @@
 <script setup>
 import Form from "./Partials/Form.vue";
-import { Head, useForm, Link } from "@inertiajs/inertia-vue3";
+import { Head, useForm } from "@inertiajs/inertia-vue3";
 import ScheduleSpeechesForm from "@/Pages/Schedule/Partials/ScheduleSpeechesForm.vue";
-import SaveButton from "@/Components/Buttons/SaveButton.vue";
 
 const props = defineProps({
     name: String,
@@ -57,19 +56,21 @@ const submit = () => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <Form :data="schedule" :form="form" :submit="submit" />
 
         <ScheduleSpeechesForm
             :dates="schedule.to_receive"
-            :route="route('schedules.save-receive', props.schedule.id)"
+            :save-route="route('schedules.save-receive', props.schedule.id)"
+            :schedule-id="props.schedule.id"
             :speeches="speeches"
             title="Receber"
         />
         <ScheduleSpeechesForm
             :dates="schedule.to_send"
-            :route="route('schedules.save-send', props.schedule.id)"
+            :save-route="route('schedules.save-send', props.schedule.id)"
             :schedule="schedule"
+            :schedule-id="props.schedule.id"
             :speakers="speakers"
             :speeches="speeches"
             title="Enviar"
