@@ -53,12 +53,22 @@ const back = () => {
                     <InputError :message="form.errors.theme" class="mt-2" />
                 </div>
 
-                <p class="dark:text-gray-400">
-                    <i>{{
-                        speech &&
-                        `Atualizado em: ${speech.updated_at} por ${speech.user_updated?.name}`
-                    }}</i>
-                </p>
+                <div>
+                    <p class="text-sm dark:text-gray-400">
+                        <i>{{
+                            speech &&
+                            speech.created_at &&
+                            `Criado em: ${speech.created_at} por ${speech.user_created?.name}`
+                        }}</i>
+                    </p>
+                    <p class="text-sm dark:text-gray-400">
+                        <i>{{
+                            speech &&
+                            speech.updated_at &&
+                            `Atualizado em: ${speech.updated_at} por ${speech.user_updated?.name}`
+                        }}</i>
+                    </p>
+                </div>
             </section>
         </div>
         <div class="flex items-center gap-4">

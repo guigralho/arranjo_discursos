@@ -79,12 +79,22 @@ export default {
                     <InputError :message="form.errors.phone" class="mt-2" />
                 </div>
 
-                <p class="dark:text-gray-400 sm:col-span-2">
-                    <i>{{
-                        data &&
-                        `Atualizado em: ${data.updated_at} por ${data.user_updated?.name}`
-                    }}</i>
-                </p>
+                <div class="sm:col-span-2">
+                    <p class="text-sm dark:text-gray-400">
+                        <i>{{
+                            data &&
+                            data.created_at &&
+                            `Criado em: ${data.created_at} por ${data.user_created?.name}`
+                        }}</i>
+                    </p>
+                    <p class="text-sm dark:text-gray-400">
+                        <i>{{
+                            data &&
+                            data.updated_at &&
+                            `Atualizado em: ${data.updated_at} por ${data.user_updated?.name}`
+                        }}</i>
+                    </p>
+                </div>
             </section>
         </div>
         <div class="flex items-center gap-4">
