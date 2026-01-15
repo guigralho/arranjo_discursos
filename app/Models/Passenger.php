@@ -18,7 +18,7 @@ class Passenger extends Model
     public static function boot()
     {
         parent::boot();
-        self::observe(new DeleteObserver());
+        self::observe(new DeleteObserver);
     }
 
     /**
