@@ -37,13 +37,13 @@ class Passenger extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getCreatedAtAttribute($date)
+    public function getCreatedAtAttribute($date): ?string
     {
-        return Carbon::parse($date)->format('d/m/Y');
+        return $date ? Carbon::parse($date, 'UTC')->setTimezone(config('app.timezone'))->format('d/m/Y') : null;
     }
 
-    public function getUpdatedAtAttribute($date)
+    public function getUpdatedAtAttribute($date): ?string
     {
-        return Carbon::parse($date)->format('d/m/Y H:i:s');
+        return $date ? Carbon::parse($date, 'UTC')->setTimezone(config('app.timezone'))->format('d/m/Y H:i:s') : null;
     }
 }

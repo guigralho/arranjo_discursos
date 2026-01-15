@@ -74,13 +74,13 @@ class Schedule extends Model
         return strtoupper(Carbon::parse($this->month)->translatedFormat('M/Y'));
     }
 
-    public function getCreatedAtAttribute($date)
+    public function getCreatedAtAttribute($date): ?string
     {
-        return Carbon::parse($date)->format('d/m/Y H:i:s');
+        return $date ? Carbon::parse($date, 'UTC')->setTimezone(config('app.timezone'))->format('d/m/Y H:i:s') : null;
     }
 
-    public function getUpdatedAtAttribute($date)
+    public function getUpdatedAtAttribute($date): ?string
     {
-        return Carbon::parse($date)->format('d/m/Y H:i:s');
+        return $date ? Carbon::parse($date, 'UTC')->setTimezone(config('app.timezone'))->format('d/m/Y H:i:s') : null;
     }
 }
