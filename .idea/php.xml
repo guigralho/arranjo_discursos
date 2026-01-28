@@ -16,7 +16,7 @@
   </component>
   <component name="PhpCodeSniffer">
     <phpcs_settings>
-      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="5081c0ea-a1cf-4d8d-ad9b-db03ef8164fe" timeout="30000" />
+      <PhpCSConfiguration asDefaultInterpreter="true" timeout="30000" />
     </phpcs_settings>
   </component>
   <component name="PhpExternalFormatter">
@@ -188,7 +188,7 @@
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
   <component name="PhpStan">
     <PhpStan_settings>
-      <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="5081c0ea-a1cf-4d8d-ad9b-db03ef8164fe" timeout="60000" />
+      <PhpStanConfiguration asDefaultInterpreter="true" timeout="60000" />
     </PhpStan_settings>
   </component>
   <component name="PhpStanOptionsConfiguration">
@@ -201,7 +201,7 @@
   </component>
   <component name="Psalm">
     <Psalm_settings>
-      <psalm_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="5081c0ea-a1cf-4d8d-ad9b-db03ef8164fe" timeout="60000" />
+      <PsalmConfiguration asDefaultInterpreter="true" timeout="60000" />
     </Psalm_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
