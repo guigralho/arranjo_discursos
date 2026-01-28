@@ -285,7 +285,7 @@ const changeVal = (val, item) => {
             <!-- Botões de ação -->
             <div
                 v-if="form.weeks.length > 0"
-                class="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50"
+                class="grid grid-cols-1 gap-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50 sm:grid-cols-2"
             >
                 <div class="flex items-center gap-2">
                     <span class="text-xs text-gray-500 dark:text-gray-400">
@@ -296,7 +296,7 @@ const changeVal = (val, item) => {
                     </span>
                 </div>
 
-                <div class="flex gap-3">
+                <div class="flex justify-end gap-3">
                     <slot />
                     <SaveButton :disabled="form.processing">
                         <span
@@ -324,7 +324,7 @@ const changeVal = (val, item) => {
                         :href="
                             route('download-receive-speakers-csv', scheduleId)
                         "
-                        class="items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
+                        class="w-full items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex sm:w-fit"
                         type="button"
                     >
                         <font-awesome-icon
