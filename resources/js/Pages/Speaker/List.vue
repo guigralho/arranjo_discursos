@@ -61,7 +61,7 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
-                <div class="flex gap-2">
+                <div class="grid grid-cols-2 gap-2">
                     <a
                         v-if="selectedIds.length > 0"
                         :href="
