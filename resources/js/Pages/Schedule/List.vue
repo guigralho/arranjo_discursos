@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";

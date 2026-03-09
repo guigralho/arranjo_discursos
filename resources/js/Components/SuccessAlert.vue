@@ -1,11 +1,11 @@
 <script setup>
 import { computed, ref, watch } from "vue";
-import { usePage } from "@inertiajs/inertia-vue3";
+import { usePage } from "@inertiajs/vue3";
 
 let showNot = ref("");
 
 let notification = computed(() => {
-    return usePage().props.value.flash.message;
+    return usePage().props.flash.message;
 });
 
 watch(notification, (val) => {

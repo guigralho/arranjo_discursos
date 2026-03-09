@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
@@ -90,7 +90,7 @@ const toggleOrder = (field) => {
                 </div>
             </div>
             <Link
-                v-if="$inertia.page.props.auth.user.id === 1"
+                v-if="$page.props.auth.user.id === 1"
                 :href="route('speeches.create')"
                 class="btn-novo"
                 >Novo</Link
@@ -187,7 +187,7 @@ const toggleOrder = (field) => {
                                 Preparado?
                             </th>
                             <th
-                                v-if="$inertia.page.props.auth.user.id === 1"
+                                v-if="$page.props.auth.user.id === 1"
                                 class="w-1/12 px-5 py-5 text-left text-sm uppercase"
                                 scope="col"
                             >
@@ -218,7 +218,7 @@ const toggleOrder = (field) => {
                                 {{ item.speakers.length > 0 ? "Sim" : "Não" }}
                             </td>
                             <td
-                                v-if="$inertia.page.props.auth.user.id === 1"
+                                v-if="$page.props.auth.user.id === 1"
                                 class="space-x-3 whitespace-nowrap px-5 py-5 text-sm"
                             >
                                 <EditButton

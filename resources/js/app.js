@@ -2,8 +2,7 @@ import "./bootstrap";
 import "../css/app.css";
 
 import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/inertia-vue3";
-import { InertiaProgress } from "@inertiajs/progress";
+import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 
@@ -105,18 +104,14 @@ createInertiaApp({
         });
         return page;
     },
-    setup({ el, app, props, plugin }) {
-        return createApp({ render: () => h(app, props) })
+    progress: {
+        color: "#3B82F6",
+    },
+    setup({ el, App, props, plugin }) {
+        return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .component("font-awesome-icon", FontAwesomeIcon)
             .mount(el);
     },
-});
-
-InertiaProgress.init({
-    color: "#3B82F6",
-    showSpinner: false,
-    delay: 100,
-    includeCSS: true,
 });

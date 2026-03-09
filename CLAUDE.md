@@ -3,78 +3,116 @@
 
 # Laravel Boost Guidelines
 
-The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to enhance the user's satisfaction building Laravel applications.
+The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines
+should be followed closely to ensure the best experience when building Laravel applications.
 
 ## Foundational Context
-This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.2.29
-- inertiajs/inertia-laravel (INERTIA) - v0
-- laravel/framework (LARAVEL) - v10
+This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an
+expert with them all. Ensure you abide by these specific packages & versions.
+
+- php - 8.2.30
+- inertiajs/inertia-laravel (INERTIA_LARAVEL) - v2
+- laravel/framework (LARAVEL) - v11
 - laravel/nightwatch (NIGHTWATCH) - v1
 - laravel/prompts (PROMPTS) - v0
-- laravel/sanctum (SANCTUM) - v3
+- laravel/sanctum (SANCTUM) - v4
 - tightenco/ziggy (ZIGGY) - v1
-- laravel/breeze (BREEZE) - v1
+- laravel/boost (BOOST) - v2
+- laravel/breeze (BREEZE) - v2
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
-- phpunit/phpunit (PHPUNIT) - v10
+- phpunit/phpunit (PHPUNIT) - v11
 - eslint (ESLINT) - v8
+- @inertiajs/vue3 (INERTIA_VUE) - v2
 - prettier (PRETTIER) - v2
 - tailwindcss (TAILWINDCSS) - v3
 - vue (VUE) - v3
 
+## Skills Activation
+
+This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that
+domain—don't wait until you're stuck.
+
+- `inertia-vue-development` — Develops Inertia.js v2 Vue client-side applications. Activates when creating Vue pages,
+  forms, or navigation; using &lt;Link&gt;, &lt;Form&gt;, useForm, or router; working with deferred props, prefetching,
+  or polling; or when user mentions Vue with Inertia, Vue pages, Vue forms, or Vue navigation.
+- `tailwindcss-development` — Styles applications using Tailwind CSS v3 utilities. Activates when adding styles,
+  restyling components, working with gradients, spacing, layout, flex, grid, responsive design, dark mode, colors,
+  typography, or borders; or when the user mentions CSS, styling, classes, Tailwind, restyle, hero section, cards,
+  buttons, or any visual/UI changes.
+
 ## Conventions
-- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, and naming.
+
+- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling
+  files for the correct structure, approach, and naming.
 - Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
 - Check for existing components to reuse before writing a new one.
 
 ## Verification Scripts
-- Do not create verification scripts or tinker when tests cover that functionality and prove it works. Unit and feature tests are more important.
+
+- Do not create verification scripts or tinker when tests cover that functionality and prove they work. Unit and feature
+  tests are more important.
 
 ## Application Structure & Architecture
+
 - Stick to existing directory structure; don't create new base folders without approval.
 - Do not change the application's dependencies without approval.
 
 ## Frontend Bundling
-- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `vendor/bin/sail npm run build`, `vendor/bin/sail npm run dev`, or `vendor/bin/sail composer run dev`. Ask them.
 
-## Replies
-- Be concise in your explanations - focus on what's important rather than explaining obvious details.
+- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run
+  `vendor/bin/sail npm run build`, `vendor/bin/sail npm run dev`, or `vendor/bin/sail composer run dev`. Ask them.
 
 ## Documentation Files
+
 - You must only create documentation files if explicitly requested by the user.
+
+## Replies
+
+- Be concise in your explanations - focus on what's important rather than explaining obvious details.
 
 === boost rules ===
 
-## Laravel Boost
+# Laravel Boost
+
 - Laravel Boost is an MCP server that comes with powerful tools designed specifically for this application. Use them.
 
 ## Artisan
-- Use the `list-artisan-commands` tool when you need to call an Artisan command to double-check the available parameters.
+
+- Use the `list-artisan-commands` tool when you need to call an Artisan command to double-check the available
+  parameters.
 
 ## URLs
-- Whenever you share a project URL with the user, you should use the `get-absolute-url` tool to ensure you're using the correct scheme, domain/IP, and port.
+
+- Whenever you share a project URL with the user, you should use the `get-absolute-url` tool to ensure you're using the
+  correct scheme, domain/IP, and port.
 
 ## Tinker / Debugging
+
 - You should use the `tinker` tool when you need to execute PHP to debug code or query Eloquent models directly.
 - Use the `database-query` tool when you only need to read from the database.
+- Use the `database-schema` tool to inspect table structure before writing migrations or models.
 
 ## Reading Browser Logs With the `browser-logs` Tool
+
 - You can read browser logs, errors, and exceptions using the `browser-logs` tool from Boost.
 - Only recent browser logs will be useful - ignore old logs.
 
 ## Searching Documentation (Critically Important)
-- Boost comes with a powerful `search-docs` tool you should use before any other approaches when dealing with Laravel or Laravel ecosystem packages. This tool automatically passes a list of installed packages and their versions to the remote Boost API, so it returns only version-specific documentation for the user's circumstance. You should pass an array of packages to filter on if you know you need docs for particular packages.
-- The `search-docs` tool is perfect for all Laravel-related packages, including Laravel, Inertia, Livewire, Filament, Tailwind, Pest, Nova, Nightwatch, etc.
-- You must use this tool to search for Laravel ecosystem documentation before falling back to other approaches.
+
+- Boost comes with a powerful `search-docs` tool you should use before trying other approaches when working with Laravel
+  or Laravel ecosystem packages. This tool automatically passes a list of installed packages and their versions to the
+  remote Boost API, so it returns only version-specific documentation for the user's circumstance. You should pass an
+  array of packages to filter on if you know you need docs for particular packages.
 - Search the documentation before making code changes to ensure we are taking the correct approach.
-- Use multiple, broad, simple, topic-based queries to start. For example: `['rate limiting', 'routing rate limiting', 'routing']`.
-- Do not add package names to queries; package information is already shared. For example, use `test resource table`, not `filament 4 test resource table`.
+- Use multiple, broad, simple, topic-based queries at once. For example:
+  `['rate limiting', 'routing rate limiting', 'routing']`. The most relevant results will be returned first.
+- Do not add package names to queries; package information is already shared. For example, use `test resource table`,
+  not `filament 4 test resource table`.
 
 ### Available Search Syntax
-- You can and should pass multiple queries at once. The most relevant results will be returned first.
 
 1. Simple Word Searches with auto-stemming - query=authentication - finds 'authenticate' and 'auth'.
 2. Multiple Words (AND Logic) - query=rate limit - finds knowledge containing both "rate" AND "limit".
@@ -84,38 +122,46 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 === php rules ===
 
-## PHP
+# PHP
 
-- Always use curly braces for control structures, even if it has one line.
+- Always use curly braces for control structures, even for single-line bodies.
 
-### Constructors
+## Constructors
+
 - Use PHP 8 constructor property promotion in `__construct()`.
-    - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
+    - `public function __construct(public GitHub $github) { }`
 - Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
 
-### Type Declarations
+## Type Declarations
+
 - Always use explicit return type declarations for methods and functions.
 - Use appropriate PHP type hints for method parameters.
 
-<code-snippet name="Explicit Return Types and Method Params" lang="php">
+<!-- Explicit Return Types and Method Params -->
+
+```php
 protected function isAccessible(User $user, ?string $path = null): bool
 {
     ...
 }
-</code-snippet>
-
-## Comments
-- Prefer PHPDoc blocks over inline comments. Never use comments within the code itself unless there is something very complex going on.
-
-## PHPDoc Blocks
-- Add useful array shape type definitions for arrays when appropriate.
+```
 
 ## Enums
+
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
+
+## Comments
+
+- Prefer PHPDoc blocks over inline comments. Never use comments within the code itself unless the logic is exceptionally
+  complex.
+
+## PHPDoc Blocks
+
+- Add useful array shape type definitions when appropriate.
 
 === sail rules ===
 
-## Laravel Sail
+# Laravel Sail
 
 - This project runs inside Laravel Sail's Docker containers. You MUST execute all commands through Sail.
 - Start services using `vendor/bin/sail up -d` and stop them with `vendor/bin/sail stop`.
@@ -129,138 +175,182 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 === tests rules ===
 
-## Test Enforcement
+# Test Enforcement
 
-- Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
-- Run the minimum number of tests needed to ensure code quality and speed. Use `vendor/bin/sail artisan test --compact` with a specific filename or filter.
+- Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests
+  to make sure they pass.
+- Run the minimum number of tests needed to ensure code quality and speed. Use `vendor/bin/sail artisan test --compact`
+  with a specific filename or filter.
 
 === inertia-laravel/core rules ===
 
-## Inertia
+# Inertia
 
-- Inertia.js components should be placed in the `resources/js/Pages` directory unless specified differently in the JS bundler (`vite.config.js`).
-- Use `Inertia::render()` for server-side routing instead of traditional Blade views.
-- Use the `search-docs` tool for accurate guidance on all things Inertia.
+- Inertia creates fully client-side rendered SPAs without modern SPA complexity, leveraging existing server-side
+  patterns.
+- Components live in `resources/js/Pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for
+  server-side routing instead of Blade views.
+- ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
+- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
-<code-snippet name="Inertia Render Example" lang="php">
-// routes/web.php example
-Route::get('/users', function () {
-    return Inertia::render('Users/Index', [
-        'users' => User::all()
-    ]);
-});
-</code-snippet>
+# Inertia v2
+
+- Use all Inertia features from v1 and v2. Check the documentation before making changes to ensure the correct approach.
+- New features: deferred props, infinite scroll, merging props, polling, prefetching, once props, flash data.
+- When using deferred props, add an empty state with a pulsing or animated skeleton.
 
 === laravel/core rules ===
 
-## Do Things the Laravel Way
+# Do Things the Laravel Way
 
-- Use `vendor/bin/sail artisan make:` commands to create new files (i.e. migrations, controllers, models, etc.). You can list available Artisan commands using the `list-artisan-commands` tool.
+- Use `vendor/bin/sail artisan make:` commands to create new files (i.e. migrations, controllers, models, etc.). You can
+  list available Artisan commands using the `list-artisan-commands` tool.
 - If you're creating a generic PHP class, use `vendor/bin/sail artisan make:class`.
-- Pass `--no-interaction` to all Artisan commands to ensure they work without user input. You should also pass the correct `--options` to ensure correct behavior.
+- Pass `--no-interaction` to all Artisan commands to ensure they work without user input. You should also pass the
+  correct `--options` to ensure correct behavior.
 
-### Database
-- Always use proper Eloquent relationship methods with return type hints. Prefer relationship methods over raw queries or manual joins.
+## Database
+
+- Always use proper Eloquent relationship methods with return type hints. Prefer relationship methods over raw queries
+  or manual joins.
 - Use Eloquent models and relationships before suggesting raw database queries.
-- Avoid `DB::`; prefer `Model::query()`. Generate code that leverages Laravel's ORM capabilities rather than bypassing them.
+- Avoid `DB::`; prefer `Model::query()`. Generate code that leverages Laravel's ORM capabilities rather than bypassing
+  them.
 - Generate code that prevents N+1 query problems by using eager loading.
 - Use Laravel's query builder for very complex database operations.
 
 ### Model Creation
-- When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `list-artisan-commands` to check the available options to `vendor/bin/sail artisan make:model`.
+
+- When creating new models, create useful factories and seeders for them too. Ask the user if they need any other
+  things, using `list-artisan-commands` to check the available options to `vendor/bin/sail artisan make:model`.
 
 ### APIs & Eloquent Resources
-- For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you should follow existing application convention.
 
-### Controllers & Validation
-- Always create Form Request classes for validation rather than inline validation in controllers. Include both validation rules and custom error messages.
+- For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you
+  should follow existing application convention.
+
+## Controllers & Validation
+
+- Always create Form Request classes for validation rather than inline validation in controllers. Include both
+  validation rules and custom error messages.
 - Check sibling Form Requests to see if the application uses array or string based validation rules.
 
-### Queues
-- Use queued jobs for time-consuming operations with the `ShouldQueue` interface.
+## Authentication & Authorization
 
-### Authentication & Authorization
 - Use Laravel's built-in authentication and authorization features (gates, policies, Sanctum, etc.).
 
-### URL Generation
+## URL Generation
+
 - When generating links to other pages, prefer named routes and the `route()` function.
 
-### Configuration
-- Use environment variables only in configuration files - never use the `env()` function directly outside of config files. Always use `config('app.name')`, not `env('APP_NAME')`.
+## Queues
 
-### Testing
-- When creating models for tests, use the factories for the models. Check if the factory has custom states that can be used before manually setting up the model.
-- Faker: Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to use `$this->faker` or `fake()`.
-- When creating tests, make use of `vendor/bin/sail artisan make:test [options] {name}` to create a feature test, and pass `--unit` to create a unit test. Most tests should be feature tests.
+- Use queued jobs for time-consuming operations with the `ShouldQueue` interface.
 
-### Vite Error
-- If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `vendor/bin/sail npm run build` or ask the user to run `vendor/bin/sail npm run dev` or `vendor/bin/sail composer run dev`.
+## Configuration
 
-=== laravel/v10 rules ===
+- Use environment variables only in configuration files - never use the `env()` function directly outside of config
+  files. Always use `config('app.name')`, not `env('APP_NAME')`.
 
-## Laravel 10
+## Testing
 
-- Use the `search-docs` tool to get version-specific documentation.
-- Middleware typically live in `app/Http/Middleware/` and service providers in `app/Providers/`.
-- Laravel 10 has a `bootstrap/app.php` file that creates the application instance and binds kernel contracts, but does not use it for application configuration like Laravel 11:
-    - Middleware registration is in `app/Http/Kernel.php`
-    - Exception handling is in `app/Exceptions/Handler.php`
-    - Console commands and schedule registration is in `app/Console/Kernel.php`
-    - Rate limits likely exist in `RouteServiceProvider` or `app/Http/Kernel.php`
-- When using Eloquent model casts, you must use `protected $casts = [];` and not the `casts()` method. The `casts()` method isn't available on models in Laravel 10.
+- When creating models for tests, use the factories for the models. Check if the factory has custom states that can be
+  used before manually setting up the model.
+- Faker: Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to
+  use `$this->faker` or `fake()`.
+- When creating tests, make use of `vendor/bin/sail artisan make:test [options] {name}` to create a feature test, and
+  pass `--unit` to create a unit test. Most tests should be feature tests.
+
+## Vite Error
+
+- If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run
+  `vendor/bin/sail npm run build` or ask the user to run `vendor/bin/sail npm run dev` or
+  `vendor/bin/sail composer run dev`.
+
+=== laravel/v11 rules ===
+
+# Laravel 11
+
+- CRITICAL: ALWAYS use `search-docs` tool for version-specific Laravel documentation and updated code examples.
+- Laravel 11 brought a new streamlined file structure which this project now uses.
+
+## Laravel 11 Structure
+
+- In Laravel 11, middleware are no longer registered in `app/Http/Kernel.php`.
+- Middleware are configured declaratively in `bootstrap/app.php` using `Application::configure()->withMiddleware()`.
+- `bootstrap/app.php` is the file to register middleware, exceptions, and routing files.
+- `bootstrap/providers.php` contains application specific service providers.
+- No app\Console\Kernel.php - use `bootstrap/app.php` or `routes/console.php` for console configuration.
+- Commands auto-register - files in `app/Console/Commands/` are automatically available and do not require manual
+  registration.
+
+## Database
+
+- When modifying a column, the migration must include all of the attributes that were previously defined on the column.
+  Otherwise, they will be dropped and lost.
+- Laravel 11 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
+
+### Models
+
+- Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing
+  conventions from other models.
+
+## New Artisan Commands
+
+- List Artisan commands using Boost's MCP tool, if available. New commands available in Laravel 11:
+    - `vendor/bin/sail artisan make:enum`
+    - `vendor/bin/sail artisan make:class`
+    - `vendor/bin/sail artisan make:interface`
 
 === pint/core rules ===
 
-## Laravel Pint Code Formatter
+# Laravel Pint Code Formatter
 
-- You must run `vendor/bin/sail bin pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
-- Do not run `vendor/bin/sail bin pint --test`, simply run `vendor/bin/sail bin pint` to fix any formatting issues.
+- If you have modified any PHP files, you must run `vendor/bin/sail bin pint --dirty --format agent` before finalizing
+  changes to ensure your code matches the project's expected style.
+- Do not run `vendor/bin/sail bin pint --test --format agent`, simply run `vendor/bin/sail bin pint --format agent` to
+  fix any formatting issues.
 
 === phpunit/core rules ===
 
-## PHPUnit
+# PHPUnit
 
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `vendor/bin/sail artisan make:test --phpunit {name}` to create a new test.
+- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use
+  `vendor/bin/sail artisan make:test --phpunit {name}` to create a new test.
 - If you see a test using "Pest", convert it to PHPUnit.
 - Every time a test has been updated, run that singular test.
-- When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
-- Tests should test all of the happy paths, failure paths, and weird paths.
-- You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files; these are core to the application.
+- When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite
+  to make sure everything is still passing.
+- Tests should cover all happy paths, failure paths, and edge cases.
+- You must not remove any tests or test files from the tests directory without approval. These are not temporary or
+  helper files; these are core to the application.
 
-### Running Tests
+## Running Tests
+
 - Run the minimal number of tests, using an appropriate filter, before finalizing.
 - To run all tests: `vendor/bin/sail artisan test --compact`.
 - To run all tests in a file: `vendor/bin/sail artisan test --compact tests/Feature/ExampleTest.php`.
-- To filter on a particular test name: `vendor/bin/sail artisan test --compact --filter=testName` (recommended after making a change to a related file).
+- To filter on a particular test name: `vendor/bin/sail artisan test --compact --filter=testName` (recommended after
+  making a change to a related file).
+
+=== inertia-vue/core rules ===
+
+# Inertia + Vue
+
+Vue components must have a single root element.
+
+- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
 === tailwindcss/core rules ===
 
-## Tailwind CSS
+# Tailwind CSS
 
-- Use Tailwind CSS classes to style HTML; check and use existing Tailwind conventions within the project before writing your own.
-- Offer to extract repeated patterns into components that match the project's conventions (i.e. Blade, JSX, Vue, etc.).
-- Think through class placement, order, priority, and defaults. Remove redundant classes, add classes to parent or child carefully to limit repetition, and group elements logically.
-- You can use the `search-docs` tool to get exact examples from the official documentation when needed.
+- Always use existing Tailwind conventions; check project patterns before adding new ones.
+- IMPORTANT: Always use `search-docs` tool for version-specific Tailwind CSS documentation and updated code examples.
+  Never rely on training data.
+- IMPORTANT: Activate `tailwindcss-development` every time you're working with a Tailwind CSS or styling-related task.
 
-### Spacing
-- When listing items, use gap utilities for spacing; don't use margins.
-
-<code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-    <div class="flex gap-8">
-        <div>Superior</div>
-        <div>Michigan</div>
-        <div>Erie</div>
-    </div>
-</code-snippet>
-
-### Dark Mode
-- If existing pages and components support dark mode, new pages and components must support dark mode in a similar way, typically using `dark:`.
-
-=== tailwindcss/v3 rules ===
-
-## Tailwind CSS 3
-
-- Always use Tailwind CSS v3; verify you're using only classes supported by this version.
+# Serena
 
 - sempre use o serena para acessar o que aprendeu sobre o projeto
-</laravel-boost-guidelines>
+  </laravel-boost-guidelines>

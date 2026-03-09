@@ -46,12 +46,12 @@
                 >
                     <Link
                         v-for="(link, index) in list.links"
+                        :key="index"
                         :class="getClass(link.active, index, list.links.length)"
-                        :disabled="!link.url"
-                        :href="link.url"
+                        :href="link.url ?? '#'"
                         class="inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
                         v-html="
-                            link.label
+                            (link.label ?? '')
                                 .replaceAll('Next', '')
                                 .replaceAll('Previous', '')
                         "
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 
 defineProps({
     list: {

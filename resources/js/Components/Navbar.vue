@@ -27,7 +27,7 @@
                 >
                     <div class="flex flex-shrink-0 items-center">
                         <h1 class="text-xl font-bold text-gray-400">
-                            {{ $inertia.page.props.app.name }}
+                            {{ $page.props.app.name }}
                         </h1>
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
@@ -36,7 +36,7 @@
                                 <Link
                                     v-if="
                                         (item.name === 'Ônibus' &&
-                                            $inertia.page.props.auth.user.id ===
+                                            $page.props.auth.user.id ===
                                                 1) ||
                                         item.name !== 'Ônibus'
                                     "
@@ -105,7 +105,7 @@
                                     class="block px-4 py-2 text-sm text-gray-700"
                                 >
                                     Olá,
-                                    {{ $inertia.page.props.auth.user.name }}
+                                    {{ $page.props.auth.user.name }}
                                 </p>
                                 <MenuItem v-slot="{ active }">
                                     <Link
@@ -176,8 +176,8 @@ import {
     XMarkIcon,
 } from "@heroicons/vue/24/outline";
 import { useDark, useToggle } from "@vueuse/core";
-import { Link } from "@inertiajs/inertia-vue3";
-import { Inertia } from "@inertiajs/inertia";
+import { Link } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const isDark = useDark();
@@ -215,7 +215,7 @@ const setNavigation = () => {
     ];
 };
 
-Inertia.on("navigate", (event) => {
+router.on("navigate", (event) => {
     setNavigation();
 });
 </script>

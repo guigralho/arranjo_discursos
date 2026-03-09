@@ -1,14 +1,14 @@
 # Stack Tecnológica
 
 ## Backend
-- **PHP**: ^8.1
-- **Laravel**: ^10.0
-- **Laravel Sanctum**: ^3.0 (autenticação)
-- **Laravel Breeze**: ^1.21 (scaffolding de auth)
+- **PHP**: ^8.2
+- **Laravel**: ^11.0
+- **Laravel Sanctum**: ^4.0 (autenticação)
+- **Laravel Breeze**: ^2.0 (scaffolding de auth)
 
 ## Frontend
 - **Vue.js**: ^3.2.41
-- **Inertia.js**: ^0.6.11 (Laravel) / ^0.11.0 (JS)
+- **Inertia.js**: ^2.0 (Laravel) / ^2.0 (JS - @inertiajs/vue3)
 - **Tailwind CSS**: ^3.2.1
 - **Vite**: ^4.1.5
 
@@ -37,4 +37,4 @@
 - **Laravel Pint**: Code formatting
 - **ESLint**: Linting JS/Vue
 - **Prettier**: Code formatting (com plugin Tailwind)
-- **PHPUnit**: ^10.1
+- **PHPUnit**: ^11.0

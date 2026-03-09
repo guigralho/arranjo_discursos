@@ -2,10 +2,13 @@
     "agents": [
         "claude_code"
     ],
-    "editors": [
-        "claude_code",
-        "phpstorm"
-    ],
-    "guidelines": [],
-    "sail": true
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "nightwatch_mcp": true,
+    "sail": true,
+    "skills": [
+        "inertia-vue-development",
+        "tailwindcss-development"
+    ]
 }

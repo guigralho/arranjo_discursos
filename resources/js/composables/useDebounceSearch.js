@@ -1,12 +1,12 @@
 import { ref, watch } from 'vue'
-import { Inertia } from '@inertiajs/inertia'
+import { router } from '@inertiajs/vue3'
 import debounce from 'lodash/debounce'
 
 export function useDebounceSearch(route, initialFilters = {}) {
     const filters = ref({ ...initialFilters })
     
     const debouncedSearch = debounce((newFilters) => {
-        Inertia.get(route, newFilters, { 
+        router.get(route, newFilters, { 
             preserveState: true, 
             replace: true 
         })

@@ -6,7 +6,7 @@ import InputError from "@/Components/InputError.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
 import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const props = defineProps({

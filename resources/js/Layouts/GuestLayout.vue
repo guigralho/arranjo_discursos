@@ -1,6 +1,6 @@
 <script setup>
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import { Link } from "@inertiajs/inertia-vue3";
             <Link href="/">
                 <!--                <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />-->
                 <h1 class="text-3xl font-bold text-gray-400">
-                    {{ $inertia.page.props.app.name }}
+                    {{ $page.props.app.name }}
                 </h1>
             </Link>
         </div>

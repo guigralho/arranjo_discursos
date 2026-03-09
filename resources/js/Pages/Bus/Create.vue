@@ -1,6 +1,6 @@
 <script setup>
 import Form from "./Partials/Form.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 
 defineProps({
     show: {

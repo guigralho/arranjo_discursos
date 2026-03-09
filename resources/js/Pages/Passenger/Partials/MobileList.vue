@@ -4,7 +4,7 @@ import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import { ref, watch } from "vue";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/vue3";
 import DeleteModal from "@/Components/DeleteModal.vue";
 
 const emit = defineEmits(["toggleOrder"]);
@@ -21,7 +21,7 @@ let showModal = ref(false);
 let selectedItem = ref({});
 
 watch([dir, field], ([valueOrderDir, valueOrderField]) => {
-    Inertia.get(
+    router.get(
         "/speeches",
         {
             orderDir: valueOrderDir,

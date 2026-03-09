@@ -4,7 +4,7 @@ import Breadcrumb from "@/Components/Breadcrumb.vue";
 import SuccessAlert from "@/Components/SuccessAlert.vue";
 import GlobalLoading from "@/Components/GlobalLoading.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 </script>
 
 <template>

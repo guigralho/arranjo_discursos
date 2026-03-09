@@ -1,5 +1,5 @@
 <script setup>
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import { ref } from "vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -37,7 +37,7 @@ const pagar =
     (parseInt(props.totais.friday) +
         parseInt(props.totais.saturday) +
         parseInt(props.totais.sunday)) *
-    usePage().props.value.valor_onibus;
+    usePage().props.valor_onibus;
 
 
 const toggleOrder = (field) => {

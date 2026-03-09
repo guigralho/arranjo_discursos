@@ -49,22 +49,22 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Inertia } from '@inertiajs/inertia'
+import { router } from '@inertiajs/vue3'
 
 const isNavigating = ref(false)
 
 onMounted(() => {
-    Inertia.on('start', () => {
+    router.on('start', () => {
         isNavigating.value = true
     })
     
-    Inertia.on('finish', () => {
+    router.on('finish', () => {
         setTimeout(() => {
             isNavigating.value = false
         }, 100) // Small delay to avoid flash
     })
     
-    Inertia.on('error', () => {
+    router.on('error', () => {
         isNavigating.value = false
     })
 })

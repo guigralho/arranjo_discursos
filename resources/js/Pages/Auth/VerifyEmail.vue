@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     status: String,

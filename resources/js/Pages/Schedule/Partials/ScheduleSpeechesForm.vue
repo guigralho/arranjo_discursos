@@ -6,7 +6,7 @@ import SelectInput from "@/Components/SelectInput.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import Datepicker from "flowbite-datepicker/Datepicker";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 import { onMounted, onUpdated } from "vue";
 import debounce from "lodash/debounce";
 import axios from "axios";

@@ -2,7 +2,7 @@
 import Modal from "./Modal.vue";
 import LoadingButton from "./LoadingButton.vue";
 import PrimaryButton from "./Buttons/PrimaryButton.vue";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/vue3";
 import { useLoading } from "@/composables/useLoading";
 
 const props = defineProps({
@@ -31,7 +31,7 @@ const { isLoadingKey, withLoading } = useLoading();
 const deleteRow = async () => {
     await withLoading(async () => {
         return new Promise((resolve, reject) => {
-            Inertia.delete(props.deleteUrl, {
+            router.delete(props.deleteUrl, {
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,

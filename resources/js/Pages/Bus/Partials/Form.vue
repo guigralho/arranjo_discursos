@@ -135,7 +135,7 @@ function priceFormat(price) {
                                     (form.friday +
                                         form.saturday +
                                         form.sunday) *
-                                    $inertia.page.props.valor_onibus
+                                    $page.props.valor_onibus
                                 ).toLocaleString("pt-BR", {
                                     style: "currency",
                                     currency: "BRL",
@@ -156,7 +156,7 @@ function priceFormat(price) {
                                     (form.friday +
                                         form.saturday +
                                         form.sunday) *
-                                        $inertia.page.props.valor_onibus
+                                        $page.props.valor_onibus
                                 ).toLocaleString("pt-BR", {
                                     style: "currency",
                                     currency: "BRL",

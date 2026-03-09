@@ -1,6 +1,6 @@
 <script setup>
 import Form from "./Partials/Form.vue";
-import { Head, useForm } from "@inertiajs/inertia-vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const props = defineProps({
