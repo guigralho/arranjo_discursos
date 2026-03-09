@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run')->weeklyOn(1, '01:00');
     }
 
+
     /**
      * Register the commands for the application.
      *
