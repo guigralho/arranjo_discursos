@@ -49,7 +49,7 @@ const toggleOrder = (field) => {
 
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div
-            class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
+            class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
         >
             <div
                 class="flex flex-col gap-4 md:w-full md:flex-row md:items-center"
@@ -58,7 +58,7 @@ const toggleOrder = (field) => {
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
-                        class="dark:bg-gray-800 dark:text-gray-200"
+                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
                         name="search"
                         placeholder="Buscar"
                         type="text"
@@ -68,22 +68,18 @@ const toggleOrder = (field) => {
                     <label class="flex items-center">
                         <Checkbox
                             v-model:checked="filters.hasSpeakers"
-                            class="h-5 w-5"
+                            class="h-4 w-4"
                         />
-                        <span
-                            class="ml-2 text-lg text-gray-600 dark:text-gray-400"
-                        >
+                        <span class="ml-2 text-gray-600 dark:text-gray-400">
                             Já preparado?
                         </span>
                     </label>
                     <label class="flex items-center">
                         <Checkbox
                             v-model:checked="filters.moreThan2Years"
-                            class="h-5 w-5"
+                            class="h-4 w-4"
                         />
-                        <span
-                            class="ml-2 text-lg text-gray-600 dark:text-gray-400"
-                        >
+                        <span class="ml-2 text-gray-600 dark:text-gray-400">
                             Pode ser feito?
                         </span>
                     </label>

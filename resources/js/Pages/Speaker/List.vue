@@ -48,14 +48,14 @@ const toggleOrder = (field) => {
 
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div
-            class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
+            class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
         >
             <div class="flex flex-col gap-4 md:w-full md:flex-row">
                 <div class="relative">
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
-                        class="dark:bg-gray-800 dark:text-gray-200"
+                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
                         name="search"
                         placeholder="Buscar"
                         type="text"

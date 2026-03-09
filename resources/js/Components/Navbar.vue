@@ -1,95 +1,83 @@
 <template>
-    <Disclosure v-slot="{ open }" as="nav" class="bg-gray-800">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div class="relative flex h-16 items-center justify-between">
-                <div
-                    class="absolute inset-y-0 left-0 flex items-center sm:hidden"
+    <Disclosure
+        v-slot="{ open, close }"
+        as="header"
+        class="sticky top-0 z-50 bg-white/80 backdrop-blur-md dark:bg-gray-800"
+    >
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-12 items-center justify-between gap-8">
+                <!-- Logo -->
+                <Link
+                    :href="route('dashboard')"
+                    class="flex flex-shrink-0 items-center gap-2"
                 >
-                    <!-- Mobile menu button-->
-                    <DisclosureButton
-                        class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    <BookOpenIcon
+                        class="h-5 w-5 text-gray-800 dark:text-white"
+                    />
+                    <span
+                        class="text-sm font-semibold text-gray-900 dark:text-white"
                     >
-                        <span class="sr-only">Open main menu</span>
-                        <Bars3Icon
-                            v-if="!open"
-                            aria-hidden="true"
-                            class="block h-6 w-6"
-                        />
-                        <XMarkIcon
-                            v-else
-                            aria-hidden="true"
-                            class="block h-6 w-6"
-                        />
-                    </DisclosureButton>
-                </div>
-                <div
-                    class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
-                >
-                    <div class="flex flex-shrink-0 items-center">
-                        <h1 class="text-xl font-bold text-gray-400">
-                            {{ $page.props.app.name }}
-                        </h1>
-                    </div>
-                    <div class="hidden sm:ml-6 sm:block">
-                        <div class="flex space-x-4">
-                            <div v-for="item in navigation" :key="item.name">
-                                <Link
-                                    v-if="
-                                        (item.name === 'Ônibus' &&
-                                            $page.props.auth.user.id ===
-                                                1) ||
-                                        item.name !== 'Ônibus'
-                                    "
-                                    :aria-current="
-                                        item.current ? 'page' : undefined
-                                    "
-                                    :class="[
-                                        item.current
-                                            ? 'bg-gray-900 text-white'
-                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                        'rounded-md px-3 py-2 text-sm font-medium',
-                                    ]"
-                                    :href="item.href"
-                                    >{{ item.name }}
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
-                >
+                        {{ $page.props.app.name }}
+                    </span>
+                </Link>
+
+                <!-- Desktop nav -->
+                <nav class="hidden flex-1 items-center gap-1 sm:flex">
+                    <template v-for="item in navigation" :key="item.name">
+                        <Link
+                            v-if="item.visible"
+                            :aria-current="item.current ? 'page' : undefined"
+                            :class="[
+                                item.current
+                                    ? 'text-gray-900 dark:text-white'
+                                    : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white',
+                                'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors duration-150',
+                            ]"
+                            :href="item.href"
+                        >
+                            <component
+                                :is="item.icon"
+                                :class="[
+                                    item.current ? 'opacity-100' : 'opacity-50',
+                                    'h-3.5 w-3.5',
+                                ]"
+                            />
+                            {{ item.name }}
+                        </Link>
+                    </template>
+                </nav>
+
+                <!-- Right side -->
+                <div class="flex items-center gap-1">
+                    <!-- Dark mode toggle -->
                     <button
-                        class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        class="rounded-full p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                         type="button"
                         @click="toggleDark()"
                     >
-                        <span class="sr-only">Dark mode</span>
-                        <MoonIcon
-                            v-if="!isDark"
-                            aria-hidden="true"
-                            class="h-6 w-6"
-                        />
-                        <SunIcon
-                            v-if="isDark"
-                            aria-hidden="true"
-                            class="h-6 w-6"
-                        />
+                        <span class="sr-only">Alternar tema</span>
+                        <MoonIcon v-if="!isDark" class="h-4 w-4" />
+                        <SunIcon v-else class="h-4 w-4" />
                     </button>
 
-                    <!-- Profile dropdown -->
-                    <Menu as="div" class="relative ml-3">
-                        <div>
-                            <MenuButton
-                                class="flex rounded-full bg-gray-800 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    <!-- User dropdown -->
+                    <Menu as="div" class="relative">
+                        <MenuButton
+                            class="flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-sm text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                        >
+                            <div
+                                class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-700 dark:bg-gray-700 dark:text-gray-200"
                             >
-                                <span class="sr-only">Open user menu</span>
-                                <UserCircleIcon
-                                    aria-hidden="true"
-                                    class="h-6 w-6"
-                                />
-                            </MenuButton>
-                        </div>
+                                {{ userInitials }}
+                            </div>
+                            <span class="hidden text-xs font-medium sm:block">
+                                {{ $page.props.auth.user.name.split(" ")[0] }}
+                            </span>
+                            <ChevronDownIcon
+                                class="hidden h-3 w-3 opacity-50 sm:block"
+                            />
+                        </MenuButton>
+
                         <transition
                             enter-active-class="transition ease-out duration-100"
                             enter-from-class="transform opacity-0 scale-95"
@@ -99,123 +87,190 @@
                             leave-to-class="transform opacity-0 scale-95"
                         >
                             <MenuItems
-                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right overflow-hidden rounded-2xl bg-white shadow-xl shadow-gray-200/60 ring-1 ring-black/[0.05] focus:outline-none dark:bg-gray-800 dark:shadow-none dark:ring-gray-700"
                             >
-                                <p
-                                    class="block px-4 py-2 text-sm text-gray-700"
-                                >
-                                    Olá,
-                                    {{ $page.props.auth.user.name }}
-                                </p>
-                                <MenuItem v-slot="{ active }">
-                                    <Link
-                                        :class="[
-                                            active ? 'bg-gray-100' : '',
-                                            'block px-4 py-2 text-sm text-gray-700',
-                                        ]"
-                                        :href="route('profile.edit')"
+                                <!-- User info -->
+                                <div class="px-4 py-3">
+                                    <p
+                                        class="text-xs text-gray-400 dark:text-gray-500"
                                     >
-                                        Seu perfil
-                                    </Link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                    <Link
-                                        :class="[
-                                            active ? 'bg-gray-100' : '',
-                                            'block px-4 py-2 text-sm text-gray-700',
-                                        ]"
-                                        :href="route('logout')"
-                                        method="post"
-                                        type="button"
-                                        >Sair
-                                    </Link>
-                                </MenuItem>
+                                        Conectado como
+                                    </p>
+                                    <p
+                                        class="mt-0.5 truncate text-sm font-medium text-gray-800 dark:text-gray-100"
+                                    >
+                                        {{ $page.props.auth.user.name }}
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border-t border-gray-100 py-1 dark:border-gray-700"
+                                >
+                                    <MenuItem v-slot="{ active }">
+                                        <Link
+                                            :class="[
+                                                active
+                                                    ? 'bg-gray-50 dark:bg-white/5'
+                                                    : '',
+                                                'flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 dark:text-gray-300',
+                                            ]"
+                                            :href="route('profile.edit')"
+                                        >
+                                            <UserIcon
+                                                class="h-4 w-4 opacity-50"
+                                            />
+                                            Seu perfil
+                                        </Link>
+                                    </MenuItem>
+                                </div>
+
+                                <div
+                                    class="border-t border-gray-100 py-1 dark:border-gray-700"
+                                >
+                                    <MenuItem v-slot="{ active }">
+                                        <Link
+                                            :class="[
+                                                active
+                                                    ? 'bg-gray-50 dark:bg-white/5'
+                                                    : '',
+                                                'flex items-center gap-2.5 px-4 py-2 text-sm text-red-500',
+                                            ]"
+                                            :href="route('logout')"
+                                            method="post"
+                                            type="button"
+                                        >
+                                            <ArrowRightOnRectangleIcon
+                                                class="h-4 w-4"
+                                            />
+                                            Sair
+                                        </Link>
+                                    </MenuItem>
+                                </div>
                             </MenuItems>
                         </transition>
                     </Menu>
+
+                    <!-- Mobile hamburger -->
+                    <DisclosureButton
+                        class="ml-1 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-700 sm:hidden"
+                    >
+                        <Bars3Icon v-if="!open" class="h-5 w-5" />
+                        <XMarkIcon v-else class="h-5 w-5" />
+                    </DisclosureButton>
                 </div>
             </div>
         </div>
 
-        <DisclosurePanel class="sm:hidden">
-            <div class="space-y-1 px-2 pt-2 pb-3">
-                <DisclosureButton
-                    v-for="item in navigation"
-                    :key="item.name"
-                    :aria-current="item.current ? 'page' : undefined"
-                    :class="[
-                        item.current
-                            ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block rounded-md px-3 py-2 text-base font-medium',
-                    ]"
-                    :href="item.href"
-                    as="a"
-                    >{{ item.name }}
-                </DisclosureButton>
+        <!-- Mobile menu -->
+        <DisclosurePanel
+            class="border-t border-gray-100 dark:border-gray-700 sm:hidden"
+        >
+            <div class="space-y-0.5 px-3 py-2">
+                <template v-for="item in navigation" :key="item.name">
+                    <DisclosureButton
+                        v-if="item.visible"
+                        :aria-current="item.current ? 'page' : undefined"
+                        :class="[
+                            item.current
+                                ? 'bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white'
+                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white',
+                            'flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium',
+                        ]"
+                        :href="item.href"
+                        as="a"
+                    >
+                        <component :is="item.icon" class="h-4 w-4 opacity-60" />
+                        {{ item.name }}
+                    </DisclosureButton>
+                </template>
             </div>
         </DisclosurePanel>
     </Disclosure>
 </template>
 
 <script setup>
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-} from "@headlessui/vue";
-import {
+    ArrowRightOnRectangleIcon,
     Bars3Icon,
+    BookOpenIcon,
+    CalendarDaysIcon,
+    ChevronDownIcon,
+    MicrophoneIcon,
     MoonIcon,
+    Squares2X2Icon,
     SunIcon,
-    UserCircleIcon,
-    XMarkIcon,
+    TruckIcon,
+    UserIcon,
+    XMarkIcon
 } from "@heroicons/vue/24/outline";
 import { useDark, useToggle } from "@vueuse/core";
-import { Link } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { Link, router, usePage } from "@inertiajs/vue3";
+import { computed, onMounted, ref } from "vue";
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
+const page = usePage();
 
-let navigation = ref([]);
+const userInitials = computed(() => {
+    const name = page.props.auth.user.name ?? "";
+    return name
+        .split(" ")
+        .slice(0, 2)
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase();
+});
+
+const navigation = ref([]);
 
 const setNavigation = () => {
+    const isAdmin = page.props.auth.user.id === 1;
+
     navigation.value = [
         {
             name: "Dashboard",
             href: route("dashboard"),
             current: route().current("dashboard*"),
+            icon: Squares2X2Icon,
+            visible: true,
         },
         {
             name: "Arranjos",
             href: route("schedules.index"),
             current: route().current("schedules*"),
+            icon: CalendarDaysIcon,
+            visible: true,
         },
         {
             name: "Discursos",
             href: route("speeches.index"),
             current: route().current("speeches*"),
+            icon: BookOpenIcon,
+            visible: true,
         },
         {
             name: "Oradores",
             href: route("speakers.index"),
             current: route().current("speakers*"),
+            icon: MicrophoneIcon,
+            visible: true,
         },
         {
             name: "Ônibus",
             href: route("bus.index"),
             current: route().current("bus*"),
+            icon: TruckIcon,
+            visible: isAdmin,
         },
     ];
 };
 
-router.on("navigate", (event) => {
+onMounted(() => {
+    setNavigation();
+});
+
+router.on("navigate", () => {
     setNavigation();
 });
 </script>

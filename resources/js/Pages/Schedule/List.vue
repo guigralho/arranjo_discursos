@@ -17,7 +17,7 @@ const props = defineProps({
     filters: Object,
 });
 
-const { filters, updateFilter } = useDebounceSearch('/schedules', {
+const { filters, updateFilter } = useDebounceSearch("/schedules", {
     page: props.filters.page,
     search: props.filters.search,
     searchDate: props.filters.searchDate,
@@ -56,38 +56,37 @@ onMounted(() => {
     });
 });
 
-
 const toggleOrder = (field) => {
-    updateFilter('orderField', field);
+    updateFilter("orderField", field);
 
     if (filters.value.orderDir === undefined) {
-        updateFilter('orderDir', "asc");
+        updateFilter("orderDir", "asc");
     } else if (filters.value.orderDir === "asc") {
-        updateFilter('orderDir', "desc");
+        updateFilter("orderDir", "desc");
     } else if (filters.value.orderDir === "desc") {
-        updateFilter('orderDir', undefined);
-        updateFilter('orderField', "");
+        updateFilter("orderDir", undefined);
+        updateFilter("orderField", "");
     }
 };
 
 const changeVal = (val) => {
-    updateFilter('searchDate', val);
+    updateFilter("searchDate", val);
 };
 </script>
 
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div
-            class="mb-1 flex w-full flex-col justify-between gap-4 sm:mb-0 md:flex-row"
+            class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
         >
             <div class="flex flex-col gap-4 md:w-full md:flex-row">
                 <div class="relative">
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
-                        class="dark:bg-gray-800 dark:text-gray-200"
+                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
                         name="search"
                         placeholder="Buscar"
                         type="text"
@@ -98,7 +97,7 @@ const changeVal = (val) => {
                         id="datepickerId"
                         v-model="filters.searchDate"
                         autocomplete="off"
-                        class="dark:bg-gray-800 dark:text-gray-200"
+                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
                         name="searchDate"
                         placeholder="Data"
                         type="text"
@@ -126,7 +125,9 @@ const changeVal = (val) => {
                                     Data
                                     <SortIcons
                                         :order-dir="filters.orderDir"
-                                        :update-icon="filters.orderField === 'month'"
+                                        :update-icon="
+                                            filters.orderField === 'month'
+                                        "
                                     />
                                 </p>
                             </th>
@@ -138,7 +139,9 @@ const changeVal = (val) => {
                                 Congregação
                                 <SortIcons
                                     :order-dir="filters.orderDir"
-                                    :update-icon="filters.orderField === 'congregation'"
+                                    :update-icon="
+                                        filters.orderField === 'congregation'
+                                    "
                                 />
                             </th>
                             <th
