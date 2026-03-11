@@ -51,9 +51,7 @@ const toggleOrder = (field) => {
         <div
             class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
         >
-            <div
-                class="flex flex-col gap-4 md:w-full md:flex-row md:items-center"
-            >
+            <div class="flex w-full flex-col gap-4 md:flex-row md:items-center">
                 <div class="relative">
                     <TextInput
                         v-model="filters.search"
