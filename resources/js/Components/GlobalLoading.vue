@@ -1,6 +1,6 @@
 <template>
     <Transition
-        enter-active-class="transition-opacity duration-300"
+        enter-active-class="transition-opacity duration-200"
         enter-from-class="opacity-0"
         enter-to-class="opacity-100"
         leave-active-class="transition-opacity duration-300"
@@ -9,40 +9,10 @@
     >
         <div
             v-if="isNavigating"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-25 backdrop-blur-sm"
+            class="fixed inset-x-0 top-0 z-[60] h-0.5"
         >
-            <div class="rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800">
-                <div class="flex items-center space-x-4">
-                    <svg
-                        class="h-8 w-8 animate-spin text-blue-600"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            class="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            stroke-width="4"
-                        ></circle>
-                        <path
-                            class="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                    </svg>
-                    <div>
-                        <p class="font-medium text-gray-900 dark:text-gray-100">
-                            Carregando...
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Por favor, aguarde
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <div class="h-full w-full animate-pulse bg-teal-500" />
+            <div class="loading-bar h-full bg-teal-500" />
         </div>
     </Transition>
 </template>
@@ -57,15 +27,39 @@ onMounted(() => {
     router.on('start', () => {
         isNavigating.value = true
     })
-    
+
     router.on('finish', () => {
         setTimeout(() => {
             isNavigating.value = false
-        }, 100) // Small delay to avoid flash
+        }, 100)
     })
-    
+
     router.on('error', () => {
         isNavigating.value = false
     })
 })
 </script>
+
+<style scoped>
+.loading-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% {
+        width: 0%;
+        left: 0%;
+    }
+    50% {
+        width: 60%;
+        left: 20%;
+    }
+    100% {
+        width: 0%;
+        left: 100%;
+    }
+}
+</style>

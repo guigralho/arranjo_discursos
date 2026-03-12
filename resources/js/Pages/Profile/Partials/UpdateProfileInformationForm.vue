@@ -23,77 +23,69 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <h2 class="text-base font-semibold text-stone-900 dark:text-white">
                 Informação do Perfil
             </h2>
-
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Atualize as informações de perfil e endereço de e-mail da sua
-                conta.
+            <p class="mt-1 text-sm text-stone-500 dark:text-slate-400">
+                Atualize as informações de perfil e endereço de e-mail da sua conta.
             </p>
         </header>
 
         <form
-            class="mt-6 space-y-6"
+            class="mt-6 space-y-5"
             @submit.prevent="form.patch(route('profile.update'))"
         >
             <div>
                 <InputLabel for="name" value="Nome" />
-
                 <TextInput
                     id="name"
                     v-model="form.name"
                     autocomplete="name"
                     autofocus
-                    class="mt-1 block w-full"
+                    class="mt-1.5 block w-full"
                     required
                     type="text"
                 />
-
-                <InputError :message="form.errors.name" class="mt-2" />
+                <InputError :message="form.errors.name" class="mt-1.5" />
             </div>
 
             <div>
                 <InputLabel for="email" value="Email" />
-
                 <TextInput
                     id="email"
                     v-model="form.email"
                     autocomplete="email"
-                    class="mt-1 block w-full"
+                    class="mt-1.5 block w-full"
                     required
                     type="email"
                 />
-
-                <InputError :message="form.errors.email" class="mt-2" />
+                <InputError :message="form.errors.email" class="mt-1.5" />
             </div>
 
             <div>
-                <InputLabel for="email" value="Dia de reunião" />
-
+                <InputLabel for="day" value="Dia de reunião" />
                 <SelectInput
                     id="day"
                     ref="dayInput"
                     v-model="form.meeting_day"
-                    class="mt-1 block w-full"
+                    class="mt-1.5 block w-full"
                 >
                     <option value="">Selecione...</option>
                     <option value="6">Sábado</option>
                     <option value="0">Domingo</option>
                 </SelectInput>
-
-                <InputError :message="form.errors.meeting_day" class="mt-2" />
+                <InputError :message="form.errors.meeting_day" class="mt-1.5" />
             </div>
 
             <div
                 v-if="props.mustVerifyEmail && user.email_verified_at === null"
             >
-                <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
+                <p class="mt-2 text-sm text-stone-700 dark:text-slate-300">
                     Seu endereço de e-mail não foi verificado.
                     <Link
                         :href="route('verification.send')"
                         as="button"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                        class="text-sm font-medium text-teal-600 underline hover:text-teal-700 dark:text-teal-400"
                         method="post"
                     >
                         Clique aqui para reenviar o e-mail de verificação.
@@ -102,14 +94,13 @@ const form = useForm({
 
                 <div
                     v-show="props.status === 'verification-link-sent'"
-                    class="mt-2 text-sm font-medium text-green-600 dark:text-green-400"
+                    class="mt-2 text-sm font-medium text-emerald-600 dark:text-emerald-400"
                 >
-                    Um novo link de verificação foi enviado para seu endereço de
-                    e-mail.
+                    Um novo link de verificação foi enviado para seu endereço de e-mail.
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
                 <SaveButton :disabled="form.processing">Salvar</SaveButton>
 
                 <Transition
@@ -119,7 +110,7 @@ const form = useForm({
                 >
                     <p
                         v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600 dark:text-gray-400"
+                        class="text-sm text-emerald-600 dark:text-emerald-400"
                     >
                         Salvo.
                     </p>

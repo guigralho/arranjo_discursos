@@ -34,11 +34,11 @@ const changeVal = (val) => {
 
 <template>
     <form class="space-y-6" @submit.prevent="submit">
-        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
+        <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800 sm:p-6">
             <!-- Informações Básicas -->
             <div class="mb-6">
                 <h3
-                    class="mb-4 text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-4 text-sm font-medium text-stone-900 dark:text-white"
                 >
                     Informações Básicas
                 </h3>
@@ -79,12 +79,12 @@ const changeVal = (val) => {
             </div>
 
             <!-- Detalhes da Reunião -->
-            <div class="mb-6 border-t pt-6 dark:border-gray-700">
+            <div class="mb-6 border-t pt-6 dark:border-slate-800">
                 <h3
-                    class="mb-4 text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-4 text-sm font-medium text-stone-900 dark:text-white"
                 >
                     Detalhes da Reunião
-                    <span class="text-xs text-gray-500">(opcional)</span>
+                    <span class="text-xs text-stone-500">(opcional)</span>
                 </h3>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div>
@@ -134,12 +134,12 @@ const changeVal = (val) => {
             </div>
 
             <!-- Informações de Contato -->
-            <div class="border-t pt-6 dark:border-gray-700">
+            <div class="border-t pt-6 dark:border-slate-800">
                 <h3
-                    class="mb-4 text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-4 text-sm font-medium text-stone-900 dark:text-white"
                 >
                     Informações de Contato
-                    <span class="text-xs text-gray-500">(opcional)</span>
+                    <span class="text-xs text-stone-500">(opcional)</span>
                 </h3>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
@@ -177,7 +177,7 @@ const changeVal = (val) => {
 
         <!-- Ações do Formulário -->
         <div
-            class="space-y-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50 sm:space-y-0 md:flex md:items-center md:justify-between"
+            class="space-y-3 rounded-2xl bg-stone-50 px-4 py-3 dark:bg-slate-900/50 sm:space-y-0 md:flex md:items-center md:justify-between"
         >
             <div class="grid items-center gap-3 sm:flex sm:flex-wrap">
                 <PrimaryButton
@@ -200,7 +200,7 @@ const changeVal = (val) => {
                 <a
                     v-if="data?.id"
                     :href="route('download-pdf', data?.id)"
-                    class="items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
+                    class="items-center gap-1 rounded-md bg-teal-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 sm:inline-flex"
                     type="button"
                 >
                     <font-awesome-icon
@@ -213,7 +213,7 @@ const changeVal = (val) => {
                 <a
                     v-if="data?.id"
                     :href="route('download-csv', data?.id)"
-                    class="items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex"
+                    class="items-center gap-1 rounded-md bg-teal-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 sm:inline-flex"
                     type="button"
                 >
                     <font-awesome-icon
@@ -225,13 +225,13 @@ const changeVal = (val) => {
             </div>
 
             <div>
-                <p class="text-sm dark:text-gray-400">
+                <p class="text-sm dark:text-slate-400">
                     <i>{{
                         data &&
                         `Criado em: ${data.created_at} por ${data.user_created?.name}`
                     }}</i>
                 </p>
-                <p class="text-sm dark:text-gray-400">
+                <p class="text-sm dark:text-slate-400">
                     <i>{{
                         data &&
                         data.user_updated &&

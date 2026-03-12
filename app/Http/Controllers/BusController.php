@@ -17,9 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class BusController extends Controller
 {
-    public function __construct(public BusService $busService, public Request $request)
-    {
-    }
+    public function __construct(public BusService $busService, public Request $request) {}
 
     public function index()
     {
@@ -65,7 +63,7 @@ class BusController extends Controller
         $totais->amount = (float) $totais->amount ?? 0;
 
         return Inertia::render('Bus/List', [
-            'name' => 'Oradores',
+            'name' => 'Ônibus',
             'list' => BusResource::collection($list),
             'totais' => $totais,
             'filters' => $this->request->only([
@@ -76,7 +74,7 @@ class BusController extends Controller
 
     public function store(BusRequest $busRequest)
     {
-        $bus = new Bus();
+        $bus = new Bus;
         $bus->passenger_id = $busRequest->passenger_id;
         $bus->friday = $busRequest->friday;
         $bus->saturday = $busRequest->saturday;
@@ -150,7 +148,7 @@ class BusController extends Controller
 
     public function downloadList()
     {
-        $export = new BusListExport();
+        $export = new BusListExport;
 
         return Excel::download($export, 'arranjo_onibus.xlsx');
     }

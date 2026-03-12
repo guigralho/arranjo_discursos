@@ -13,7 +13,7 @@ defineProps({
     <Component
         :is="href ? Link : 'button'"
         :href="href"
-        class="flex-shrink-0 rounded-md bg-sky-800 px-3 py-1.5 text-center text-xs font-semibold tracking-widest text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-sky-200"
+        class="inline-flex items-center justify-center rounded-lg bg-teal-50 p-2 text-teal-600 transition-colors hover:bg-teal-100 dark:bg-teal-500/10 dark:text-teal-400 dark:hover:bg-teal-500/20"
     >
         <slot />
     </Component>

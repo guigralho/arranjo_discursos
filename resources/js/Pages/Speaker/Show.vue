@@ -39,7 +39,7 @@ const submit = () => {
     <Head :title="name" />
 
     <div
-        class="mx-auto grid max-w-7xl grid-cols-none gap-6 py-6 px-4 sm:grid-cols-2 sm:px-6 lg:px-8"
+        class="mx-auto grid max-w-6xl grid-cols-none gap-6 py-6 px-4 sm:grid-cols-2 sm:px-6 lg:px-8"
     >
         <Form :data="speaker" :form="form" :submit="submit" />
         <SpeechsList

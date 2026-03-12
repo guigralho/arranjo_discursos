@@ -62,14 +62,14 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
                 </PrimaryButton>
             </div>
         </div>
-        <div class="mb-4 min-w-full rounded-lg shadow dark:bg-gray-800">
+        <div class="mb-4 min-w-full rounded-2xl shadow-sm dark:bg-slate-900">
             <div
-                class="w-full rounded-lg bg-white dark:border-gray-700 dark:bg-gray-800"
+                class="w-full rounded-2xl bg-white dark:border-slate-800 dark:bg-slate-900"
             >
                 <div class="flow-root">
                     <ul
                         v-if="list.total"
-                        class="divide-y divide-gray-200 dark:divide-gray-700"
+                        class="divide-y divide-stone-200 dark:divide-slate-800"
                         role="list"
                     >
                         <li
@@ -79,22 +79,22 @@ watch([dir, field], ([valueOrderDir, valueOrderField]) => {
                         >
                             <div class="flex flex-col">
                                 <p
-                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                 >
                                     {{ item.name }}
                                 </p>
                                 <p
-                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                 >
                                     {{ item.doc }}
                                 </p>
                                 <p
-                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                 >
                                     {{ item.phone }}
                                 </p>
                                 <p
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-stone-500 dark:text-slate-400"
                                 >
                                     Atualizado em
                                     {{ item.updated_at }}

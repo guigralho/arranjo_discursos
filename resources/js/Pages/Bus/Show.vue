@@ -34,7 +34,7 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="mx-auto grid max-w-7xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto grid max-w-6xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
         <Form :form="form" :passengers="passengers" :submit="submit" />
     </div>
 </template>

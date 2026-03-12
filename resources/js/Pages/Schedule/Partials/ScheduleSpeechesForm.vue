@@ -116,11 +116,11 @@ const changeVal = (val, item) => {
     <div class="mt-4 space-y-4">
         <!-- Cabeçalho -->
         <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 class="text-lg font-semibold text-stone-900 dark:text-white">
                 {{ title }}
             </h2>
             <span
-                class="rounded-full bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                class="rounded-full bg-stone-50 px-3 py-1 text-xs font-medium text-stone-600 dark:bg-slate-800 dark:text-slate-300"
             >
                 {{ form.weeks.length }}
                 {{ form.weeks.length === 1 ? "semana" : "semanas" }}
@@ -144,14 +144,14 @@ const changeVal = (val, item) => {
                 <div
                     v-for="(item, key) in form.weeks"
                     :key="key"
-                    class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                    class="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
                     <!-- Header do card com número da semana -->
                     <div
-                        class="mb-3 flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-700"
+                        class="mb-3 flex items-center justify-between border-b border-stone-100 pb-2 dark:border-slate-800"
                     >
                         <span
-                            class="text-xs font-medium text-gray-500 dark:text-gray-400"
+                            class="text-xs font-medium text-stone-500 dark:text-slate-400"
                         >
                             Semana {{ key + 1 }}
                         </span>
@@ -270,11 +270,11 @@ const changeVal = (val, item) => {
                             <Checkbox
                                 :id="`guest${key + title}`"
                                 v-model:checked="item.is_guest"
-                                class="rounded text-blue-600"
+                                class="rounded text-teal-600"
                             />
                             <InputLabel
                                 :for="`guest${key + title}`"
-                                class="text-xs text-gray-600 dark:text-gray-400"
+                                class="text-xs text-stone-600 dark:text-slate-400"
                                 value="É um convite?"
                             />
                         </div>
@@ -285,10 +285,10 @@ const changeVal = (val, item) => {
             <!-- Botões de ação -->
             <div
                 v-if="form.weeks.length > 0"
-                class="grid grid-cols-1 gap-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800/50 sm:grid-cols-2"
+                class="grid grid-cols-1 gap-3 rounded-2xl bg-stone-50 px-4 py-3 dark:bg-slate-900/50 sm:grid-cols-2"
             >
                 <div class="flex items-center gap-2">
-                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                    <span class="text-xs text-stone-500 dark:text-slate-400">
                         {{
                             form.weeks.filter((w) => w.date && w.speaker).length
                         }}
@@ -324,7 +324,7 @@ const changeVal = (val, item) => {
                         :href="
                             route('download-receive-speakers-csv', scheduleId)
                         "
-                        class="w-full items-center gap-1 rounded-md bg-sky-800 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 sm:inline-flex sm:w-fit"
+                        class="w-full items-center gap-1 rounded-md bg-teal-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 sm:inline-flex sm:w-fit"
                         type="button"
                     >
                         <font-awesome-icon

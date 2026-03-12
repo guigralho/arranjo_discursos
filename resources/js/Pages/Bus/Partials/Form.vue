@@ -30,7 +30,7 @@ function priceFormat(price) {
 
 <template>
     <form class="space-y-6" @submit.prevent="submit">
-        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
+        <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800 sm:p-8">
             <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <fieldset>
                     <InputLabel for="passenger_id" value="Nome" />
@@ -65,7 +65,7 @@ function priceFormat(price) {
                             </div>
                             <div class="text-sm leading-6">
                                 <label
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="text-sm font-medium text-stone-700 dark:text-slate-300"
                                     for="friday"
                                 >
                                     Sexta
@@ -83,7 +83,7 @@ function priceFormat(price) {
                             </div>
                             <div class="text-sm leading-6">
                                 <label
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="text-sm font-medium text-stone-700 dark:text-slate-300"
                                     for="saturday"
                                 >
                                     Sábado
@@ -101,7 +101,7 @@ function priceFormat(price) {
                             </div>
                             <div class="text-sm leading-6">
                                 <label
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="text-sm font-medium text-stone-700 dark:text-slate-300"
                                     for="sunday"
                                 >
                                     Domingo
@@ -128,7 +128,7 @@ function priceFormat(price) {
                         <InputLabel for="amount" value="A Pagar" />
 
                         <p
-                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                            class="text-sm font-medium text-stone-700 dark:text-slate-300"
                         >
                             {{
                                 (
@@ -148,7 +148,7 @@ function priceFormat(price) {
                         <InputLabel for="amount" value="Saldo" />
 
                         <p
-                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                            class="text-sm font-medium text-stone-700 dark:text-slate-300"
                         >
                             {{
                                 (
@@ -172,7 +172,7 @@ function priceFormat(price) {
                     <textarea
                         id="obs"
                         v-model="form.obs"
-                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-gray-900 dark:text-gray-300 dark:ring-gray-700 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        class="block w-full rounded-md border-0 py-1.5 text-stone-900 shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 dark:bg-slate-950 dark:text-slate-300 dark:ring-slate-700 dark:focus:border-teal-600 dark:focus:ring-teal-600 sm:text-sm sm:leading-6"
                         name="about"
                         rows="3"
                     ></textarea>

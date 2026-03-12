@@ -21,7 +21,7 @@ const back = () => {
 
 <template>
     <form class="space-y-6" @submit.prevent="submit">
-        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
+        <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800 sm:p-8">
             <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div class="sm:col-span-2">
                     <InputLabel for="name" value="Nome" />
@@ -68,7 +68,7 @@ const back = () => {
                     <InputError :message="form.errors.phone" class="mt-2" />
                 </div>
 
-                <p class="dark:text-gray-400">
+                <p class="dark:text-slate-400">
                     <i>{{
                         passenger &&
                         `Atualizado em: ${passenger.updated_at} por ${passenger.user_updated?.name}`

@@ -10,10 +10,10 @@
         :type="type"
         @click="$emit('click', $event)"
     >
-        <div class="flex items-center">
+        <div class="flex items-center justify-center gap-2">
             <svg
                 v-if="loading"
-                class="-ml-1 mr-2 h-4 w-4 animate-spin text-white"
+                class="h-4 w-4 animate-spin"
                 fill="none"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -62,6 +62,7 @@ defineProps({
                 "indigo",
                 "purple",
                 "pink",
+                "teal",
             ].includes(value),
     },
     variant: {
@@ -88,16 +89,17 @@ defineProps({
 });
 
 const baseClasses =
-    "justify-items-center gap-1 rounded-md border border-transparent px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-fit ";
+    "rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-900 sm:w-fit ";
 
 const colorClasses = {
-    gray: "text-white bg-gray-600 hover:bg-gray-700 focus:bg-gray-600 active:bg-gray-700 focus:ring-gray-500",
-    green: "text-white bg-green-700 hover:bg-green-900 focus:bg-green-700 active:bg-green-900 focus:ring-green-500",
-    blue: "text-white bg-blue-600 hover:bg-blue-700 focus:bg-blue-600 active:bg-blue-700 focus:ring-blue-500",
-    red: "text-white bg-red-600 hover:bg-red-800 focus:bg-red-600 active:bg-red-700 focus:ring-red-500",
-    yellow: "text-gray-900 bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-500 active:bg-yellow-600 focus:ring-yellow-400",
-    indigo: "text-white bg-indigo-600 hover:bg-indigo-700 focus:bg-indigo-600 active:bg-indigo-700 focus:ring-indigo-500",
-    purple: "text-white bg-purple-600 hover:bg-purple-700 focus:bg-purple-600 active:bg-purple-700 focus:ring-purple-500",
-    pink: "text-white bg-pink-600 hover:bg-pink-700 focus:bg-pink-600 active:bg-pink-700 focus:ring-pink-500",
+    gray: "text-white bg-stone-600 hover:bg-stone-700 focus:ring-stone-500",
+    green: "text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500",
+    blue: "text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500",
+    red: "text-white bg-rose-600 hover:bg-rose-700 focus:ring-rose-500",
+    yellow: "text-stone-900 bg-amber-400 hover:bg-amber-500 focus:ring-amber-400",
+    indigo: "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500",
+    purple: "text-white bg-purple-600 hover:bg-purple-700 focus:ring-purple-500",
+    pink: "text-white bg-pink-600 hover:bg-pink-700 focus:ring-pink-500",
+    teal: "text-white bg-teal-600 hover:bg-teal-700 focus:ring-teal-500 dark:bg-teal-500 dark:hover:bg-teal-600",
 };
 </script>

@@ -1,5 +1,5 @@
 <script setup>
-import { Link, usePage } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import { ref } from "vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -10,6 +10,7 @@ import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import { useDebounceSearch } from "@/composables/useDebounceSearch";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
 
 const props = defineProps({
     name: String,
@@ -19,7 +20,7 @@ const props = defineProps({
     filters: Object,
 });
 
-const { filters, updateFilter } = useDebounceSearch('/bus', {
+const { filters, updateFilter } = useDebounceSearch("/bus", {
     page: props.filters.page,
     search: props.filters.search,
     friday: props.filters.friday,
@@ -39,23 +40,24 @@ const pagar =
         parseInt(props.totais.sunday)) *
     usePage().props.valor_onibus;
 
-
 const toggleOrder = (field) => {
-    updateFilter('orderField', field);
+    updateFilter("orderField", field);
 
     if (filters.value.orderDir === undefined) {
-        updateFilter('orderDir', "asc");
+        updateFilter("orderDir", "asc");
     } else if (filters.value.orderDir === "asc") {
-        updateFilter('orderDir', "desc");
+        updateFilter("orderDir", "desc");
     } else if (filters.value.orderDir === "desc") {
-        updateFilter('orderDir', undefined);
-        updateFilter('orderField', "");
+        updateFilter("orderDir", undefined);
+        updateFilter("orderField", "");
     }
 };
 </script>
 
 <template>
+    <Head :title="name" />
     <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        <Breadcrumb />
         <div
             class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
         >
@@ -64,7 +66,7 @@ const toggleOrder = (field) => {
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
-                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
+                        class="h-9 dark:bg-slate-900 dark:text-slate-200"
                         name="search"
                         placeholder="Buscar"
                         type="text"
@@ -81,7 +83,7 @@ const toggleOrder = (field) => {
                         </div>
                         <div class="text-sm leading-6">
                             <label
-                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="text-sm font-medium text-stone-700 dark:text-slate-300"
                                 for="sexta"
                             >
                                 Sexta
@@ -98,7 +100,7 @@ const toggleOrder = (field) => {
                         </div>
                         <div class="text-sm leading-6">
                             <label
-                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="text-sm font-medium text-stone-700 dark:text-slate-300"
                                 for="sabado"
                             >
                                 Sábado
@@ -115,7 +117,7 @@ const toggleOrder = (field) => {
                         </div>
                         <div class="text-sm leading-6">
                             <label
-                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="text-sm font-medium text-stone-700 dark:text-slate-300"
                                 for="domingo"
                             >
                                 Domingo
@@ -126,7 +128,7 @@ const toggleOrder = (field) => {
                 <div class="flex flex-wrap gap-3">
                     <a
                         :href="route('bus.download-list')"
-                        class="flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
+                        class="flex-shrink-0 rounded-2xl bg-teal-600 px-4 py-2 text-center text-base font-semibold text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 focus:ring-offset-teal-200 md:w-auto"
                         type="button"
                     >
                         Baixar excel
@@ -154,11 +156,9 @@ const toggleOrder = (field) => {
 
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div>
-            <p class="text-gray-800 dark:text-gray-100">
-                Chave pix: 11966615727
-            </p>
+            <p class="text-stone-800 dark:text-white">Chave pix: 11966615727</p>
         </div>
-        <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
+        <div class="py-4">
             <MobileList
                 :list="list"
                 :order-dir="filters.orderDir"
@@ -167,12 +167,12 @@ const toggleOrder = (field) => {
                 @toggle-order="toggleOrder"
             />
             <div
-                class="inline-block hidden min-w-full overflow-hidden rounded-lg shadow md:block"
+                class="hidden overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800 md:block"
             >
-                <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
+                <table class="min-w-full">
                     <thead>
                         <tr
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
+                            class="border-b text-stone-800 dark:border-slate-800 dark:text-white"
                         >
                             <th
                                 class="w-[10%] cursor-pointer px-5 py-5 text-left text-sm uppercase"
@@ -249,12 +249,14 @@ const toggleOrder = (field) => {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody
+                        class="divide-y divide-stone-100 dark:divide-slate-800"
+                    >
                         <tr
                             v-for="item in list.data"
                             v-if="list.meta.total"
                             :key="item.id"
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
+                            class="text-stone-800 hover:bg-stone-100 dark:text-white dark:hover:bg-slate-800"
                         >
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
                                 {{ item.passenger.name }}
@@ -398,10 +400,7 @@ const toggleOrder = (field) => {
                                 </DeleteButton>
                             </td>
                         </tr>
-                        <tr
-                            v-else
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
-                        >
+                        <tr v-else class="text-stone-800 dark:text-white">
                             <td class="px-5 py-3 text-sm" colspan="9">
                                 Nenhum registro encontrado!
                             </td>
@@ -409,7 +408,7 @@ const toggleOrder = (field) => {
                     </tbody>
                     <tfoot>
                         <tr
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+                            class="border-b text-stone-800 hover:bg-stone-100 dark:border-slate-800 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
                         >
                             <td
                                 class="whitespace-nowrap px-5 py-5 text-center text-sm"
@@ -447,13 +446,12 @@ const toggleOrder = (field) => {
                                 class="px-5 py-5 text-sm"
                             >
                                 {{
-                                    (totais.amount - totais.total).toLocaleString(
-                                        "pt-BR",
-                                        {
-                                            style: "currency",
-                                            currency: "BRL",
-                                        }
-                                    )
+                                    (
+                                        totais.amount - totais.total
+                                    ).toLocaleString("pt-BR", {
+                                        style: "currency",
+                                        currency: "BRL",
+                                    })
                                 }}
                             </td>
                             <td></td>

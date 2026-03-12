@@ -3,12 +3,21 @@ import { Head, Link } from "@inertiajs/vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
 import { ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import { useDebounceSearch } from "@/composables/useDebounceSearch";
 import { usePersistedSelection } from "@/composables/usePersistedSelection";
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    MagnifyingGlassIcon,
+    ArrowDownTrayIcon,
+    XCircleIcon,
+    PlusIcon,
+} from "@heroicons/vue/24/outline";
 
 const props = defineProps({
     name: String,
@@ -46,58 +55,62 @@ const toggleOrder = (field) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div
-            class="mb-1 flex w-full flex-col items-center justify-between gap-x-4 sm:mb-0 md:flex-row"
-        >
-            <div class="flex w-full flex-col gap-4 md:flex-row md:items-center">
-                <div class="relative">
-                    <TextInput
-                        v-model="filters.search"
-                        autocomplete="off"
-                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
-                        name="search"
-                        placeholder="Buscar"
-                        type="text"
-                    />
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <a
-                        v-if="selectedIds.length > 0"
-                        :href="
-                            route('speakers.download-speeches', {
-                                ids: selectedIds,
-                            })
-                        "
-                        class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
-                        type="button"
-                    >
-                        Baixar temas
-                    </a>
-                    <button
-                        v-if="selectedIds.length > 0"
-                        class="w-full flex-shrink-0 rounded-lg bg-red-700 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2 focus:ring-offset-red-200 dark:bg-red-800 dark:hover:bg-red-900 md:w-auto"
-                        type="button"
-                        @click="clearSelection"
-                    >
-                        Limpar seleção
-                    </button>
-                </div>
-            </div>
-            <Link :href="route('speakers.create')" class="btn-novo">Novo</Link>
+    <div class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <Breadcrumb />
+
+        <!-- Header -->
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <h1 class="text-2xl font-bold tracking-tight text-stone-900 dark:text-white">
+                {{ name }}
+            </h1>
+            <Link :href="route('speakers.create')" class="btn-novo">
+                <PlusIcon class="h-4 w-4" />
+                Novo
+            </Link>
         </div>
-        <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
-            <div
-                class="inline-block min-w-full overflow-hidden rounded-lg shadow"
-            >
-                <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
+
+        <!-- Filters -->
+        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div class="relative flex-1 sm:max-w-xs">
+                <MagnifyingGlassIcon class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-slate-500" />
+                <TextInput
+                    v-model="filters.search"
+                    autocomplete="off"
+                    class="h-10 pl-9"
+                    name="search"
+                    placeholder="Buscar orador..."
+                    type="text"
+                />
+            </div>
+            <div v-if="selectedIds.length > 0" class="flex gap-2">
+                <a
+                    :href="route('speakers.download-speeches', { ids: selectedIds })"
+                    class="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+                    type="button"
+                >
+                    <ArrowDownTrayIcon class="h-4 w-4" />
+                    Baixar temas
+                </a>
+                <button
+                    class="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-semibold text-stone-700 transition-all hover:bg-stone-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                    type="button"
+                    @click="clearSelection"
+                >
+                    <XCircleIcon class="h-4 w-4" />
+                    Limpar
+                </button>
+            </div>
+        </div>
+
+        <!-- Table card -->
+        <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800">
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
                     <thead>
-                        <tr
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
-                        >
-                            <th></th>
+                        <tr class="border-b border-stone-100 dark:border-slate-800">
+                            <th class="w-10 px-4 py-3.5"></th>
                             <th
-                                class="w-2/12 cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="w-2/12 cursor-pointer px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                                 @click="toggleOrder('privilege')"
                             >
@@ -105,114 +118,96 @@ const toggleOrder = (field) => {
                                     Privilégio
                                     <SortIcons
                                         :order-dir="filters.orderDir"
-                                        :update-icon="
-                                            filters.orderField === 'privilege'
-                                        "
+                                        :update-icon="filters.orderField === 'privilege'"
                                     />
                                 </p>
                             </th>
                             <th
-                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="cursor-pointer px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                                 @click="toggleOrder('name')"
                             >
-                                Nome
-                                <SortIcons
-                                    :order-dir="filters.orderDir"
-                                    :update-icon="filters.orderField === 'name'"
-                                />
+                                <p class="flex items-center gap-2">
+                                    Nome
+                                    <SortIcons
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="filters.orderField === 'name'"
+                                    />
+                                </p>
                             </th>
                             <th
-                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="cursor-pointer px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                                 @click="toggleOrder('max(send_speakers.date)')"
                             >
-                                Último discurso
-                                <SortIcons
-                                    :order-dir="filters.orderDir"
-                                    :update-icon="
-                                        filters.orderField ===
-                                        'max(send_speakers.date)'
-                                    "
-                                />
+                                <p class="flex items-center gap-2">
+                                    Último discurso
+                                    <SortIcons
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="filters.orderField === 'max(send_speakers.date)'"
+                                    />
+                                </p>
                             </th>
                             <th
-                                class="w-1/12 px-5 py-5 text-left text-sm uppercase"
+                                class="w-1/12 px-5 py-3.5 text-right text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                             >
                                 Ações
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-stone-100 dark:divide-slate-800">
                         <tr
                             v-for="item in list.data"
                             v-if="list.total"
                             :key="item.id"
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
+                            class="transition-colors hover:bg-stone-50 dark:hover:bg-slate-800/50"
                         >
-                            <td class="w-4 p-4">
-                                <div class="flex items-center">
-                                    <input
-                                        id="checkbox-table-1"
-                                        v-model="selectedIds"
-                                        :value="item.id"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                                        type="checkbox"
-                                    />
-                                    <label
-                                        class="sr-only"
-                                        for="checkbox-table-1"
-                                        >checkbox</label
-                                    >
-                                </div>
+                            <td class="w-10 px-4 py-4">
+                                <input
+                                    v-model="selectedIds"
+                                    :value="item.id"
+                                    class="h-4 w-4 rounded border-stone-300 text-teal-600 transition-colors focus:ring-2 focus:ring-teal-500 dark:border-slate-600 dark:bg-slate-800 dark:checked:bg-teal-500 dark:focus:ring-teal-500"
+                                    type="checkbox"
+                                />
                             </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
-                                {{ item.privilege }}
+                            <td class="whitespace-nowrap px-5 py-4 text-sm text-stone-600 dark:text-slate-300">
+                                <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-700 dark:bg-slate-800 dark:text-slate-300">
+                                    {{ item.privilege }}
+                                </span>
                             </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                            <td class="whitespace-nowrap px-5 py-4 text-sm font-medium text-stone-900 dark:text-white">
                                 {{ item.name }}
                             </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
-                                {{ item.last_speech_made?.date }}
+                            <td class="whitespace-nowrap px-5 py-4 text-sm text-stone-600 dark:text-slate-300">
+                                {{ item.last_speech_made?.date || '-' }}
                             </td>
-                            <td
-                                class="space-x-3 whitespace-nowrap px-5 py-5 text-sm"
-                            >
-                                <EditButton
-                                    :href="route('speakers.show', item.id)"
-                                >
-                                    <font-awesome-icon
-                                        icon="fa-solid fa-edit"
-                                    />
-                                </EditButton>
-                                <DeleteButton
-                                    @click="
-                                        () => {
+                            <td class="whitespace-nowrap px-5 py-4 text-right">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <EditButton :href="route('speakers.show', item.id)">
+                                        <PencilSquareIcon class="h-4 w-4" />
+                                    </EditButton>
+                                    <DeleteButton
+                                        @click="() => {
                                             showModal = true;
                                             selectedItem = item;
-                                        }
-                                    "
-                                >
-                                    <font-awesome-icon
-                                        icon="fa-solid fa-trash"
-                                    />
-                                </DeleteButton>
+                                        }"
+                                    >
+                                        <TrashIcon class="h-4 w-4" />
+                                    </DeleteButton>
+                                </div>
                             </td>
                         </tr>
-                        <tr
-                            v-else
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
-                        >
-                            <td class="px-5 py-3 text-sm" colspan="4">
-                                Nenhum registro encontrado!
+                        <tr v-else>
+                            <td class="px-5 py-12 text-center text-sm text-stone-500 dark:text-slate-400" colspan="5">
+                                Nenhum registro encontrado
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
-                <TablePaginator :list="list" />
             </div>
+
+            <TablePaginator :list="list" />
         </div>
 
         <DeleteModal

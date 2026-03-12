@@ -1,154 +1,176 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
+import {
+    CalendarDaysIcon,
+    ClockIcon,
+    MapPinIcon,
+    UserIcon,
+    MicrophoneIcon,
+    ArrowDownIcon,
+    ArrowUpIcon,
+    InboxIcon,
+    PaperAirplaneIcon,
+    CalendarIcon,
+    ArrowRightIcon,
+} from "@heroicons/vue/24/outline";
 
 defineProps({
     current: Object,
     next: Object,
 });
+
+const formatDate = () => {
+    return new Date().toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+};
 </script>
 
 <template>
     <Head title="Dashboard" />
 
-    <div class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
-        <!-- Header do Dashboard -->
-        <div class="flex flex-wrap items-center justify-between">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-                Dashboard
-            </h1>
-            <div class="text-sm text-gray-500 dark:text-gray-400">
-                {{ new Date().toLocaleDateString('pt-BR', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                }) }}
+    <div class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <Breadcrumb />
+
+        <!-- Header -->
+        <div class="mb-8 flex flex-wrap items-end justify-between gap-2">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-stone-900 dark:text-white sm:text-3xl">
+                    Dashboard
+                </h1>
+                <p class="mt-1 text-sm text-stone-500 dark:text-slate-400">
+                    {{ formatDate() }}
+                </p>
             </div>
         </div>
 
-        <!-- Arranjo Atual -->
-        <div v-if="current !== null" class="space-y-4">
+        <!-- Current Schedule -->
+        <div v-if="current !== null" class="mb-8 space-y-4">
             <div class="flex items-center gap-3">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 class="text-lg font-semibold text-stone-900 dark:text-white">
                     Arranjo Atual
                 </h2>
-                <span class="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
+                <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     Em andamento
                 </span>
             </div>
 
-            <div class="rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-800 dark:ring-gray-700">
-                <!-- Cabeçalho do arranjo -->
-                <div class="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-800/50">
-                    <div class="flex flex-wrap items-center justify-between gap-4">
-                        <div class="space-y-1">
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                                {{ current.congregation }}
-                            </h3>
-                            <div class="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-                                <span v-if="current.address" class="flex items-center gap-1">
-                                    <font-awesome-icon class="h-3 w-3" icon="fa-solid fa-map-marker-alt" />
-                                    {{ current.address }}
-                                </span>
-                                <span v-if="current.hour" class="flex items-center gap-1">
-                                    <font-awesome-icon class="h-3 w-3" icon="fa-solid fa-clock" />
-                                    {{ current.hour }}
-                                </span>
-                            </div>
+            <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800">
+                <!-- Schedule header -->
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-stone-100 px-5 py-4 dark:border-slate-800 sm:px-6">
+                    <div class="space-y-1">
+                        <h3 class="text-base font-semibold text-stone-900 dark:text-white">
+                            {{ current.congregation }}
+                        </h3>
+                        <div class="flex flex-wrap gap-4 text-sm text-stone-500 dark:text-slate-400">
+                            <span v-if="current.address" class="flex items-center gap-1.5">
+                                <MapPinIcon class="h-3.5 w-3.5" />
+                                {{ current.address }}
+                            </span>
+                            <span v-if="current.hour" class="flex items-center gap-1.5">
+                                <ClockIcon class="h-3.5 w-3.5" />
+                                {{ current.hour }}
+                            </span>
                         </div>
-                        <Link
-                            :href="route('schedules.show', current.id)"
-                            class="inline-flex items-center gap-2 rounded-md dark:bg-sky-800 bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700 dark:hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                        >
-                            Ver detalhes
-                        </Link>
                     </div>
+                    <Link
+                        :href="route('schedules.show', current.id)"
+                        class="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+                    >
+                        Ver detalhes
+                        <ArrowRightIcon class="h-3.5 w-3.5" />
+                    </Link>
                 </div>
 
-                <!-- Conteúdo do arranjo -->
-                <div class="p-6">
+                <!-- Schedule content -->
+                <div class="p-5 sm:p-6">
                     <div class="grid gap-8 lg:grid-cols-2">
-                        <!-- Receber -->
-                        <div class="flex flex-col space-y-4">
-                            <div class="flex items-center gap-2">
-                                <h4 class="text-lg font-medium text-gray-900 dark:text-white">
-                                    <font-awesome-icon class="h-4 w-4 dark:text-green-600 text-green-500" icon="fa-solid fa-arrow-down" />
-                                    Receber
-                                </h4>
-                                <span class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                                    {{ current.to_receive?.length || 0 }} {{ (current.to_receive?.length || 0) === 1 ? 'discurso' : 'discursos' }}
+                        <!-- Receive -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2.5">
+                                <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-500/10">
+                                    <ArrowDownIcon class="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                </div>
+                                <h4 class="font-semibold text-stone-900 dark:text-white">Receber</h4>
+                                <span class="rounded-full bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-600 dark:bg-slate-800 dark:text-slate-400">
+                                    {{ current.to_receive?.length || 0 }}
                                 </span>
                             </div>
 
-                            <div v-if="current.to_receive?.length" class="grid gap-3 sm:grid-cols-2">
+                            <div v-if="current.to_receive?.length" class="space-y-2">
                                 <div
                                     v-for="(item, key) in current.to_receive"
                                     :key="key"
-                                    class="rounded-lg hover:shadow-lg hover:border-b-4 dark:hover:border-b-sky-800 hover:border-b-sky-600 border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50"
+                                    class="group rounded-xl border border-stone-200 bg-stone-50/50 p-4 transition-all hover:border-teal-200 hover:shadow-sm dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-teal-500/30"
                                 >
                                     <div class="space-y-2">
-                                        <div class="flex items-center gap-2">
-                                            <font-awesome-icon class="h-3 w-3 text-gray-400" icon="fa-regular fa-calendar" />
-                                            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ item.date }}</span>
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <CalendarIcon class="h-3.5 w-3.5 text-stone-400 dark:text-slate-500" />
+                                            <span class="font-medium text-stone-900 dark:text-white">{{ item.date }}</span>
                                         </div>
-                                        <div class="flex items-center gap-2">
-                                            <font-awesome-icon class="h-3 w-3 text-gray-400" icon="fa-solid fa-user" />
-                                            <span class="text-sm text-gray-600 dark:text-gray-300">{{ item.speaker || '-' }}</span>
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <UserIcon class="h-3.5 w-3.5 text-stone-400 dark:text-slate-500" />
+                                            <span class="text-stone-600 dark:text-slate-300">{{ item.speaker || '-' }}</span>
                                         </div>
-                                        <div class="flex items-start gap-2">
-                                            <font-awesome-icon class="mt-0.5 h-3 w-3 text-gray-400" icon="fa-solid fa-microphone" />
-                                            <span class="text-sm text-gray-600 dark:text-gray-300">
+                                        <div class="flex items-start gap-2 text-sm">
+                                            <MicrophoneIcon class="mt-0.5 h-3.5 w-3.5 text-stone-400 dark:text-slate-500" />
+                                            <span class="text-stone-600 dark:text-slate-300">
                                                 {{ item.speech?.number ? `${item.speech.number} - ${item.speech.theme}` : '-' }}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div v-else class="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center dark:border-gray-600">
-                                <font-awesome-icon class="mx-auto h-8 w-8 text-gray-400" icon="fa-solid fa-inbox" />
-                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhum discurso para receber</p>
+                            <div v-else class="flex flex-col items-center rounded-xl border-2 border-dashed border-stone-200 py-8 dark:border-slate-800">
+                                <InboxIcon class="h-8 w-8 text-stone-300 dark:text-slate-700" />
+                                <p class="mt-2 text-sm text-stone-400 dark:text-slate-500">Nenhum discurso para receber</p>
                             </div>
                         </div>
 
-                        <!-- Enviar -->
-                        <div class="flex flex-col space-y-4">
-                            <div class="flex items-center gap-2">
-                                <h4 class="text-lg font-medium text-gray-900 dark:text-white">
-                                    <font-awesome-icon class="h-4 w-4 dark:text-sky-800 text-sky-600" icon="fa-solid fa-arrow-up" />
-                                    Enviar
-                                </h4>
-                                <span class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                                    {{ current.to_send?.length || 0 }} {{ (current.to_send?.length || 0) === 1 ? 'discurso' : 'discursos' }}
+                        <!-- Send -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2.5">
+                                <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-100 dark:bg-sky-500/10">
+                                    <ArrowUpIcon class="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
+                                </div>
+                                <h4 class="font-semibold text-stone-900 dark:text-white">Enviar</h4>
+                                <span class="rounded-full bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-600 dark:bg-slate-800 dark:text-slate-400">
+                                    {{ current.to_send?.length || 0 }}
                                 </span>
                             </div>
 
-                            <div v-if="current.to_send?.length" class="grid gap-3 sm:grid-cols-2">
+                            <div v-if="current.to_send?.length" class="space-y-2">
                                 <div
                                     v-for="(sendItem, key) in current.to_send"
                                     :key="key"
-                                    class="rounded-lg hover:shadow-lg hover:border-b-4 dark:hover:border-b-sky-800 hover:border-b-sky-600 border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50"
+                                    class="group rounded-xl border border-stone-200 bg-stone-50/50 p-4 transition-all hover:border-teal-200 hover:shadow-sm dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-teal-500/30"
                                 >
                                     <div class="space-y-2">
-                                        <div class="flex items-center gap-2">
-                                            <font-awesome-icon class="h-3 w-3 text-gray-400" icon="fa-regular fa-calendar" />
-                                            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ sendItem.date }}</span>
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <CalendarIcon class="h-3.5 w-3.5 text-stone-400 dark:text-slate-500" />
+                                            <span class="font-medium text-stone-900 dark:text-white">{{ sendItem.date }}</span>
                                         </div>
-                                        <div class="flex items-center gap-2">
-                                            <font-awesome-icon class="h-3 w-3 text-gray-400" icon="fa-solid fa-user" />
-                                            <span class="text-sm text-gray-600 dark:text-gray-300">{{ sendItem.speaker?.name || '-' }}</span>
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <UserIcon class="h-3.5 w-3.5 text-stone-400 dark:text-slate-500" />
+                                            <span class="text-stone-600 dark:text-slate-300">{{ sendItem.speaker?.name || '-' }}</span>
                                         </div>
-                                        <div class="flex items-start gap-2">
-                                            <font-awesome-icon class="mt-0.5 h-3 w-3 text-gray-400" icon="fa-solid fa-microphone" />
-                                            <span class="text-sm text-gray-600 dark:text-gray-300">
+                                        <div class="flex items-start gap-2 text-sm">
+                                            <MicrophoneIcon class="mt-0.5 h-3.5 w-3.5 text-stone-400 dark:text-slate-500" />
+                                            <span class="text-stone-600 dark:text-slate-300">
                                                 {{ sendItem.speech?.number ? `${sendItem.speech.number} - ${sendItem.speech.theme}` : '-' }}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div v-else class="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center dark:border-gray-600">
-                                <font-awesome-icon class="mx-auto h-8 w-8 text-gray-400" icon="fa-solid fa-paper-plane" />
-                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhum discurso para enviar</p>
+                            <div v-else class="flex flex-col items-center rounded-xl border-2 border-dashed border-stone-200 py-8 dark:border-slate-800">
+                                <PaperAirplaneIcon class="h-8 w-8 text-stone-300 dark:text-slate-700" />
+                                <p class="mt-2 text-sm text-stone-400 dark:text-slate-500">Nenhum discurso para enviar</p>
                             </div>
                         </div>
                     </div>
@@ -156,46 +178,53 @@ defineProps({
             </div>
         </div>
 
-        <!-- Estado vazio para arranjo atual -->
-        <div v-else class="rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-8 text-center dark:border-gray-600 dark:bg-gray-800">
-            <font-awesome-icon class="mx-auto h-12 w-12 text-gray-400" icon="fa-solid fa-calendar-xmark" />
-            <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">Nenhum arranjo atual</h3>
-            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Não há arranjos ativos no momento.</p>
+        <!-- Empty state -->
+        <div v-else class="mb-8 flex flex-col items-center rounded-2xl border-2 border-dashed border-stone-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900">
+            <CalendarDaysIcon class="h-12 w-12 text-stone-300 dark:text-slate-700" />
+            <h3 class="mt-4 text-base font-semibold text-stone-900 dark:text-white">Nenhum arranjo atual</h3>
+            <p class="mt-1 text-sm text-stone-500 dark:text-slate-400">Não há arranjos ativos no momento.</p>
+            <Link
+                :href="route('schedules.create')"
+                class="mt-5 inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+            >
+                Criar arranjo
+            </Link>
         </div>
 
-        <!-- Próximo Arranjo -->
+        <!-- Next Schedule -->
         <div v-if="next !== null" class="space-y-4">
             <div class="flex items-center gap-3">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 class="text-lg font-semibold text-stone-900 dark:text-white">
                     Próximo Arranjo
                 </h2>
-                <span class="rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-500/10 dark:text-amber-400">
                     Planejado
                 </span>
             </div>
 
-            <div class="rounded-lg bg-gray-50 shadow-sm ring-1 px-6 py-4 ring-gray-900/5 dark:bg-gray-800 dark:ring-gray-700">
+            <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800 sm:p-6">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div class="space-y-1">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+                        <h3 class="text-base font-semibold text-stone-900 dark:text-white">
                             {{ next.congregation }}
                         </h3>
-                        <div class="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-                                <span v-if="next.address" class="flex items-center gap-1">
-                                    <font-awesome-icon class="h-3 w-3" icon="fa-solid fa-map-marker-alt" />
-                                    {{ next.address }}
-                                </span>
-                            <span v-if="next.hour" class="flex items-center gap-1">
-                                    <font-awesome-icon class="h-3 w-3" icon="fa-solid fa-clock" />
-                                    {{ next.hour }}
-                                </span>
+                        <div class="flex flex-wrap gap-4 text-sm text-stone-500 dark:text-slate-400">
+                            <span v-if="next.address" class="flex items-center gap-1.5">
+                                <MapPinIcon class="h-3.5 w-3.5" />
+                                {{ next.address }}
+                            </span>
+                            <span v-if="next.hour" class="flex items-center gap-1.5">
+                                <ClockIcon class="h-3.5 w-3.5" />
+                                {{ next.hour }}
+                            </span>
                         </div>
                     </div>
                     <Link
                         :href="route('schedules.show', next.id)"
-                        class="inline-flex items-center gap-2 rounded-md dark:bg-sky-800 bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700 dark:hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        class="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
                     >
                         Ver detalhes
+                        <ArrowRightIcon class="h-3.5 w-3.5" />
                     </Link>
                 </div>
             </div>

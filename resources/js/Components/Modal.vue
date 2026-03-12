@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, watch } from "vue";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps({
     show: {
@@ -80,9 +81,7 @@ const maxWidthClass = computed(() => {
                         class="fixed inset-0 transform transition-all"
                         @click="close"
                     >
-                        <div
-                            class="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-900"
-                        />
+                        <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm dark:bg-slate-950/80" />
                     </div>
                 </transition>
 
@@ -97,28 +96,15 @@ const maxWidthClass = computed(() => {
                     <div
                         v-show="show"
                         :class="maxWidthClass"
-                        class="mb-6 transform overflow-hidden rounded-lg bg-white p-10 shadow-xl transition-all dark:bg-gray-800 sm:mx-auto sm:w-full"
+                        class="relative mb-6 transform overflow-hidden rounded-2xl bg-white p-8 shadow-2xl shadow-stone-900/10 ring-1 ring-stone-200 transition-all dark:bg-slate-900 dark:shadow-none dark:ring-slate-800 sm:mx-auto sm:w-full"
                     >
-                        <a
-                            class="absolute top-1.5 right-1.5 p-3"
-                            href="#"
+                        <button
+                            v-if="closeable"
+                            class="absolute right-3 top-3 rounded-lg p-1.5 text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600 dark:text-slate-500 dark:hover:bg-slate-800 dark:hover:text-slate-300"
                             @click="close"
                         >
-                            <svg
-                                class="h-4 w-4 cursor-pointer fill-current text-slate-500 hover:text-slate-900"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M6 18L18 6M6 6l12 12"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-                            </svg>
-                        </a>
+                            <XMarkIcon class="h-5 w-5" />
+                        </button>
                         <slot v-if="show" />
                     </div>
                 </transition>

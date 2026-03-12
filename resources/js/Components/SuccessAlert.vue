@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import { usePage } from "@inertiajs/vue3";
+import { CheckCircleIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
 let showNot = ref("");
 
@@ -13,24 +14,33 @@ watch(notification, (val) => {
 
     setTimeout(() => {
         showNot.value = null;
-    }, 3000);
+    }, 4000);
 });
 </script>
 
 <template>
     <Transition
-        class="transition duration-300 ease-in-out"
-        enter-from-class="opacity-0"
-        leave-to-class="opacity-0"
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="translate-y-2 opacity-0"
+        enter-to-class="translate-y-0 opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="translate-y-0 opacity-100"
+        leave-to-class="translate-y-2 opacity-0"
     >
-        <div v-if="showNot" class="mx-auto max-w-7xl py-3 sm:px-3 lg:px-8">
+        <div
+            v-if="showNot"
+            class="fixed bottom-24 right-4 z-50 md:bottom-6 md:right-6"
+        >
             <div
-                class="mb-4 rounded-lg bg-green-100 p-4 text-sm text-green-700 dark:bg-gray-800 dark:text-green-400"
+                class="flex items-center gap-3 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-medium text-white shadow-lg shadow-emerald-600/25"
                 role="alert"
                 @click="showNot = null"
             >
-                <font-awesome-icon icon="fa-solid fa-circle-check" />
-                {{ showNot.value }}
+                <CheckCircleIcon class="h-5 w-5 flex-shrink-0" />
+                <span>{{ showNot.value }}</span>
+                <button class="ml-2 rounded-lg p-0.5 hover:bg-emerald-500" @click.stop="showNot = null">
+                    <XMarkIcon class="h-4 w-4" />
+                </button>
             </div>
         </div>
     </Transition>

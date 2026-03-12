@@ -45,7 +45,7 @@ const toggleOrder = (field) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl py-6 px-4 sm:px-6 lg:px-8">
         <div
             class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
         >
@@ -56,7 +56,7 @@ const toggleOrder = (field) => {
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
-                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
+                        class="h-9 dark:bg-slate-900 dark:text-slate-200"
                         name="search"
                         placeholder="Buscar"
                         type="text"
@@ -69,7 +69,7 @@ const toggleOrder = (field) => {
         </div>
 
         <div
-            class="-mx-4 overflow-x-auto px-4 py-4 sm:col-span-2 sm:-mx-8 sm:px-8"
+            class="py-4 sm:col-span-2"
         >
             <MobileList
                 :list="list"
@@ -78,14 +78,14 @@ const toggleOrder = (field) => {
                 @toggle-order="toggleOrder"
             />
             <div
-                class="inline-block min-w-full overflow-hidden rounded-lg shadow"
+                class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800"
             >
                 <table
-                    class="hidden min-w-full table-fixed bg-white dark:bg-gray-800 md:block"
+                    class="hidden min-w-full md:block"
                 >
                     <thead>
                         <tr
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
+                            class="border-b text-stone-800 dark:border-slate-800 dark:text-white"
                         >
                             <th
                                 class="w-1/12 cursor-pointer px-5 py-5 text-left text-sm uppercase"
@@ -134,12 +134,12 @@ const toggleOrder = (field) => {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-stone-100 dark:divide-slate-800">
                         <tr
                             v-for="item in list.data"
                             v-if="list.total"
                             :key="item.id"
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
+                            class="text-stone-800 hover:bg-stone-100 dark:text-white dark:hover:bg-slate-800"
                         >
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
                                 {{ item.name }}
@@ -176,7 +176,7 @@ const toggleOrder = (field) => {
                         </tr>
                         <tr
                             v-else
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
+                            class="text-stone-800 dark:text-white"
                         >
                             <td class="px-5 py-3 text-sm" colspan="4">
                                 Nenhum registro encontrado!

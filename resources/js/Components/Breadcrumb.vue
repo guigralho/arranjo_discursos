@@ -1,29 +1,24 @@
 <template>
-    <header
+    <nav
         v-if="breadcrumbs.length > 0"
-        class="bg-white shadow dark:bg-gray-800"
+        class="mb-1"
     >
-        <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-            <nav class="w-full rounded-md">
-                <ol class="list-reset flex">
-                    <li v-for="page in breadcrumbs">
-                        <div>
-                            <span v-if="page === '/'" class="mx-2 text-gray-500"
-                                >/</span
-                            >
-                            <Link
-                                v-else
-                                :class="{ 'font-bold': page.current }"
-                                :href="page.url ?? '#'"
-                                class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                                >{{ page.title }}</Link
-                            >
-                        </div>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </header>
+        <ol class="flex items-center gap-1.5 text-sm">
+            <li v-for="(page, index) in breadcrumbs" :key="index">
+                <span v-if="page === '/'" class="text-stone-300 dark:text-slate-600">/</span>
+                <Link
+                    v-else
+                    :href="page.url ?? '#'"
+                    :class="page.current
+                        ? 'font-semibold text-stone-900 dark:text-white'
+                        : 'text-stone-500 hover:text-stone-700 dark:text-slate-400 dark:hover:text-slate-200'"
+                    class="transition-colors"
+                >
+                    {{ page.title }}
+                </Link>
+            </li>
+        </ol>
+    </nav>
 </template>
 
 <script setup>
@@ -31,7 +26,6 @@ import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { Link } from "@inertiajs/vue3";
 
-// Insert an element between all elements, insertBetween([1, 2, 3], '/') results in [1, '/', 2, '/', 3]
 const insertBetween = (items, insertion) => {
     return items.flatMap((value, index, array) =>
         array.length - 1 !== index ? [value, insertion] : value

@@ -38,7 +38,7 @@ const submitSpeech = () => {
 </script>
 <template>
     <form class="flex flex-col space-y-6" @submit.prevent="submitSpeech">
-        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
+        <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800 sm:p-6">
             <section class="max-w-xl space-y-6">
                 <div>
                     <InputLabel for="privilege" value="Temas" />
@@ -80,12 +80,12 @@ const submitSpeech = () => {
         </div>
     </form>
 
-    <div class="-mx-4 overflow-x-auto px-4 py-4 sm:col-span-2 sm:-mx-8 sm:px-8">
-        <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
-            <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
+    <div class="py-4 sm:col-span-2">
+        <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800">
+            <table class="min-w-full">
                 <thead>
                     <tr
-                        class="font-weight-bold border-b px-10 text-gray-800 dark:border-gray-900 dark:text-gray-100"
+                        class="border-b px-10 text-stone-800 dark:border-slate-800 dark:text-white"
                     >
                         <th
                             class="w-2/12 px-5 py-5 text-left text-sm uppercase"
@@ -107,11 +107,11 @@ const submitSpeech = () => {
                         </th>
                     </tr>
                 </thead>
-                <tbody v-if="mySpeeches.total">
+                <tbody v-if="mySpeeches.total" class="divide-y divide-stone-100 dark:divide-slate-800">
                     <tr
                         v-for="item in mySpeeches.data"
                         :key="item.id"
-                        class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
+                        class="text-stone-800 hover:bg-stone-100 dark:text-white dark:hover:bg-slate-800"
                     >
                         <td class="whitespace-nowrap px-5 py-5 text-sm">
                             {{ item.number }}
@@ -137,7 +137,7 @@ const submitSpeech = () => {
                 </tbody>
                 <tr
                     v-else
-                    class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
+                    class="text-stone-800 hover:bg-stone-100 dark:text-white dark:hover:bg-slate-800"
                 >
                     <td class="whitespace-nowrap px-5 py-5 text-sm" colspan="3">
                         Nenhum registro encontrado

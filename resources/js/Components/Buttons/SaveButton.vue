@@ -15,11 +15,11 @@ defineProps({
     <button
         :class="
             disabled
-                ? 'cursor-not-allowed bg-gray-600'
-                : 'bg-green-700 hover:bg-green-900 focus:bg-green-700 active:bg-green-900'
+                ? 'cursor-not-allowed bg-stone-300 dark:bg-slate-700'
+                : 'bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600'
         "
         :type="type"
-        class="w-full gap-1 rounded-md border border-transparent px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-fit sm:grow-0"
+        class="w-full rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 sm:w-auto"
     >
         <slot />
     </button>

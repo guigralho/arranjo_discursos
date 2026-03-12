@@ -1,25 +1,37 @@
 <script setup>
-import Navbar from "@/Components/Navbar.vue";
-import Breadcrumb from "@/Components/Breadcrumb.vue";
+import Sidebar from "@/Components/Sidebar.vue";
+import TopBar from "@/Components/TopBar.vue";
+import BottomNav from "@/Components/BottomNav.vue";
 import SuccessAlert from "@/Components/SuccessAlert.vue";
 import GlobalLoading from "@/Components/GlobalLoading.vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { Link } from "@inertiajs/vue3";
+import { useSidebar } from "@/composables/useSidebar";
+
+const { collapsed } = useSidebar();
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <Navbar />
+    <div class="min-h-screen bg-stone-50 dark:bg-slate-950">
+        <!-- Desktop sidebar -->
+        <Sidebar />
 
-            <Breadcrumb />
+        <!-- Mobile top bar -->
+        <TopBar />
 
-            <!-- Page Content -->
-            <main>
+        <!-- Main content area -->
+        <div
+            :class="collapsed ? 'md:pl-[72px]' : 'md:pl-64'"
+            class="transition-all duration-300"
+        >
+            <main class="pb-20 md:pb-0">
                 <SuccessAlert />
                 <slot />
             </main>
-            <GlobalLoading />
         </div>
+
+        <!-- Mobile bottom nav -->
+        <BottomNav />
+
+        <!-- Global loading -->
+        <GlobalLoading />
     </div>
 </template>

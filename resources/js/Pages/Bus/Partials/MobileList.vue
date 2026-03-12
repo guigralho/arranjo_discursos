@@ -25,38 +25,38 @@ let selectedItem = ref({});
 
 <template>
     <div class="block md:hidden">
-        <div class="mb-4 min-w-full rounded-lg shadow dark:bg-gray-800">
+        <div class="mb-4 min-w-full rounded-2xl shadow-sm dark:bg-slate-900">
             <div
-                class="w-full rounded-lg bg-white dark:border-gray-700 dark:bg-gray-800"
+                class="w-full rounded-2xl bg-white dark:border-slate-800 dark:bg-slate-900"
             >
                 <div class="flow-root">
                     <ul
                         v-if="list.meta.total"
-                        class="divide-y divide-gray-200 dark:divide-gray-700"
+                        class="divide-y divide-stone-200 dark:divide-slate-800"
                         role="list"
                     >
                         <li class="p-4 sm:p-4">
                             <div class="flex flex-col gap-2">
                                 <div class="flex justify-between">
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         Sexta: {{ totais.friday }}
                                     </p>
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         Sábado: {{ totais.saturday }}
                                     </p>
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         Domingo: {{ totais.sunday }}
                                     </p>
                                 </div>
                                 <div class="flex justify-between">
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         A pagar:
                                         {{
@@ -67,7 +67,7 @@ let selectedItem = ref({});
                                         }}
                                     </p>
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         Pago:
                                         {{
@@ -84,7 +84,7 @@ let selectedItem = ref({});
                                         :class="
                                             totais.amount - totais.total < 0
                                                 ? 'text-red-500'
-                                                : 'text-gray-900 dark:text-gray-100'
+                                                : 'text-stone-900 dark:text-white'
                                         "
                                         class="inline-flex items-center text-base font-semibold"
                                     >
@@ -108,7 +108,7 @@ let selectedItem = ref({});
                         >
                             <div class="flex flex-col gap-2">
                                 <p
-                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                    class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                 >
                                     {{ item.passenger.name }} -
                                     {{ item.passenger.doc }}
@@ -124,7 +124,7 @@ let selectedItem = ref({});
                                     class="flex flex-wrap justify-between gap-4"
                                 >
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         A pagar:
                                         {{
@@ -136,7 +136,7 @@ let selectedItem = ref({});
                                     </p>
 
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         Pago:
                                         {{
@@ -151,7 +151,7 @@ let selectedItem = ref({});
                                     </p>
 
                                     <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
+                                        class="inline-flex items-center text-base font-semibold text-stone-900 dark:text-white"
                                     >
                                         Saldo:
                                         {{
@@ -179,7 +179,7 @@ let selectedItem = ref({});
                                 </div>
 
                                 <p
-                                    class="inline-flex items-center text-base text-sm font-semibold italic text-gray-900 dark:text-gray-100"
+                                    class="inline-flex items-center text-base text-sm font-semibold italic text-stone-900 dark:text-white"
                                 >
                                     {{ item.obs }}
                                 </p>

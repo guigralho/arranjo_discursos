@@ -3,12 +3,20 @@ import { Head, Link } from "@inertiajs/vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
 import { onMounted, ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import Datepicker from "flowbite-datepicker/Datepicker";
 import { useDebounceSearch } from "@/composables/useDebounceSearch";
+import {
+    CalendarIcon,
+    MagnifyingGlassIcon,
+    PencilSquareIcon,
+    PlusIcon,
+    TrashIcon,
+} from "@heroicons/vue/24/outline";
 
 const props = defineProps({
     name: String,
@@ -46,7 +54,6 @@ onMounted(() => {
         ],
     };
 
-    // the DOM element will be assigned to the ref after initial render
     new Datepicker(document.getElementById("datepickerId"), {
         format: "dd/mm/yyyy",
         startView: 1,
@@ -77,47 +84,66 @@ const changeVal = (val) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div
-            class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
-        >
-            <div class="flex w-full flex-col gap-4 md:flex-row md:items-center">
-                <div class="relative">
-                    <TextInput
-                        v-model="filters.search"
-                        autocomplete="off"
-                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
-                        name="search"
-                        placeholder="Buscar"
-                        type="text"
-                    />
-                </div>
-                <div class="relative">
-                    <TextInput
-                        id="datepickerId"
-                        v-model="filters.searchDate"
-                        autocomplete="off"
-                        class="h-9 dark:bg-gray-800 dark:text-gray-200"
-                        name="searchDate"
-                        placeholder="Data"
-                        type="text"
-                        @focusout="changeVal($event.target.value)"
-                    />
-                </div>
-            </div>
-            <Link :href="route('schedules.create')" class="btn-novo">Novo</Link>
-        </div>
-        <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
-            <div
-                class="inline-block min-w-full overflow-hidden rounded-lg shadow"
+    <div class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <Breadcrumb />
+
+        <!-- Header -->
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <h1
+                class="text-2xl font-bold tracking-tight text-stone-900 dark:text-white"
             >
-                <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
+                {{ name }}
+            </h1>
+            <Link :href="route('schedules.create')" class="btn-novo">
+                <PlusIcon class="h-4 w-4" />
+                Novo
+            </Link>
+        </div>
+
+        <!-- Filters -->
+        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div class="relative flex-1 sm:max-w-xs">
+                <MagnifyingGlassIcon
+                    class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-slate-500"
+                />
+                <TextInput
+                    v-model="filters.search"
+                    autocomplete="off"
+                    class="h-10 pl-9"
+                    name="search"
+                    placeholder="Buscar arranjo..."
+                    type="text"
+                />
+            </div>
+            <div class="relative sm:max-w-[180px]">
+                <CalendarIcon
+                    class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-slate-500"
+                />
+                <TextInput
+                    id="datepickerId"
+                    v-model="filters.searchDate"
+                    autocomplete="off"
+                    class="h-10 pl-9"
+                    name="searchDate"
+                    placeholder="Filtrar data..."
+                    type="text"
+                    @focusout="changeVal($event.target.value)"
+                />
+            </div>
+        </div>
+
+        <!-- Table card -->
+        <div
+            class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800"
+        >
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
                     <thead>
                         <tr
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
+                            class="border-b border-stone-100 dark:border-slate-800"
                         >
                             <th
-                                class="w-2/12 cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="w-2/12 cursor-pointer px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                                 @click="toggleOrder('month')"
                             >
@@ -132,104 +158,123 @@ const changeVal = (val) => {
                                 </p>
                             </th>
                             <th
-                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="cursor-pointer px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                                 @click="toggleOrder('congregation')"
                             >
-                                Congregação
-                                <SortIcons
-                                    :order-dir="filters.orderDir"
-                                    :update-icon="
-                                        filters.orderField === 'congregation'
-                                    "
-                                />
+                                <p class="flex items-center gap-2">
+                                    Congregação
+                                    <SortIcons
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="
+                                            filters.orderField ===
+                                            'congregation'
+                                        "
+                                    />
+                                </p>
                             </th>
                             <th
-                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="cursor-pointer px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                                 @click="toggleOrder('day')"
                             >
-                                Dia
-                                <SortIcons
-                                    :order-dir="filters.orderDir"
-                                    :update-icon="filters.orderField === 'day'"
-                                />
+                                <p class="flex items-center gap-2">
+                                    Dia
+                                    <SortIcons
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="
+                                            filters.orderField === 'day'
+                                        "
+                                    />
+                                </p>
                             </th>
                             <th
-                                class="cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="cursor-pointer px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                                 @click="toggleOrder('hour')"
                             >
-                                Hora
-                                <SortIcons
-                                    :order-dir="filters.orderDir"
-                                    :update-icon="filters.orderField === 'hour'"
-                                />
+                                <p class="flex items-center gap-2">
+                                    Hora
+                                    <SortIcons
+                                        :order-dir="filters.orderDir"
+                                        :update-icon="
+                                            filters.orderField === 'hour'
+                                        "
+                                    />
+                                </p>
                             </th>
                             <th
-                                class="w-1/12 px-5 py-5 text-left text-sm uppercase"
+                                class="w-1/12 px-5 py-3.5 text-right text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400"
                                 scope="col"
                             >
                                 Ações
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody
+                        class="divide-y divide-stone-100 dark:divide-slate-800"
+                    >
                         <tr
                             v-for="item in list.data"
                             v-if="list.total"
                             :key="item.id"
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
+                            class="transition-colors hover:bg-stone-50 dark:hover:bg-slate-800/50"
                         >
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                            <td
+                                class="whitespace-nowrap px-5 py-4 text-sm font-medium text-stone-900 dark:text-white"
+                            >
                                 {{ item.translated_month }}
                             </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                            <td
+                                class="whitespace-nowrap px-5 py-4 text-sm text-stone-600 dark:text-slate-300"
+                            >
                                 {{ item.congregation }}
                             </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                            <td
+                                class="whitespace-nowrap px-5 py-4 text-sm text-stone-600 dark:text-slate-300"
+                            >
                                 {{ item.day }}
                             </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                            <td
+                                class="whitespace-nowrap px-5 py-4 text-sm text-stone-600 dark:text-slate-300"
+                            >
                                 {{ item.hour }}
                             </td>
-                            <td
-                                class="space-x-3 whitespace-nowrap px-5 py-5 text-sm"
-                            >
-                                <EditButton
-                                    :href="route('schedules.show', item.id)"
+                            <td class="whitespace-nowrap px-5 py-4 text-right">
+                                <div
+                                    class="flex items-center justify-end gap-1.5"
                                 >
-                                    <font-awesome-icon
-                                        icon="fa-solid fa-edit"
-                                    />
-                                </EditButton>
-                                <DeleteButton
-                                    @click="
-                                        () => {
-                                            showModal = true;
-                                            selectedItem = item;
-                                        }
-                                    "
-                                >
-                                    <font-awesome-icon
-                                        icon="fa-solid fa-trash"
-                                    />
-                                </DeleteButton>
+                                    <EditButton
+                                        :href="route('schedules.show', item.id)"
+                                    >
+                                        <PencilSquareIcon class="h-4 w-4" />
+                                    </EditButton>
+                                    <DeleteButton
+                                        @click="
+                                            () => {
+                                                showModal = true;
+                                                selectedItem = item;
+                                            }
+                                        "
+                                    >
+                                        <TrashIcon class="h-4 w-4" />
+                                    </DeleteButton>
+                                </div>
                             </td>
                         </tr>
-                        <tr
-                            v-else
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
-                        >
-                            <td class="px-5 py-3 text-sm" colspan="4">
-                                Nenhum registro encontrado!
+                        <tr v-else>
+                            <td
+                                class="px-5 py-12 text-center text-sm text-stone-500 dark:text-slate-400"
+                                colspan="5"
+                            >
+                                Nenhum registro encontrado
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
-                <TablePaginator :list="list" />
             </div>
+
+            <TablePaginator :list="list" />
         </div>
 
         <DeleteModal

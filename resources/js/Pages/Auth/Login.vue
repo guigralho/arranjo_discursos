@@ -2,7 +2,6 @@
 import Checkbox from "@/Components/Checkbox.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
@@ -35,67 +34,60 @@ export default {
 <template>
     <Head title="Log in" />
 
-    <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+    <div v-if="status" class="mb-4 rounded-xl bg-emerald-50 p-3 text-sm font-medium text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
         {{ status }}
     </div>
 
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submit" class="space-y-5">
         <div>
             <InputLabel for="email" value="Email" />
-
             <TextInput
                 id="email"
                 v-model="form.email"
                 autocomplete="email"
                 autofocus
-                class="mt-1 block w-full"
+                class="mt-1.5 block w-full"
                 required
                 type="email"
             />
-
-            <InputError :message="form.errors.email" class="mt-2" />
+            <InputError :message="form.errors.email" class="mt-1.5" />
         </div>
 
-        <div class="mt-4">
+        <div>
             <InputLabel for="password" value="Senha" />
-
             <TextInput
                 id="password"
                 v-model="form.password"
                 autocomplete="current-password"
-                class="mt-1 block w-full"
+                class="mt-1.5 block w-full"
                 required
                 type="password"
             />
-
-            <InputError :message="form.errors.password" class="mt-2" />
+            <InputError :message="form.errors.password" class="mt-1.5" />
         </div>
 
-        <div class="mt-4 block">
-            <label class="flex items-center">
+        <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2">
                 <Checkbox v-model:checked="form.remember" name="remember" />
-                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"
-                    >Manter conectado</span
-                >
+                <span class="text-sm text-stone-600 dark:text-slate-400">Manter conectado</span>
             </label>
-        </div>
 
-        <div class="mt-4 flex flex-wrap items-center justify-end gap-3">
             <Link
                 v-if="canResetPassword"
                 :href="route('password.request')"
-                class="flex-auto rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                class="text-sm font-medium text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
             >
                 Esqueceu sua senha?
             </Link>
-
-            <PrimaryButton
-                :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing"
-                class="flex-auto"
-            >
-                Entrar
-            </PrimaryButton>
         </div>
+
+        <button
+            :class="{ 'opacity-50 cursor-not-allowed': form.processing }"
+            :disabled="form.processing"
+            class="w-full rounded-xl bg-teal-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:bg-teal-500 dark:hover:bg-teal-600 dark:focus:ring-offset-slate-900"
+            type="submit"
+        >
+            Entrar
+        </button>
     </form>
 </template>

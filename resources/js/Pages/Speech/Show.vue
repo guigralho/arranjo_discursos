@@ -32,21 +32,21 @@ const submit = () => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl space-y-6 py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl space-y-6 py-6 px-4 sm:px-6 lg:px-8">
         <Form :form="form" :speech="speech" :submit="submit" />
 
         <div
             v-if="speech.speakers.length > 0"
-            class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8"
+            class="py-4"
         >
-            <p class="mb-1 text-lg dark:text-gray-100">Oradores</p>
+            <p class="mb-1 text-lg dark:text-white">Oradores</p>
             <div
-                class="inline-block min-w-full overflow-hidden rounded-lg shadow"
+                class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60 dark:bg-slate-900 dark:ring-slate-800"
             >
-                <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
+                <table class="min-w-full">
                     <thead>
                         <tr
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
+                            class="border-b text-stone-800 dark:border-slate-800 dark:text-white"
                         >
                             <th
                                 class="w-2/12 px-5 py-5 text-left text-sm uppercase"
@@ -64,11 +64,11 @@ const submit = () => {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-stone-100 dark:divide-slate-800">
                         <tr
                             v-for="item in speech.speakers"
                             :key="item.id"
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
+                            class="text-stone-800 hover:bg-stone-100 dark:text-white dark:hover:bg-slate-800"
                         >
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
                                 {{ item.privilege }}
