@@ -1,5 +1,5 @@
 <script setup>
-import { Link, usePage } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import { ref } from "vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -55,12 +55,12 @@ const toggleOrder = (field) => {
 </script>
 
 <template>
+    <Head :title="name" />
+
     <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <div
-            class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
-        >
-            <div class="flex flex-col gap-4 md:w-full md:flex-row">
-                <div class="relative">
+        <div class="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-center md:flex-1">
+                <div class="w-full sm:max-w-xs">
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
@@ -70,85 +70,50 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
-                <div class="flex items-center gap-x-3">
-                    <div class="relative flex gap-x-3">
-                        <div class="flex h-6 items-center">
-                            <Checkbox
-                                id="sexta"
-                                v-model="filters.friday"
-                                name="sexta"
-                            />
-                        </div>
-                        <div class="text-sm leading-6">
-                            <label
-                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                for="sexta"
-                            >
-                                Sexta
-                            </label>
-                        </div>
-                    </div>
-                    <div class="relative flex gap-x-3">
-                        <div class="flex h-6 items-center">
-                            <Checkbox
-                                id="sabado"
-                                v-model="filters.saturday"
-                                name="sabado"
-                            />
-                        </div>
-                        <div class="text-sm leading-6">
-                            <label
-                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                for="sabado"
-                            >
-                                Sábado
-                            </label>
-                        </div>
-                    </div>
-                    <div class="relative flex gap-x-3">
-                        <div class="flex h-6 items-center">
-                            <Checkbox
-                                id="domingo"
-                                v-model="filters.sunday"
-                                name="domingo"
-                            />
-                        </div>
-                        <div class="text-sm leading-6">
-                            <label
-                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                for="domingo"
-                            >
-                                Domingo
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <a
-                        :href="route('bus.download-list')"
-                        class="flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
-                        type="button"
-                    >
-                        Baixar excel
-                    </a>
-                    <DeleteLink
-                        class="!text-center !text-base !font-semibold !tracking-normal"
-                        @click="
-                            () => {
-                                showModal = true;
-                                selectedItem = 'TODOS OS REGISTROS!';
-                                deleteUrl = `bus/delete-all`;
-                            }
-                        "
-                    >
-                        Excluir arranjo
-                    </DeleteLink>
+                <div class="flex flex-wrap gap-x-4 gap-y-2">
+                    <label class="flex cursor-pointer items-center gap-2">
+                        <Checkbox
+                            id="sexta"
+                            v-model="filters.friday"
+                            name="sexta"
+                        />
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sexta</span>
+                    </label>
+                    <label class="flex cursor-pointer items-center gap-2">
+                        <Checkbox
+                            id="sabado"
+                            v-model="filters.saturday"
+                            name="sabado"
+                        />
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sábado</span>
+                    </label>
+                    <label class="flex cursor-pointer items-center gap-2">
+                        <Checkbox
+                            id="domingo"
+                            v-model="filters.sunday"
+                            name="domingo"
+                        />
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Domingo</span>
+                    </label>
                 </div>
             </div>
-            <Link :href="route('bus.create')" class="btn-novo"> Novo</Link>
-            <Link :href="route('passengers.index')" class="btn-novo">
-                Passageiros
-            </Link>
+            <div class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap">
+                <a
+                    :href="route('bus.download-list')"
+                    class="btn-novo"
+                >
+                    Baixar excel
+                </a>
+                <button
+                    class="btn-novo-danger"
+                    type="button"
+                    @click="() => { showModal = true; selectedItem = 'TODOS OS REGISTROS!'; deleteUrl = 'bus/delete-all'; }"
+                >
+                    Excluir arranjo
+                </button>
+                <Link :href="route('bus.create')" class="btn-novo">Novo</Link>
+                <Link :href="route('passengers.index')" class="btn-novo">Passageiros</Link>
+            </div>
         </div>
     </div>
 
@@ -158,7 +123,7 @@ const toggleOrder = (field) => {
                 Chave pix: 11966615727
             </p>
         </div>
-        <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
+        <div class="px-0 py-4">
             <MobileList
                 :list="list"
                 :order-dir="filters.orderDir"
@@ -167,15 +132,15 @@ const toggleOrder = (field) => {
                 @toggle-order="toggleOrder"
             />
             <div
-                class="inline-block hidden min-w-full overflow-hidden rounded-lg shadow md:block"
+                class="inline-block min-w-full overflow-hidden rounded-lg shadow"
             >
-                <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
+                <table class="hidden min-w-full table-fixed bg-white dark:bg-gray-800 md:block">
                     <thead>
                         <tr
                             class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
                         >
                             <th
-                                class="w-[10%] cursor-pointer px-5 py-5 text-left text-sm uppercase"
+                                class="w-[14%] cursor-pointer px-3 py-5 text-left text-sm uppercase"
                                 scope="col"
                                 @click="toggleOrder('passengers.name')"
                             >
@@ -224,7 +189,7 @@ const toggleOrder = (field) => {
                                 Pago
                             </th>
                             <th
-                                class="px-5 py-5 text-left text-sm uppercase"
+                                class="w-[14%] px-3 py-5 text-left text-sm uppercase"
                                 scope="col"
                             >
                                 Obs
@@ -256,7 +221,7 @@ const toggleOrder = (field) => {
                             :key="item.id"
                             class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
                         >
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                            <td class="break-words px-3 py-5 text-sm">
                                 {{ item.passenger.name }}
                             </td>
                             <td class="whitespace-nowrap px-5 py-5 text-sm">
@@ -347,7 +312,7 @@ const toggleOrder = (field) => {
                                     })
                                 }}
                             </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
+                            <td class="break-words px-3 py-5 text-sm">
                                 {{ item.obs }}
                             </td>
                             <td class="whitespace-nowrap px-5 py-5 text-sm">

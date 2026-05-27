@@ -35,69 +35,44 @@ let selectedItem = ref({});
                         class="divide-y divide-gray-200 dark:divide-gray-700"
                         role="list"
                     >
-                        <li class="p-4 sm:p-4">
-                            <div class="flex flex-col gap-2">
-                                <div class="flex justify-between">
-                                    <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
-                                    >
-                                        Sexta: {{ totais.friday }}
-                                    </p>
-                                    <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
-                                    >
-                                        Sábado: {{ totais.saturday }}
-                                    </p>
-                                    <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
-                                    >
-                                        Domingo: {{ totais.sunday }}
-                                    </p>
+                        <li class="p-4">
+                            <div class="flex flex-col gap-3">
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div>
+                                        <p class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Sexta</p>
+                                        <p class="text-base font-semibold text-gray-900 dark:text-gray-100">{{ totais.friday }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Sábado</p>
+                                        <p class="text-base font-semibold text-gray-900 dark:text-gray-100">{{ totais.saturday }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Domingo</p>
+                                        <p class="text-base font-semibold text-gray-900 dark:text-gray-100">{{ totais.sunday }}</p>
+                                    </div>
                                 </div>
-                                <div class="flex justify-between">
-                                    <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
-                                    >
-                                        A pagar:
-                                        {{
-                                            totais.total.toLocaleString("pt-BR", {
-                                                style: "currency",
-                                                currency: "BRL",
-                                            })
-                                        }}
-                                    </p>
-                                    <p
-                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-100"
-                                    >
-                                        Pago:
-                                        {{
-                                            totais.amount.toLocaleString(
-                                                "pt-BR",
-                                                {
-                                                    style: "currency",
-                                                    currency: "BRL",
-                                                }
-                                            )
-                                        }}
-                                    </p>
-                                    <p
-                                        :class="
-                                            totais.amount - totais.total < 0
-                                                ? 'text-red-500'
-                                                : 'text-gray-900 dark:text-gray-100'
-                                        "
-                                        class="inline-flex items-center text-base font-semibold"
-                                    >
-                                        Saldo:
-                                        {{
-                                            (
-                                                totais.amount - totais.total
-                                            ).toLocaleString("pt-BR", {
-                                                style: "currency",
-                                                currency: "BRL",
-                                            })
-                                        }}
-                                    </p>
+                                <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                                    <div class="flex justify-between py-1.5">
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">A pagar</span>
+                                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                            {{ totais.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) }}
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5">
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">Pago</span>
+                                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                            {{ totais.amount.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) }}
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between py-1.5">
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">Saldo</span>
+                                        <span
+                                            :class="totais.amount - totais.total < 0 ? 'text-red-500' : 'text-gray-900 dark:text-gray-100'"
+                                            class="text-sm font-semibold"
+                                        >
+                                            {{ (totais.amount - totais.total).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </li>

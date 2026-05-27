@@ -48,11 +48,9 @@ const toggleOrder = (field) => {
     <Head :title="name" />
 
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div
-            class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
-        >
-            <div class="flex w-full flex-col gap-4 md:flex-row md:items-center">
-                <div class="relative">
+        <div class="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-center md:flex-1">
+                <div class="w-full sm:max-w-xs">
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
@@ -62,24 +60,20 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
-                <div class="relative flex gap-4">
-                    <label class="flex items-center">
+                <div class="flex flex-wrap gap-x-4 gap-y-2">
+                    <label class="flex cursor-pointer items-center gap-2">
                         <Checkbox
                             v-model:checked="filters.hasSpeakers"
                             class="h-4 w-4"
                         />
-                        <span class="ml-2 text-gray-600 dark:text-gray-400">
-                            Já preparado?
-                        </span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Já preparado?</span>
                     </label>
-                    <label class="flex items-center">
+                    <label class="flex cursor-pointer items-center gap-2">
                         <Checkbox
                             v-model:checked="filters.moreThan2Years"
                             class="h-4 w-4"
                         />
-                        <span class="ml-2 text-gray-600 dark:text-gray-400">
-                            Pode ser feito?
-                        </span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Pode ser feito?</span>
                     </label>
                 </div>
             </div>
@@ -87,8 +81,7 @@ const toggleOrder = (field) => {
                 v-if="$page.props.auth.user.id === 1"
                 :href="route('speeches.create')"
                 class="btn-novo"
-                >Novo</Link
-            >
+            >Novo</Link>
         </div>
 
         <div

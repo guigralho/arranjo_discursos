@@ -47,11 +47,9 @@ const toggleOrder = (field) => {
     <Head :title="name" />
 
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div
-            class="mb-1 flex w-full flex-col items-center justify-between gap-x-4 sm:mb-0 md:flex-row"
-        >
-            <div class="flex w-full flex-col gap-4 md:flex-row md:items-center">
-                <div class="relative">
+        <div class="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-center md:flex-1">
+                <div class="w-full sm:max-w-xs">
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
@@ -61,30 +59,25 @@ const toggleOrder = (field) => {
                         type="text"
                     />
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <a
-                        v-if="selectedIds.length > 0"
-                        :href="
-                            route('speakers.download-speeches', {
-                                ids: selectedIds,
-                            })
-                        "
-                        class="w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto"
-                        type="button"
-                    >
-                        Baixar temas
-                    </a>
-                    <button
-                        v-if="selectedIds.length > 0"
-                        class="w-full flex-shrink-0 rounded-lg bg-red-700 px-4 py-2 text-center text-base font-semibold text-white shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2 focus:ring-offset-red-200 dark:bg-red-800 dark:hover:bg-red-900 md:w-auto"
-                        type="button"
-                        @click="clearSelection"
-                    >
-                        Limpar seleção
-                    </button>
-                </div>
             </div>
-            <Link :href="route('speakers.create')" class="btn-novo">Novo</Link>
+            <div class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap">
+                <a
+                    v-if="selectedIds.length > 0"
+                    :href="route('speakers.download-speeches', { ids: selectedIds })"
+                    class="btn-novo"
+                >
+                    Baixar temas
+                </a>
+                <button
+                    v-if="selectedIds.length > 0"
+                    class="btn-novo-danger"
+                    type="button"
+                    @click="clearSelection"
+                >
+                    Limpar seleção
+                </button>
+                <Link :href="route('speakers.create')" class="btn-novo" :class="selectedIds.length > 0 ? '' : 'col-span-2 sm:col-span-1'">Novo</Link>
+            </div>
         </div>
         <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
             <div

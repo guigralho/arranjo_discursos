@@ -46,13 +46,9 @@ const toggleOrder = (field) => {
     <Head :title="name" />
 
     <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-        <div
-            class="mb-1 flex w-full flex-col items-center justify-between gap-4 sm:mb-0 md:flex-row"
-        >
-            <div
-                class="flex flex-col gap-4 md:w-full md:flex-row md:items-center"
-            >
-                <div class="relative">
+        <div class="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-center md:flex-1">
+                <div class="w-full sm:max-w-xs">
                     <TextInput
                         v-model="filters.search"
                         autocomplete="off"
@@ -63,9 +59,7 @@ const toggleOrder = (field) => {
                     />
                 </div>
             </div>
-            <Link :href="route('passengers.create')" class="btn-novo"
-                >Novo
-            </Link>
+            <Link :href="route('passengers.create')" class="btn-novo">Novo</Link>
         </div>
 
         <div
