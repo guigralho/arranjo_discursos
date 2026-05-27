@@ -133,7 +133,7 @@
                                                 active
                                                     ? 'bg-gray-50 dark:bg-white/5'
                                                     : '',
-                                                'flex items-center gap-2.5 px-4 py-2 text-sm text-red-500',
+                                                'flex w-full items-center gap-2.5 px-4 py-2 text-sm text-red-500',
                                             ]"
                                             :href="route('logout')"
                                             method="post"
@@ -226,6 +226,7 @@ const navigation = ref([]);
 
 const setNavigation = () => {
     const isAdmin = page.props.auth.user.id === 1;
+    const onlyBus = page.props.auth.user.id === 14;
 
     navigation.value = [
         {
@@ -240,28 +241,28 @@ const setNavigation = () => {
             href: route("schedules.index"),
             current: route().current("schedules*"),
             icon: CalendarDaysIcon,
-            visible: true,
+            visible: !onlyBus,
         },
         {
             name: "Discursos",
             href: route("speeches.index"),
             current: route().current("speeches*"),
             icon: BookOpenIcon,
-            visible: true,
+            visible: !onlyBus,
         },
         {
             name: "Oradores",
             href: route("speakers.index"),
             current: route().current("speakers*"),
             icon: MicrophoneIcon,
-            visible: true,
+            visible: !onlyBus,
         },
         {
             name: "Ônibus",
             href: route("bus.index"),
             current: route().current("bus*"),
             icon: TruckIcon,
-            visible: isAdmin,
+            visible: isAdmin || onlyBus,
         },
     ];
 };
