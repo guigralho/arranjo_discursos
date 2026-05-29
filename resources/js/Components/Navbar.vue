@@ -22,7 +22,7 @@
                 </Link>
 
                 <!-- Desktop nav -->
-                <nav class="hidden flex-1 items-center gap-1 sm:flex">
+                <nav class="hidden flex-1 items-center gap-1 lg:flex">
                     <template v-for="item in navigation" :key="item.name">
                         <Link
                             v-if="item.visible"
@@ -152,7 +152,7 @@
 
                     <!-- Mobile hamburger -->
                     <DisclosureButton
-                        class="ml-1 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-700 sm:hidden"
+                        class="ml-1 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-700 lg:hidden"
                     >
                         <Bars3Icon v-if="!open" class="h-5 w-5" />
                         <XMarkIcon v-else class="h-5 w-5" />
@@ -163,7 +163,7 @@
 
         <!-- Mobile menu -->
         <DisclosurePanel
-            class="border-t border-gray-100 dark:border-gray-700 sm:hidden"
+            class="border-t border-gray-100 dark:border-gray-700 lg:hidden"
         >
             <div class="space-y-0.5 px-3 py-2">
                 <template v-for="item in navigation" :key="item.name">

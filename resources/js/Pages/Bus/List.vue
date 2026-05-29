@@ -19,7 +19,7 @@ const props = defineProps({
     filters: Object,
 });
 
-const { filters, updateFilter } = useDebounceSearch('/bus', {
+const { filters, updateFilter } = useDebounceSearch("/bus", {
     page: props.filters.page,
     search: props.filters.search,
     friday: props.filters.friday,
@@ -39,17 +39,16 @@ const pagar =
         parseInt(props.totais.sunday)) *
     usePage().props.valor_onibus;
 
-
 const toggleOrder = (field) => {
-    updateFilter('orderField', field);
+    updateFilter("orderField", field);
 
     if (filters.value.orderDir === undefined) {
-        updateFilter('orderDir', "asc");
+        updateFilter("orderDir", "asc");
     } else if (filters.value.orderDir === "asc") {
-        updateFilter('orderDir', "desc");
+        updateFilter("orderDir", "desc");
     } else if (filters.value.orderDir === "desc") {
-        updateFilter('orderDir', undefined);
-        updateFilter('orderField', "");
+        updateFilter("orderDir", undefined);
+        updateFilter("orderField", "");
     }
 };
 </script>
@@ -57,9 +56,13 @@ const toggleOrder = (field) => {
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <div class="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-center md:flex-1">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div
+            class="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between"
+        >
+            <div
+                class="flex w-full flex-col gap-3 sm:flex-row sm:items-center md:flex-1"
+            >
                 <div class="w-full sm:max-w-xs">
                     <TextInput
                         v-model="filters.search"
@@ -77,7 +80,10 @@ const toggleOrder = (field) => {
                             v-model="filters.friday"
                             name="sexta"
                         />
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sexta</span>
+                        <span
+                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >Sexta</span
+                        >
                     </label>
                     <label class="flex cursor-pointer items-center gap-2">
                         <Checkbox
@@ -85,7 +91,10 @@ const toggleOrder = (field) => {
                             v-model="filters.saturday"
                             name="sabado"
                         />
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sábado</span>
+                        <span
+                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >Sábado</span
+                        >
                     </label>
                     <label class="flex cursor-pointer items-center gap-2">
                         <Checkbox
@@ -93,37 +102,47 @@ const toggleOrder = (field) => {
                             v-model="filters.sunday"
                             name="domingo"
                         />
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Domingo</span>
+                        <span
+                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >Domingo</span
+                        >
                     </label>
                 </div>
             </div>
-            <div class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap">
-                <a
-                    :href="route('bus.download-list')"
-                    class="btn-novo"
-                >
+            <div
+                class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap"
+            >
+                <a :href="route('bus.download-list')" class="btn-novo">
                     Baixar excel
                 </a>
                 <button
                     class="btn-novo-danger"
                     type="button"
-                    @click="() => { showModal = true; selectedItem = 'TODOS OS REGISTROS!'; deleteUrl = 'bus/delete-all'; }"
+                    @click="
+                        () => {
+                            showModal = true;
+                            selectedItem = 'TODOS OS REGISTROS!';
+                            deleteUrl = 'bus/delete-all';
+                        }
+                    "
                 >
                     Excluir arranjo
                 </button>
                 <Link :href="route('bus.create')" class="btn-novo">Novo</Link>
-                <Link :href="route('passengers.index')" class="btn-novo">Passageiros</Link>
+                <Link :href="route('passengers.index')" class="btn-novo"
+                    >Passageiros</Link
+                >
             </div>
         </div>
     </div>
 
-    <div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div>
             <p class="text-gray-800 dark:text-gray-100">
                 Chave pix: 11966615727
             </p>
         </div>
-        <div class="px-0 py-4">
+        <div class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
             <MobileList
                 :list="list"
                 :order-dir="filters.orderDir"
@@ -134,13 +153,15 @@ const toggleOrder = (field) => {
             <div
                 class="inline-block min-w-full overflow-hidden rounded-lg shadow"
             >
-                <table class="hidden min-w-full table-fixed bg-white dark:bg-gray-800 md:block">
+                <table
+                    class="hidden min-w-full table-fixed bg-white dark:bg-gray-800 md:block"
+                >
                     <thead>
                         <tr
                             class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
                         >
                             <th
-                                class="w-[14%] cursor-pointer px-3 py-5 text-left text-sm uppercase"
+                                class="cursor-pointer px-3 py-5 text-left text-sm uppercase"
                                 scope="col"
                                 @click="toggleOrder('passengers.name')"
                             >
@@ -189,7 +210,7 @@ const toggleOrder = (field) => {
                                 Pago
                             </th>
                             <th
-                                class="w-[14%] px-3 py-5 text-left text-sm uppercase"
+                                class="px-3 py-5 text-left text-sm uppercase"
                                 scope="col"
                             >
                                 Obs
@@ -412,13 +433,12 @@ const toggleOrder = (field) => {
                                 class="px-5 py-5 text-sm"
                             >
                                 {{
-                                    (totais.amount - totais.total).toLocaleString(
-                                        "pt-BR",
-                                        {
-                                            style: "currency",
-                                            currency: "BRL",
-                                        }
-                                    )
+                                    (
+                                        totais.amount - totais.total
+                                    ).toLocaleString("pt-BR", {
+                                        style: "currency",
+                                        currency: "BRL",
+                                    })
                                 }}
                             </td>
                             <td></td>
