@@ -154,7 +154,7 @@ const toggleOrder = (field) => {
                 class="inline-block min-w-full overflow-hidden rounded-lg shadow"
             >
                 <table
-                    class="hidden min-w-full table-fixed bg-white dark:bg-gray-800 md:block"
+                    class="hidden min-w-full table-fixed bg-white dark:bg-gray-800 md:table"
                 >
                     <thead>
                         <tr
