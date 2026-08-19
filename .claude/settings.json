@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "ponytail@ponytail": true,
+    "laravel@laravel": true,
+    "chrome-devtools-mcp@chrome-devtools-plugins": true
+  }
+}
