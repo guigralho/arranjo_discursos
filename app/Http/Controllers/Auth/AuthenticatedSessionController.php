@@ -33,7 +33,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // ponytail: id hardcoded, virar flag em users se passar de um usuário
+        $route = $request->user()->id === 14 ? 'bus.index' : 'dashboard';
+
+        return redirect()->intended(route($route, absolute: false));
     }
 
     /**
