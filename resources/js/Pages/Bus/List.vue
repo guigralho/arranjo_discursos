@@ -165,6 +165,9 @@ const toggleOrder = (field) => {
                             :href="route('bus.download-list')"
                             :class="dropdownItemClass"
                         >
+                            <font-awesome-icon
+                                icon="fa-solid fa-file-excel"
+                            />
                             Baixar excel
                         </a>
                         <button
@@ -172,6 +175,9 @@ const toggleOrder = (field) => {
                             type="button"
                             @click="showFareModal = true"
                         >
+                            <font-awesome-icon
+                                icon="fa-solid fa-dollar"
+                            />
                             Valor da passagem
                         </button>
                         <button
@@ -179,7 +185,12 @@ const toggleOrder = (field) => {
                             type="button"
                             @click="confirmDeleteAll"
                         >
-                            Excluir arranjo
+                            <span class="text-red-500">
+                                <font-awesome-icon
+                                    icon="fa-solid fa-trash"
+                                />
+                                Excluir arranjo
+                            </span>
                         </button>
                     </template>
                 </Dropdown>
