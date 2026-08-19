@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import LoadingButton from "@/Components/LoadingButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SelectInput from "@/Components/SelectInput.vue";
+import { vMaska } from "maska/vue";
 
 defineProps({
     submit: Function,
@@ -15,15 +16,10 @@ defineProps({
     },
 });
 
+const phoneMask = { mask: ["(##) ####-####", "(##) #####-####"] };
+
 const back = () => {
     window.history.back();
-};
-</script>
-
-<script>
-import { mask } from "vue-the-mask";
-export default {
-    directives: { mask },
 };
 </script>
 
@@ -70,7 +66,7 @@ export default {
                         id="phone"
                         ref="phoneInput"
                         v-model="form.phone"
-                        v-mask="['(##) ####-####', '(##) #####-####']"
+                        v-maska="phoneMask"
                         autocomplete="off"
                         class="mt-1 block w-full"
                         type="tel"

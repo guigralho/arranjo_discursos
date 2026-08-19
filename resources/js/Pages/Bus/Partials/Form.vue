@@ -6,6 +6,7 @@ import SaveButton from "@/Components/Buttons/SaveButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SearchableSelect from "@/Components/SearchableSelect.vue";
+import { vMaska } from "maska/vue";
 
 defineProps({
     submit: Function,
@@ -16,6 +17,8 @@ defineProps({
         default: null,
     },
 });
+
+const moneyMask = { number: { locale: "pt-BR", fraction: 2, unsigned: true } };
 
 function priceFormat(price) {
     // Replace all occurrences of '.' with an empty string
@@ -117,6 +120,7 @@ function priceFormat(price) {
                     <TextInput
                         id="amount"
                         v-model="form.amount"
+                        v-maska="moneyMask"
                         autocomplete="off"
                         class="mt-1 block w-full"
                         type="text"

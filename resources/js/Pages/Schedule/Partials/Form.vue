@@ -7,6 +7,7 @@ import LoadingButton from "@/Components/LoadingButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Datepicker from "flowbite-datepicker/Datepicker";
 import { onMounted } from "vue";
+import { vMaska } from "maska/vue";
 
 const props = defineProps({
     submit: Function,
@@ -16,6 +17,8 @@ const props = defineProps({
         default: null,
     },
 });
+
+const phoneMask = { mask: ["(##) ####-####", "(##) #####-####"] };
 
 onMounted(() => {
     // the DOM element will be assigned to the ref after initial render
@@ -164,6 +167,7 @@ const changeVal = (val) => {
                             id="phone"
                             ref="phoneInput"
                             v-model="form.phone"
+                            v-maska="phoneMask"
                             autocomplete="off"
                             class="mt-1 block w-full"
                             placeholder="(xx) xxxxx-xxxx"
