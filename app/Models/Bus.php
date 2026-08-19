@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Bus extends Model
 {
     use HasFactory, SoftDeletes;
@@ -20,7 +19,7 @@ class Bus extends Model
     public static function boot()
     {
         parent::boot();
-        self::observe(new DeleteObserver());
+        self::observe(new DeleteObserver);
     }
 
     /**
@@ -49,7 +48,7 @@ class Bus extends Model
 
     public function getTotalAttribute()
     {
-        return ($this->friday + $this->saturday + $this->sunday) * config('app.valor_onibus');
+        return ($this->friday + $this->saturday + $this->sunday) * Setting::get('valor_onibus', 0);
     }
 
     public function getSaldoAttribute()

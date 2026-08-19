@@ -2,8 +2,6 @@
 
 return [
 
-    'valor_onibus' => env('VALOR_ONIBUS', 0),
-
     'name' => env('APP_NAME', 'Laravel'),
 
     'env' => env('APP_ENV', 'production'),

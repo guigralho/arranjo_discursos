@@ -7,6 +7,7 @@ use App\Http\Requests\BusRequest;
 use App\Http\Resources\BusResource;
 use App\Models\Bus;
 use App\Models\Passenger;
+use App\Models\Setting;
 use App\Services\BusService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -142,6 +143,18 @@ class BusController extends Controller
         DB::table('buses')->delete();
 
         Session::flash('message', ['value' => 'Excluído com sucesso!', 'uuid' => uniqid()]);
+
+        return Redirect::back();
+    }
+
+    public function updateFare(Request $request)
+    {
+        $data = $request->validate(['valor_onibus' => 'required|numeric|min:0']);
+
+        Setting::query()->updateOrCreate(['key' => 'valor_onibus'], ['value' => $data['valor_onibus']]);
+        Setting::flush();
+
+        Session::flash('message', ['value' => 'Valor atualizado com sucesso!', 'uuid' => uniqid()]);
 
         return Redirect::back();
     }

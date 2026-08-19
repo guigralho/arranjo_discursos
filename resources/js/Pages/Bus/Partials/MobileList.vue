@@ -4,20 +4,13 @@ import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import EditLink from "@/Components/Buttons/EditLink.vue";
 import { ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
-import { usePage } from "@inertiajs/vue3";
 
-const props = defineProps({
+defineProps({
     list: Object,
     totais: Object,
     orderField: String,
     orderDir: String,
 });
-
-const pagar =
-    (parseInt(props.totais.friday) +
-        parseInt(props.totais.saturday) +
-        parseInt(props.totais.sunday)) *
-    usePage().props.valor_onibus;
 
 let showModal = ref(false);
 let selectedItem = ref({});

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -18,7 +19,7 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      */
-    public function version(Request $request): string|null
+    public function version(Request $request): ?string
     {
         return parent::version($request);
     }
@@ -33,9 +34,9 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'app' => [
                 'name' => config('app.name'),
-                'url' => config('app.url')
+                'url' => config('app.url'),
             ],
-            'valor_onibus' => config('app.valor_onibus'),
+            'valor_onibus' => Setting::get('valor_onibus', 0),
             'flash' => [
                 'message' => $request->session()->get('message'),
             ],
@@ -45,7 +46,7 @@ class HandleInertiaRequests extends Middleware
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
-                    'query' => $request->query()
+                    'query' => $request->query(),
                 ]);
             },
         ]);

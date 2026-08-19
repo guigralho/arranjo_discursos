@@ -264,6 +264,13 @@ const setNavigation = () => {
             icon: TruckIcon,
             visible: isAdmin || onlyBus,
         },
+        {
+            name: "Passageiros",
+            href: route("passengers.index"),
+            current: route().current("passengers*"),
+            icon: TruckIcon,
+            visible: isAdmin || onlyBus,
+        },
     ];
 };
 

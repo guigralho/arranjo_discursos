@@ -1,15 +1,21 @@
 <script setup>
-import { Head, Link, usePage } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import { ref } from "vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import InputError from "@/Components/InputError.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import MobileList from "@/Pages/Bus/Partials/MobileList.vue";
-import DeleteLink from "@/Components/Buttons/DeleteLink.vue";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
+import Modal from "@/Components/Modal.vue";
+import Dropdown from "@/Components/Dropdown.vue";
+import LoadingButton from "@/Components/LoadingButton.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import { useDebounceSearch } from "@/composables/useDebounceSearch";
+import { vMaska } from "maska/vue";
 
 const props = defineProps({
     name: String,
@@ -33,11 +39,45 @@ const deleteUrl = ref("");
 const showModal = ref(false);
 const selectedItem = ref("");
 
-const pagar =
-    (parseInt(props.totais.friday) +
-        parseInt(props.totais.saturday) +
-        parseInt(props.totais.sunday)) *
-    usePage().props.valor_onibus;
+const dropdownItemClass =
+    "block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out";
+
+const confirmDeleteAll = () => {
+    showModal.value = true;
+    selectedItem.value = "TODOS OS REGISTROS!";
+    deleteUrl.value = "bus/delete-all";
+};
+
+function priceFormat(price) {
+    // Replace all occurrences of '.' with an empty string
+    let valueFormatted = price.replace(/\./g, "");
+
+    // Replace ',' with '.'
+    valueFormatted = valueFormatted.replace(",", ".");
+
+    return valueFormatted;
+}
+
+const moneyMask = { number: { locale: "pt-BR", fraction: 2, unsigned: true } };
+
+const showFareModal = ref(false);
+const fareForm = useForm({
+    valor_onibus: Number(usePage().props.valor_onibus).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }),
+});
+
+const saveFare = () => {
+    fareForm
+        .transform((data) => ({
+            valor_onibus: priceFormat(data.valor_onibus),
+        }))
+        .put(route("bus.update-fare"), {
+            preserveScroll: true,
+            onSuccess: () => (showFareModal.value = false),
+        });
+};
 
 const toggleOrder = (field) => {
     updateFilter("orderField", field);
@@ -109,29 +149,41 @@ const toggleOrder = (field) => {
                     </label>
                 </div>
             </div>
-            <div
-                class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap"
-            >
-                <a :href="route('bus.download-list')" class="btn-novo">
-                    Baixar excel
-                </a>
-                <button
-                    class="btn-novo-danger"
-                    type="button"
-                    @click="
-                        () => {
-                            showModal = true;
-                            selectedItem = 'TODOS OS REGISTROS!';
-                            deleteUrl = 'bus/delete-all';
-                        }
-                    "
-                >
-                    Excluir arranjo
-                </button>
+            <div class="flex w-full gap-2 sm:w-auto sm:flex-wrap">
+                <Dropdown align="right" width="48">
+                    <template #trigger>
+                        <button class="btn-novo" type="button">
+                            Ações
+                            <font-awesome-icon
+                                class="ml-1"
+                                icon="fa-solid fa-angle-down"
+                            />
+                        </button>
+                    </template>
+                    <template #content>
+                        <a
+                            :href="route('bus.download-list')"
+                            :class="dropdownItemClass"
+                        >
+                            Baixar excel
+                        </a>
+                        <button
+                            :class="dropdownItemClass"
+                            type="button"
+                            @click="showFareModal = true"
+                        >
+                            Valor da passagem
+                        </button>
+                        <button
+                            :class="dropdownItemClass"
+                            type="button"
+                            @click="confirmDeleteAll"
+                        >
+                            Excluir arranjo
+                        </button>
+                    </template>
+                </Dropdown>
                 <Link :href="route('bus.create')" class="btn-novo">Novo</Link>
-                <Link :href="route('passengers.index')" class="btn-novo"
-                    >Passageiros</Link
-                >
             </div>
         </div>
     </div>
@@ -454,5 +506,46 @@ const toggleOrder = (field) => {
             :to-delete="selectedItem"
             @close="showModal = false"
         />
+
+        <Modal :show="showFareModal" max-width="md" @close="showFareModal = false">
+            <p class="text-xl font-bold dark:text-gray-400">
+                Valor da passagem
+            </p>
+            <div class="mt-6">
+                <InputLabel for="valor_onibus" value="Valor por dia" />
+                <TextInput
+                    id="valor_onibus"
+                    v-model="fareForm.valor_onibus"
+                    v-maska="moneyMask"
+                    autocomplete="off"
+                    class="mt-1 dark:bg-gray-800 dark:text-gray-200"
+                    type="text"
+                    @keyup.enter="saveFare"
+                />
+                <InputError
+                    :message="fareForm.errors.valor_onibus"
+                    class="mt-2"
+                />
+            </div>
+            <div class="mt-6 flex flex-row justify-evenly space-x-2">
+                <LoadingButton
+                    :block="true"
+                    :loading="fareForm.processing"
+                    class="uppercase"
+                    color="green"
+                    loading-text="Salvando..."
+                    text="Salvar"
+                    @click="saveFare"
+                />
+                <PrimaryButton
+                    :block="true"
+                    :disabled="fareForm.processing"
+                    type="button"
+                    @click="showFareModal = false"
+                >
+                    Cancelar
+                </PrimaryButton>
+            </div>
+        </Modal>
     </div>
 </template>

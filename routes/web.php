@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/bus/download-list', [BusController::class, 'downloadList'])->name('bus.download-list');
     Route::delete('/bus/delete-all', [BusController::class, 'deleteAll'])->name('bus.delete-all');
+    Route::put('/bus/fare', [BusController::class, 'updateFare'])->name('bus.update-fare');
     Route::resource('/bus', BusController::class);
 
     Route::resource('/passengers', PassengerController::class);
