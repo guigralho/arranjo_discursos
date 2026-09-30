@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\ReceiveSpeakers;
+use App\Models\Schedule;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,9 +38,64 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
+        $meetingDayChanged = $request->user()->isDirty('meeting_day');
+        $oldMeetingDay = $request->user()->getOriginal('meeting_day');
+
         $request->user()->save();
 
+        if ($meetingDayChanged && $oldMeetingDay !== null && $request->user()->meeting_day !== null) {
+            $this->moveReceiveDates((int) $oldMeetingDay, (int) $request->user()->meeting_day);
+        }
+
         return Redirect::route('profile.edit');
+    }
+
+    /**
+     * Move as datas de recebimento programadas (mês atual em diante) para o novo dia de reunião.
+     * Datas que cruzam o mês são excluídas; ocorrências novas do dia dentro do mês são criadas vazias.
+     */
+    private function moveReceiveDates(int $oldDay, int $newDay): void
+    {
+        $offset = (($newDay - $oldDay + 10) % 7) - 3;
+
+        Schedule::where('month', '>=', now()->startOfMonth()->format('Y-m-d'))
+            ->with('toReceive')
+            ->get()
+            ->each(function (Schedule $schedule) use ($oldDay, $newDay, $offset) {
+                $month = Carbon::parse($schedule->month);
+
+                foreach ($schedule->toReceive as $receive) {
+                    $date = Carbon::parse($receive->getRawOriginal('date'));
+
+                    if ($date->dayOfWeek !== $oldDay) {
+                        continue;
+                    }
+
+                    $date->addDays($offset);
+
+                    if ($date->isSameMonth($month)) {
+                        $receive->update(['date' => $date->format('Y-m-d')]);
+                    } else {
+                        $receive->delete();
+                    }
+                }
+
+                $this->createMissingReceiveDates($schedule, $month, $newDay);
+            });
+    }
+
+    private function createMissingReceiveDates(Schedule $schedule, Carbon $month, int $meetingDay): void
+    {
+        $existingDates = $schedule->toReceive()->get()
+            ->map(fn (ReceiveSpeakers $receive) => Carbon::parse($receive->getRawOriginal('date'))->format('Y-m-d'));
+
+        foreach ($month->copy()->startOfMonth()->daysUntil($month->copy()->endOfMonth()) as $day) {
+            $formattedDay = $day->format('Y-m-d');
+
+            if ($day->dayOfWeek === $meetingDay && ! $existingDates->contains($formattedDay)) {
+                $schedule->toReceive()->create(['date' => $formattedDay]);
+            }
+        }
     }
 
     /**
