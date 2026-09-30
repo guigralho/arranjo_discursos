@@ -5,8 +5,7 @@ import SelectInput from "@/Components/SelectInput.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import LoadingButton from "@/Components/LoadingButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import Datepicker from "flowbite-datepicker/Datepicker";
-import { onMounted } from "vue";
+import { vDatepicker } from "@/composables/vDatepicker";
 import { vMaska } from "maska/vue";
 
 const props = defineProps({
@@ -20,19 +19,7 @@ const props = defineProps({
 
 const phoneMask = { mask: ["(##) ####-####", "(##) #####-####"] };
 
-onMounted(() => {
-    // the DOM element will be assigned to the ref after initial render
-    new Datepicker(document.getElementById("datepickerId"), {
-        format: "mm/yyyy",
-        startView: 1,
-        pickLevel: 1,
-        autohide: true,
-    });
-});
-
-const changeVal = (val) => {
-    props.form.formatted_month = val;
-};
+const monthPicker = { format: "mm/yyyy", startView: 1, pickLevel: 1 };
 </script>
 
 <template>
@@ -52,11 +39,10 @@ const changeVal = (val) => {
                             id="datepickerId"
                             ref="dateInput"
                             v-model="form.formatted_month"
+                            v-datepicker="monthPicker"
                             autocomplete="off"
                             class="mt-1 block w-full"
-                            datepicker
                             type="text"
-                            @focusout="changeVal($event.target.value)"
                         />
                         <InputError
                             :message="form.errors.formatted_month"

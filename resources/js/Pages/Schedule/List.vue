@@ -3,12 +3,13 @@ import { Head, Link } from "@inertiajs/vue3";
 import DeleteButton from "@/Components/Buttons/DeleteLink.vue";
 import EditButton from "@/Components/Buttons/EditLink.vue";
 import TablePaginator from "@/Components/TablePaginator.vue";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import DeleteModal from "@/Components/DeleteModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SortIcons from "@/Components/SortIcons.vue";
 import Datepicker from "flowbite-datepicker/Datepicker";
 import { useDebounceSearch } from "@/composables/useDebounceSearch";
+import { vDatepicker } from "@/composables/vDatepicker";
 
 const props = defineProps({
     name: String,
@@ -28,33 +29,29 @@ const { filters, updateFilter } = useDebounceSearch("/schedules", {
 const showModal = ref(false);
 const selectedItem = ref({});
 
-onMounted(() => {
-    Datepicker.locales.pt = {
-        monthsShort: [
-            "Jan",
-            "Fev",
-            "Mar",
-            "Abr",
-            "Mai",
-            "Jun",
-            "Jul",
-            "Ago",
-            "Set",
-            "Out",
-            "Nov",
-            "Dez",
-        ],
-    };
+Datepicker.locales.pt = {
+    monthsShort: [
+        "Jan",
+        "Fev",
+        "Mar",
+        "Abr",
+        "Mai",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Set",
+        "Out",
+        "Nov",
+        "Dez",
+    ],
+};
 
-    // the DOM element will be assigned to the ref after initial render
-    new Datepicker(document.getElementById("datepickerId"), {
-        format: "dd/mm/yyyy",
-        startView: 1,
-        pickLevel: 1,
-        autohide: true,
-        language: "pt",
-    });
-});
+const datePicker = {
+    format: "dd/mm/yyyy",
+    startView: 1,
+    pickLevel: 1,
+    language: "pt",
+};
 
 const toggleOrder = (field) => {
     updateFilter("orderField", field);
@@ -94,6 +91,7 @@ const changeVal = (val) => {
                     <TextInput
                         id="datepickerId"
                         v-model="filters.searchDate"
+                        v-datepicker="datePicker"
                         autocomplete="off"
                         class="h-9 dark:bg-gray-800 dark:text-gray-200"
                         name="searchDate"

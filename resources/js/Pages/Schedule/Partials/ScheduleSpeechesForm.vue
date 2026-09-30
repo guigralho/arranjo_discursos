@@ -5,9 +5,9 @@ import InputError from "@/Components/InputError.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import SaveButton from "@/Components/Buttons/SaveButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
-import Datepicker from "flowbite-datepicker/Datepicker";
+import { vDatepicker } from "@/composables/vDatepicker";
 import { useForm } from "@inertiajs/vue3";
-import { onMounted, onUpdated } from "vue";
+import { watch } from "vue";
 import debounce from "lodash/debounce";
 import axios from "axios";
 
@@ -38,15 +38,12 @@ const submit = () => {
 };
 
 const fillDates = () => {
-    props.dates.map((item, key) => {
-        form.weeks.push({
-            date: item.date,
-            speech: item.speech_id,
-            speaker:
-                props.speakers === undefined ? item.speaker : item.speaker_id,
-            is_guest: item.is_guest || false,
-        });
-    });
+    form.weeks = props.dates.map((item) => ({
+        date: item.date,
+        speech: item.speech_id,
+        speaker: props.speakers === undefined ? item.speaker : item.speaker_id,
+        is_guest: item.is_guest || false,
+    }));
 };
 
 const getSpeakerSpeeches = debounce(async function (val) {
@@ -92,25 +89,8 @@ const generateWhatsappLink = (item) => {
     return link;
 };
 
-onMounted(() => {
-    fillDates();
-});
+watch(() => props.dates, fillDates, { immediate: true });
 
-onUpdated(() => {
-    // the DOM element will be assigned to the ref after initial render
-    const inputs = document.getElementsByClassName("js-datepicker");
-    Array.prototype.forEach.call(inputs, function (el) {
-        // Do stuff here
-        new Datepicker(el, {
-            format: "dd/mm/yyyy",
-            autohide: true,
-        });
-    });
-});
-
-const changeVal = (val, item) => {
-    item.date = val;
-};
 </script>
 <template>
     <div class="mt-4 space-y-4">
@@ -182,11 +162,10 @@ const changeVal = (val, item) => {
                                 :id="`date${key + title}`"
                                 :ref="`date${key}`"
                                 v-model="item.date"
+                                v-datepicker="{ format: 'dd/mm/yyyy' }"
                                 autocomplete="off"
-                                class="js-datepicker mt-1 block w-full text-sm"
-                                datepicker
+                                class="mt-1 block w-full text-sm"
                                 type="text"
-                                @focusout="changeVal($event.target.value, item)"
                             />
                             <InputError
                                 :message="form.errors[`weeks.${key}.date`]"
