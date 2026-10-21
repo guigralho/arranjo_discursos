@@ -3,24 +3,17 @@
 namespace App\Models;
 
 use App\Observers\DeleteObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy(DeleteObserver::class)]
 class Bus extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $appends = ['total', 'saldo', 'formatted_amount'];
-
-    /**
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-        self::observe(new DeleteObserver);
-    }
 
     /**
      * @return mixed

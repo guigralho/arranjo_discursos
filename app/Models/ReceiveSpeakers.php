@@ -18,9 +18,17 @@ class ReceiveSpeakers extends Model
         'is_guest',
     ];
 
-    protected $casts = [
-        'is_guest' => 'boolean',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_guest' => 'boolean',
+        ];
+    }
 
     protected static function booted()
     {
