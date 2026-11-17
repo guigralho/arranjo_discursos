@@ -16,3 +16,6 @@ yarn-error.log
 /.fleet
 /.vscode
 .DS_Store
+
+# Local Playwright CLI screenshots, snapshots, and browser state
+.playwright-cli/
