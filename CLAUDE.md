@@ -166,3 +166,19 @@ This repository uses Laravel, Inertia.js, Vue 3, and Tailwind CSS v3. Apply thes
 - Keep using the existing Tailwind and Inertia/Vue skills; these new skills complement rather than replace them.
 
 For this product, prioritize the workflows around arranging public talks between congregations, speakers, dates, and talk subjects. Favor clear information hierarchy, fast scanning, responsive layouts, accessible controls, and coherent light/dark themes. Avoid generic AI-generated dashboard patterns and unnecessary decorative UI.
+
+
+## Playwright Visual Evaluation
+
+For every frontend change, use `.claude/skills/frontend-visual-review/SKILL.md` and perform a real browser review with the official Playwright CLI when available.
+
+One-time developer-machine setup (outside Sail):
+```bash
+npm install -g @playwright/cli@latest
+playwright-cli install
+playwright-cli install --skills
+```
+
+Run the Laravel app using Sail, then use `playwright-cli` against the local URL. Capture screenshots at 390×844, 768×1024, and 1440×900, inspect them visually, check browser console errors, fix issues, and capture again. Do not claim visual verification based only on source inspection. Keep screenshots and any local browser state under `.playwright-cli/`; this directory is git-ignored and must never contain committed credentials or session data.
+
+The Playwright CLI is a host-level developer tool. Do not add it to application runtime dependencies or install browser binaries in Sail unless explicitly needed for containerized testing. Official docs: https://playwright.dev/agent-cli/introduction
