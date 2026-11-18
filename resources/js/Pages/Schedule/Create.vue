@@ -1,6 +1,11 @@
 <script setup>
-import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/vue3";
+import Form from "./Partials/Form.vue";
+import PageHeader from "@/Components/Ui/PageHeader.vue";
+
+defineProps({
+    name: String,
+});
 
 const form = useForm({
     formatted_month: "",
@@ -16,41 +21,18 @@ const submit = () => {
     form.post(route("schedules.store"), {
         preserveScroll: true,
         onSuccess: () => form.reset(),
-        onError: () => {
-            if (form.errors.formatted_month) {
-                form.reset("formatted_month");
-            }
-            if (form.errors.congregation) {
-                form.reset("congregation");
-            }
-            if (form.errors.day) {
-                form.reset("day");
-            }
-            if (form.errors.hour) {
-                form.reset("hour");
-            }
-            if (form.errors.address) {
-                form.reset("address");
-            }
-            if (form.errors.contact) {
-                form.reset("contact");
-            }
-            if (form.errors.phone) {
-                form.reset("phone");
-            }
-        },
     });
 };
-
-defineProps({
-    name: String,
-});
 </script>
 
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
-        <Form :form="form" :submit="submit" />
-    </div>
+    <PageHeader :back-href="route('schedules.index')" back-label="Arranjos" title="Novo arranjo">
+        <template #meta>
+            <span>Depois de criar, você define quem recebemos e quem enviamos em cada data.</span>
+        </template>
+    </PageHeader>
+
+    <Form :cancel-href="route('schedules.index')" :form="form" :submit="submit" submit-label="Criar arranjo" />
 </template>

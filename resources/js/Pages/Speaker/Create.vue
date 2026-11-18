@@ -1,6 +1,11 @@
 <script setup>
-import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/vue3";
+import Form from "./Partials/Form.vue";
+import PageHeader from "@/Components/Ui/PageHeader.vue";
+
+defineProps({
+    name: String,
+});
 
 const form = useForm({
     privilege: "",
@@ -11,34 +16,20 @@ const form = useForm({
 const submit = () => {
     form.post(route("speakers.store"), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
-        onError: () => {
-            if (form.errors.privilege) {
-                form.reset("privilege");
-            }
-            if (form.errors.name) {
-                form.reset("name");
-            }
-            if (form.errors.phone) {
-                form.reset("phone");
-            }
-        },
     });
 };
-
-const back = () => {
-    window.history.back();
-};
-
-defineProps({
-    name: String,
-});
 </script>
 
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto grid max-w-7xl gap-6 py-6 px-4 sm:px-6 lg:px-8">
-        <Form :form="form" :submit="submit" />
+    <PageHeader :back-href="route('speakers.index')" back-label="Oradores" title="Novo orador">
+        <template #meta>
+            <span>Depois de salvar, adicione os temas que ele preparou.</span>
+        </template>
+    </PageHeader>
+
+    <div class="max-w-2xl">
+        <Form :cancel-href="route('speakers.index')" :form="form" :submit="submit" submit-label="Criar orador" />
     </div>
 </template>

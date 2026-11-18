@@ -1,12 +1,10 @@
 <script setup>
-import DangerButton from "@/Components/Buttons/DangerButton.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import Modal from "@/Components/Modal.vue";
-import SecondaryButton from "@/Components/Buttons/SecondaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import { useForm } from "@inertiajs/vue3";
 import { nextTick, ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
+import Button from "@/Components/Ui/Button.vue";
+import Dialog from "@/Components/Ui/Dialog.vue";
+import FormField from "@/Components/Ui/FormField.vue";
+import ProfileSection from "./ProfileSection.vue";
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);
@@ -17,87 +15,46 @@ const form = useForm({
 
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
+    nextTick(() => passwordInput.value?.focus());
+};
 
-    nextTick(() => passwordInput.value.focus());
+const closeDialog = () => {
+    confirmingUserDeletion.value = false;
+    form.reset();
+    form.clearErrors();
 };
 
 const deleteUser = () => {
     form.delete(route("profile.destroy"), {
         preserveScroll: true,
-        onSuccess: () => closeModal(),
-        onError: () => passwordInput.value.focus(),
+        onSuccess: () => closeDialog(),
+        onError: () => passwordInput.value?.focus(),
         onFinish: () => form.reset(),
     });
-};
-
-const closeModal = () => {
-    confirmingUserDeletion.value = false;
-
-    form.reset();
 };
 </script>
 
 <template>
-    <section class="space-y-6">
-        <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Excluir conta
-            </h2>
+    <ProfileSection
+        id="profile-delete"
+        description="Remove sua conta e o acesso ao sistema. Esta ação não pode ser desfeita."
+        title="Excluir conta"
+    >
+        <Button variant="danger-ghost" class="-ml-4" @click="confirmUserDeletion">Excluir minha conta…</Button>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Depois que sua conta for excluída, todos os seus recursos e
-                dados serão excluídos permanentemente. Antes de excluir sua
-                conta, baixe todos os dados ou informações que deseja reter.
-            </p>
-        </header>
-
-        <DangerButton @click="confirmUserDeletion">Excluir conta</DangerButton>
-
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
-            <div class="p-6">
-                <h2
-                    class="text-lg font-medium text-gray-900 dark:text-gray-100"
-                >
-                    Tem certeza de que deseja excluir sua conta?
-                </h2>
-
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Depois que sua conta for excluída, todos os seus recursos e
-                    dados serão excluídos permanentemente. Digite sua senha para
-                    confirmar que deseja excluir permanentemente sua conta.
-                </p>
-
-                <div class="mt-6">
-                    <InputLabel class="sr-only" for="password" value="Senha" />
-
-                    <TextInput
-                        id="password"
-                        ref="passwordInput"
-                        v-model="form.password"
-                        class="mt-1 block w-3/4"
-                        placeholder="Senha"
-                        type="password"
-                        @keyup.enter="deleteUser"
-                    />
-
-                    <InputError :message="form.errors.password" class="mt-2" />
-                </div>
-
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal">
-                        Cancelar
-                    </SecondaryButton>
-
-                    <DangerButton
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        class="ml-3"
-                        @click="deleteUser"
-                    >
-                        Excluir conta
-                    </DangerButton>
-                </div>
-            </div>
-        </Modal>
-    </section>
+        <Dialog :show="confirmingUserDeletion" title="Excluir sua conta?" @close="closeDialog">
+            <p>Todos os seus dados de acesso serão removidos permanentemente. Digite sua senha para confirmar.</p>
+            <form id="delete-account-form" class="mt-4" novalidate @submit.prevent="deleteUser">
+                <FormField id="delete-account-password" v-slot="{ field }" :error="form.errors.password" label="Senha">
+                    <input ref="passwordInput" v-model="form.password" autocomplete="current-password" class="field h-10" type="password" v-bind="field" />
+                </FormField>
+            </form>
+            <template #actions>
+                <Button :disabled="form.processing" variant="secondary" @click="closeDialog">Cancelar</Button>
+                <Button :loading="form.processing" form="delete-account-form" loading-text="Excluindo…" type="submit" variant="danger">
+                    Excluir conta
+                </Button>
+            </template>
+        </Dialog>
+    </ProfileSection>
 </template>

@@ -1,9 +1,10 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import { Head, useForm, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
+import GuestLayout from "@/Layouts/GuestLayout.vue";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+
+defineOptions({ layout: null });
 
 defineProps({
     status: String,
@@ -18,60 +19,22 @@ const submit = () => {
 };
 </script>
 
-<script>
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-
-export default {
-    layout: GuestLayout,
-};
-</script>
-
 <template>
-    <Head title="Forgot Password" />
+    <GuestLayout description="Informe seu e-mail e enviaremos um link para criar uma nova senha." title="Recuperar senha">
+        <Head title="Recuperar senha" />
 
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        Esqueceu sua senha? Sem problemas. Basta nos informar seu endereço de
-        e-mail e enviaremos um e-mail com um link de redefinição de senha que
-        permitirá que você escolha um novo.
-    </div>
+        <p v-if="status" class="mb-6 rounded-md bg-pine-50 px-3 py-2 text-sm font-medium text-pine-900 dark:bg-pine-950 dark:text-pine-100" role="status">
+            {{ status }}
+        </p>
 
-    <div
-        v-if="status"
-        class="mb-4 text-sm font-medium text-green-600 dark:text-green-400"
-    >
-        {{ status }}
-    </div>
-
-    <form @submit.prevent="submit">
-        <div>
-            <InputLabel for="email" value="Email" />
-
-            <TextInput
-                id="email"
-                v-model="form.email"
-                autocomplete="username"
-                autofocus
-                class="mt-1 block w-full"
-                required
-                type="email"
-            />
-
-            <InputError :message="form.errors.email" class="mt-2" />
-        </div>
-
-        <div class="mt-4 flex items-center justify-between">
-            <Link
-                :href="route('login')"
-                class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-            >
-                Voltar
-            </Link>
-            <PrimaryButton
-                :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing"
-            >
-                Enviar link de recuperação
-            </PrimaryButton>
-        </div>
-    </form>
+        <form class="space-y-5" novalidate @submit.prevent="submit">
+            <FormField id="email" v-slot="{ field }" :error="form.errors.email" label="E-mail">
+                <input v-model="form.email" autocomplete="username" autofocus class="field h-11" type="email" v-bind="field" />
+            </FormField>
+            <Button :loading="form.processing" block class="h-11" loading-text="Enviando…" type="submit">Enviar link</Button>
+            <p class="text-center text-sm">
+                <Link :href="route('login')" class="font-medium text-pine-800 hover:underline dark:text-pine-300">Voltar para o login</Link>
+            </p>
+        </form>
+    </GuestLayout>
 </template>

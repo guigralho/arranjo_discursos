@@ -1,10 +1,8 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
-import SaveButton from "@/Components/Buttons/SaveButton.vue";
-import SelectInput from "@/Components/SelectInput.vue";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+import ProfileSection from "./ProfileSection.vue";
 
 const props = defineProps({
     mustVerifyEmail: Boolean,
@@ -16,115 +14,56 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
-    meeting_day: user.meeting_day,
+    meeting_day: user.meeting_day ?? "",
 });
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Informação do Perfil
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Atualize as informações de perfil e endereço de e-mail da sua
-                conta.
-            </p>
-        </header>
-
-        <form
-            class="mt-6 space-y-6"
-            @submit.prevent="form.patch(route('profile.update'))"
-        >
-            <div>
-                <InputLabel for="name" value="Nome" />
-
-                <TextInput
-                    id="name"
-                    v-model="form.name"
-                    autocomplete="name"
-                    autofocus
-                    class="mt-1 block w-full"
-                    required
-                    type="text"
-                />
-
-                <InputError :message="form.errors.name" class="mt-2" />
-            </div>
-
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    autocomplete="email"
-                    class="mt-1 block w-full"
-                    required
-                    type="email"
-                />
-
-                <InputError :message="form.errors.email" class="mt-2" />
-            </div>
-
-            <div>
-                <InputLabel for="email" value="Dia de reunião" />
-
-                <SelectInput
-                    id="day"
-                    ref="dayInput"
-                    v-model="form.meeting_day"
-                    class="mt-1 block w-full"
-                >
-                    <option value="">Selecione...</option>
+    <ProfileSection
+        id="profile-info"
+        description="Seu nome, e-mail de acesso e o dia em que sua congregação se reúne."
+        title="Dados da conta"
+    >
+        <form class="space-y-5" novalidate @submit.prevent="form.patch(route('profile.update'), { preserveScroll: true })">
+            <FormField id="profile-name" v-slot="{ field }" :error="form.errors.name" label="Nome" required>
+                <input v-model="form.name" autocomplete="name" class="field h-10" type="text" v-bind="field" />
+            </FormField>
+            <FormField id="profile-email" v-slot="{ field }" :error="form.errors.email" label="E-mail" required>
+                <input v-model="form.email" autocomplete="email" class="field h-10" type="email" v-bind="field" />
+            </FormField>
+            <FormField
+                id="profile-meeting-day"
+                v-slot="{ field }"
+                :error="form.errors.meeting_day"
+                hint="Define as datas em que recebemos oradores nos novos arranjos."
+                label="Dia da nossa reunião"
+            >
+                <select v-model="form.meeting_day" class="field h-10 sm:w-56" v-bind="field">
+                    <option value="">Selecione…</option>
                     <option value="6">Sábado</option>
                     <option value="0">Domingo</option>
-                </SelectInput>
-
-                <InputError :message="form.errors.meeting_day" class="mt-2" />
-            </div>
+                </select>
+            </FormField>
 
             <div
                 v-if="props.mustVerifyEmail && user.email_verified_at === null"
+                class="rounded-md bg-clay-50 px-3 py-2.5 text-sm text-clay-900 dark:bg-clay-950 dark:text-clay-100"
             >
-                <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
-                    Seu endereço de e-mail não foi verificado.
-                    <Link
-                        :href="route('verification.send')"
-                        as="button"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                        method="post"
-                    >
-                        Clique aqui para reenviar o e-mail de verificação.
-                    </Link>
+                Seu e-mail ainda não foi verificado.
+                <Link :href="route('verification.send')" as="button" class="font-medium underline" method="post">
+                    Reenviar e-mail de verificação
+                </Link>
+                <p v-if="props.status === 'verification-link-sent'" class="mt-1 font-medium">
+                    Um novo link de verificação foi enviado para seu e-mail.
                 </p>
-
-                <div
-                    v-show="props.status === 'verification-link-sent'"
-                    class="mt-2 text-sm font-medium text-green-600 dark:text-green-400"
-                >
-                    Um novo link de verificação foi enviado para seu endereço de
-                    e-mail.
-                </div>
             </div>
 
-            <div class="flex items-center gap-4">
-                <SaveButton :disabled="form.processing">Salvar</SaveButton>
-
-                <Transition
-                    class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-to-class="opacity-0"
-                >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600 dark:text-gray-400"
-                    >
-                        Salvo.
-                    </p>
-                </Transition>
+            <div class="flex items-center gap-3">
+                <Button :loading="form.processing" loading-text="Salvando…" type="submit">Salvar</Button>
+                <p aria-live="polite" class="text-sm text-pine-800 dark:text-pine-300">
+                    <span v-if="form.recentlySuccessful">Salvo.</span>
+                </p>
             </div>
         </form>
-    </section>
+    </ProfileSection>
 </template>

@@ -1,10 +1,9 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
-import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
-import SaveButton from "@/Components/Buttons/SaveButton.vue";
+import { useForm } from "@inertiajs/vue3";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+import ProfileSection from "./ProfileSection.vue";
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -22,11 +21,11 @@ const updatePassword = () => {
         onError: () => {
             if (form.errors.password) {
                 form.reset("password", "password_confirmation");
-                passwordInput.value.focus();
+                passwordInput.value?.focus();
             }
             if (form.errors.current_password) {
                 form.reset("current_password");
-                currentPasswordInput.value.focus();
+                currentPasswordInput.value?.focus();
             }
         },
     });
@@ -34,88 +33,23 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Atualizar senha
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Certifique-se de que sua conta esteja usando uma senha longa e
-                aleatória para permanecer segura.
-            </p>
-        </header>
-
-        <form class="mt-6 space-y-6" @submit.prevent="updatePassword">
-            <div>
-                <InputLabel for="current_password" value="Senha Atual" />
-
-                <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    autocomplete="current-password"
-                    class="mt-1 block w-full"
-                    type="password"
-                />
-
-                <InputError
-                    :message="form.errors.current_password"
-                    class="mt-2"
-                />
-            </div>
-
-            <div>
-                <InputLabel for="password" value="Nova Senha" />
-
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    autocomplete="new-password"
-                    class="mt-1 block w-full"
-                    type="password"
-                />
-
-                <InputError :message="form.errors.password" class="mt-2" />
-            </div>
-
-            <div>
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirmar Senha"
-                />
-
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    autocomplete="new-password"
-                    class="mt-1 block w-full"
-                    type="password"
-                />
-
-                <InputError
-                    :message="form.errors.password_confirmation"
-                    class="mt-2"
-                />
-            </div>
-
-            <div class="flex items-center gap-4">
-                <SaveButton :disabled="form.processing">Salvar</SaveButton>
-
-                <Transition
-                    class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-to-class="opacity-0"
-                >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600 dark:text-gray-400"
-                    >
-                        Salvo.
-                    </p>
-                </Transition>
+    <ProfileSection id="profile-password" description="Use uma senha longa e difícil de adivinhar." title="Senha">
+        <form class="space-y-5" novalidate @submit.prevent="updatePassword">
+            <FormField id="current-password" v-slot="{ field }" :error="form.errors.current_password" label="Senha atual">
+                <input ref="currentPasswordInput" v-model="form.current_password" autocomplete="current-password" class="field h-10" type="password" v-bind="field" />
+            </FormField>
+            <FormField id="new-password" v-slot="{ field }" :error="form.errors.password" label="Nova senha">
+                <input ref="passwordInput" v-model="form.password" autocomplete="new-password" class="field h-10" type="password" v-bind="field" />
+            </FormField>
+            <FormField id="new-password-confirmation" v-slot="{ field }" :error="form.errors.password_confirmation" label="Confirmar nova senha">
+                <input v-model="form.password_confirmation" autocomplete="new-password" class="field h-10" type="password" v-bind="field" />
+            </FormField>
+            <div class="flex items-center gap-3">
+                <Button :loading="form.processing" loading-text="Salvando…" type="submit">Atualizar senha</Button>
+                <p aria-live="polite" class="text-sm text-pine-800 dark:text-pine-300">
+                    <span v-if="form.recentlySuccessful">Senha atualizada.</span>
+                </p>
             </div>
         </form>
-    </section>
+    </ProfileSection>
 </template>

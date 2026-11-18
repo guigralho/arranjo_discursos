@@ -2,35 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-    overscroll-behavior: none;
+@layer base {
+    html,
+    body {
+        overscroll-behavior: none;
+    }
+
+    html {
+        -webkit-tap-highlight-color: transparent;
+        color-scheme: light;
+    }
+
+    html.dark {
+        color-scheme: dark;
+    }
+
+    :focus-visible {
+        outline: 2px solid theme("colors.pine.600");
+        outline-offset: 2px;
+    }
+
+    .dark :focus-visible {
+        outline-color: theme("colors.pine.300");
+    }
+
+    ::selection {
+        background: theme("colors.pine.200");
+        color: theme("colors.pine.950");
+    }
 }
 
-/* width */
+@layer components {
+    /* Shared field look used by inputs, selects, textareas and the combobox trigger */
+    .field {
+        @apply block w-full rounded-md border-stone-300 bg-white text-sm text-stone-900 shadow-sm placeholder:text-stone-400
+            focus:border-pine-600 focus:outline-none focus:ring-1 focus:ring-pine-600
+            disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-stone-500
+            dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500
+            dark:focus:border-pine-400 dark:focus:ring-pine-400 dark:disabled:bg-stone-800;
+    }
+
+    .field[aria-invalid="true"] {
+        @apply border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-400;
+    }
+
+    .eyebrow {
+        @apply text-xs font-semibold uppercase tracking-[0.08em] text-stone-500 dark:text-stone-400;
+    }
+}
+
+@layer utilities {
+    .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Scrollbars */
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-    @apply dark:bg-gray-900;
-}
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    @apply dark:bg-gray-800 bg-gray-400;
+    @apply bg-stone-300 dark:bg-stone-700;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
+/* flowbite-datepicker: align with the product palette */
+.datepicker-picker {
+    @apply rounded-lg border border-stone-200 font-sans shadow-float dark:border-stone-700 dark:bg-stone-900;
 }
 
-.btn-novo {
-    @apply w-full flex-shrink-0 rounded-lg bg-sky-800 px-4 py-2 text-center text-sm font-semibold text-white shadow-md hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-800 focus:ring-offset-2 focus:ring-offset-sky-200 md:w-auto;
+.datepicker-cell.selected,
+.datepicker-cell.selected:hover {
+    @apply bg-pine-700 text-white dark:bg-pine-500;
 }
 
-.btn-novo-danger {
-    @apply w-full flex-shrink-0 rounded-lg bg-red-700 px-4 py-2 text-center text-sm font-semibold text-white shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2 focus:ring-offset-red-200 md:w-auto;
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }

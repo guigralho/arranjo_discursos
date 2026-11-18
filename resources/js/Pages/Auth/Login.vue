@@ -1,10 +1,11 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import GuestLayout from "@/Layouts/GuestLayout.vue";
+import Checkbox from "@/Components/Checkbox.vue";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+
+defineOptions({ layout: null });
 
 defineProps({
     canResetPassword: Boolean,
@@ -24,78 +25,35 @@ const submit = () => {
 };
 </script>
 
-<script>
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-
-export default {
-    layout: GuestLayout,
-};
-</script>
-
 <template>
-    <Head title="Log in" />
+    <GuestLayout description="Acesse para organizar o arranjo do mês." title="Entrar">
+        <Head title="Entrar" />
 
-    <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-        {{ status }}
-    </div>
+        <p v-if="status" class="mb-6 rounded-md bg-pine-50 px-3 py-2 text-sm font-medium text-pine-900 dark:bg-pine-950 dark:text-pine-100" role="status">
+            {{ status }}
+        </p>
 
-    <form @submit.prevent="submit">
-        <div>
-            <InputLabel for="email" value="Email" />
-
-            <TextInput
-                id="email"
-                v-model="form.email"
-                autocomplete="email"
-                autofocus
-                class="mt-1 block w-full"
-                required
-                type="email"
-            />
-
-            <InputError :message="form.errors.email" class="mt-2" />
-        </div>
-
-        <div class="mt-4">
-            <InputLabel for="password" value="Senha" />
-
-            <TextInput
-                id="password"
-                v-model="form.password"
-                autocomplete="current-password"
-                class="mt-1 block w-full"
-                required
-                type="password"
-            />
-
-            <InputError :message="form.errors.password" class="mt-2" />
-        </div>
-
-        <div class="mt-4 block">
-            <label class="flex items-center">
-                <Checkbox v-model:checked="form.remember" name="remember" />
-                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"
-                    >Manter conectado</span
+        <form class="space-y-5" novalidate @submit.prevent="submit">
+            <FormField id="email" v-slot="{ field }" :error="form.errors.email" label="E-mail">
+                <input v-model="form.email" autocomplete="username" autofocus class="field h-11" type="email" v-bind="field" />
+            </FormField>
+            <FormField id="password" v-slot="{ field }" :error="form.errors.password" label="Senha">
+                <input v-model="form.password" autocomplete="current-password" class="field h-11" type="password" v-bind="field" />
+            </FormField>
+            <div class="flex items-center justify-between gap-4">
+                <label class="flex items-center gap-2 text-sm text-stone-700 dark:text-stone-300">
+                    <Checkbox v-model:checked="form.remember" name="remember" />
+                    Manter conectado
+                </label>
+                <Link
+                    v-if="canResetPassword"
+                    :href="route('password.request')"
+                    class="text-sm font-medium text-pine-800 hover:underline dark:text-pine-300"
                 >
-            </label>
-        </div>
-
-        <div class="mt-4 flex flex-wrap items-center justify-end gap-3">
-            <Link
-                v-if="canResetPassword"
-                :href="route('password.request')"
-                class="flex-auto rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-            >
-                Esqueceu sua senha?
-            </Link>
-
-            <PrimaryButton
-                :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing"
-                class="flex-auto"
-            >
-                Entrar
-            </PrimaryButton>
-        </div>
-    </form>
+                    Esqueceu a senha?
+                </Link>
+            </div>
+            <Button :loading="form.processing" block class="h-11" loading-text="Entrando…" type="submit">Entrar</Button>
+        </form>
+    </GuestLayout>
 </template>

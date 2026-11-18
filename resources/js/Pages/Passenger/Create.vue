@@ -1,6 +1,11 @@
 <script setup>
-import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/vue3";
+import Form from "./Partials/Form.vue";
+import PageHeader from "@/Components/Ui/PageHeader.vue";
+
+defineProps({
+    name: String,
+});
 
 const form = useForm({
     name: "",
@@ -11,34 +16,14 @@ const form = useForm({
 const submit = () => {
     form.post(route("passengers.store"), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
-        onError: () => {
-            if (form.errors.name) {
-                form.reset("name");
-            }
-            if (form.errors.doc) {
-                form.reset("doc");
-            }
-            if (form.errors.phone) {
-                form.reset("phone");
-            }
-        },
     });
 };
-
-const back = () => {
-    window.history.back();
-};
-
-defineProps({
-    name: String,
-});
 </script>
 
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl space-y-6 py-6 px-4 sm:px-6 lg:px-8">
-        <Form :form="form" :submit="submit" />
-    </div>
+    <PageHeader :back-href="route('passengers.index')" back-label="Passageiros" title="Novo passageiro" />
+
+    <Form :cancel-href="route('passengers.index')" :form="form" :submit="submit" submit-label="Criar passageiro" />
 </template>

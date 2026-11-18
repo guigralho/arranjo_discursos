@@ -1,7 +1,9 @@
 <script setup>
+import { Head, Link, useForm } from "@inertiajs/vue3";
+import { UserGroupIcon } from "@heroicons/vue/20/solid";
 import Form from "./Partials/Form.vue";
-import { Head, useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import PageHeader from "@/Components/Ui/PageHeader.vue";
+import EmptyState from "@/Components/Ui/EmptyState.vue";
 
 const props = defineProps({
     name: String,
@@ -16,70 +18,53 @@ const form = useForm({
 const submit = () => {
     form.put(route("speeches.update", props.speech.id), {
         preserveScroll: true,
-        onSuccess: () => {},
-        onError: () => {
-            if (form.errors.theme) {
-                form.reset("theme");
-            }
-            if (form.errors.number) {
-                form.reset("number");
-            }
-        },
+        onSuccess: () => form.defaults(),
     });
 };
 </script>
 
 <template>
-    <Head :title="name" />
+    <Head :title="`Discurso ${speech.number}`" />
 
-    <div class="mx-auto max-w-7xl space-y-6 py-6 px-4 sm:px-6 lg:px-8">
-        <Form :form="form" :speech="speech" :submit="submit" />
+    <PageHeader :back-href="route('speeches.index')" :eyebrow="`Discurso nº ${speech.number}`" :title="speech.theme" back-label="Discursos" />
 
-        <div
-            v-if="speech.speakers.length > 0"
-            class="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8"
-        >
-            <p class="mb-1 text-lg dark:text-gray-100">Oradores</p>
-            <div
-                class="inline-block min-w-full overflow-hidden rounded-lg shadow"
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <section aria-labelledby="edit-title">
+            <h2 id="edit-title" class="mb-4 text-base font-semibold text-stone-900 dark:text-stone-100">Dados do discurso</h2>
+            <Form :form="form" :submit="submit" />
+            <p class="mt-6 text-xs text-stone-500 dark:text-stone-400">
+                Criado em {{ speech.created_at }}<template v-if="speech.user_created"> por {{ speech.user_created.name }}</template>.
+                <template v-if="speech.user_updated">Atualizado em {{ speech.updated_at }} por {{ speech.user_updated.name }}.</template>
+            </p>
+        </section>
+
+        <section aria-labelledby="speakers-title">
+            <h2 id="speakers-title" class="mb-4 flex items-baseline justify-between text-base font-semibold text-stone-900 dark:text-stone-100">
+                Quem já preparou
+                <span class="text-sm font-normal tabular-nums text-stone-500">{{ speech.speakers.length }}</span>
+            </h2>
+            <ul
+                v-if="speech.speakers.length"
+                class="divide-y divide-stone-100 rounded-lg border border-stone-200 bg-white dark:divide-stone-800 dark:border-stone-800 dark:bg-stone-900"
             >
-                <table class="min-w-full table-fixed bg-white dark:bg-gray-800">
-                    <thead>
-                        <tr
-                            class="font-weight-bold border-b text-gray-800 dark:border-gray-900 dark:text-gray-100"
-                        >
-                            <th
-                                class="w-2/12 px-5 py-5 text-left text-sm uppercase"
-                                scope="col"
-                            >
-                                <p class="flex items-center gap-2">
-                                    Privilégio
-                                </p>
-                            </th>
-                            <th
-                                class="px-5 py-5 text-left text-sm uppercase"
-                                scope="col"
-                            >
-                                Nome
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="item in speech.speakers"
-                            :key="item.id"
-                            class="font-weight-bold border-b text-gray-800 hover:bg-gray-100 dark:border-gray-900 dark:text-gray-100 dark:hover:bg-gray-700"
-                        >
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
-                                {{ item.privilege }}
-                            </td>
-                            <td class="whitespace-nowrap px-5 py-5 text-sm">
-                                {{ item.name }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <li v-for="speaker in speech.speakers" :key="speaker.id">
+                    <Link
+                        :href="route('speakers.show', speaker.id)"
+                        class="flex items-center justify-between gap-3 px-4 py-3 text-sm hover:bg-stone-50 dark:hover:bg-stone-800/50"
+                    >
+                        <span class="min-w-0 truncate font-medium text-stone-900 dark:text-stone-100">{{ speaker.name }}</span>
+                        <span class="shrink-0 text-xs text-stone-500 dark:text-stone-400">{{ speaker.privilege }}</span>
+                    </Link>
+                </li>
+            </ul>
+            <div v-else class="rounded-lg border border-dashed border-stone-300 dark:border-stone-700">
+                <EmptyState
+                    :icon="UserGroupIcon"
+                    compact
+                    description="Adicione este tema na ficha de um orador."
+                    title="Nenhum orador preparou"
+                />
             </div>
-        </div>
+        </section>
     </div>
 </template>

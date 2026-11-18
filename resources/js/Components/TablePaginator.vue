@@ -1,92 +1,103 @@
-<template>
-    <div
-        class="flex items-center justify-between border-gray-200 bg-white px-4 py-3 dark:bg-gray-800 sm:px-6"
-    >
-        <div
-            :class="list.links[0].url ? 'justify-between' : 'justify-end'"
-            class="flex flex-1 items-center md:hidden"
-        >
-            <Link
-                v-if="list.links[0].url"
-                :href="list.links[0].url"
-                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                >Anterior</Link
-            >
-            <Link
-                v-if="list.links[list.links.length - 1].url"
-                :href="list.links[list.links.length - 1].url"
-                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                >Próximo</Link
-            >
-        </div>
-        <div
-            class="hidden sm:items-center sm:justify-between md:flex md:flex-1"
-        >
-            <div>
-                <p class="text-sm text-gray-700 dark:text-gray-200">
-                    Mostrando de
-                    {{ " " }}
-                    <span class="font-medium">{{ list.from }}</span>
-                    {{ " " }}
-                    até
-                    {{ " " }}
-                    <span class="font-medium">{{ list.to }}</span>
-                    {{ " " }}
-                    de
-                    {{ " " }}
-                    <span class="font-medium">{{ list.total }}</span>
-                    {{ " " }}
-                    resultados
-                </p>
-            </div>
-            <div>
-                <nav
-                    aria-label="Pagination"
-                    class="isolate inline-flex -space-x-px rounded-md shadow-sm"
-                >
-                    <Link
-                        v-for="(link, index) in list.links"
-                        :key="index"
-                        :class="getClass(link.active, index, list.links.length)"
-                        :href="link.url ?? '#'"
-                        class="inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-                        v-html="
-                            (link.label ?? '')
-                                .replaceAll('Next', '')
-                                .replaceAll('Previous', '')
-                        "
-                    />
-                </nav>
-            </div>
-        </div>
-    </div>
-</template>
-
 <script setup>
+import { computed } from "vue";
 import { Link } from "@inertiajs/vue3";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/16/solid";
 
-defineProps({
+/**
+ * Accepts a plain Laravel paginator ({ links, from, to, total, current_page, last_page })
+ * or an API resource collection ({ links: {...}, meta: {...} }).
+ */
+const props = defineProps({
     list: {
         type: Object,
         default: null,
     },
 });
 
-function getClass(active, index, length) {
-    let newClass = "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 ";
-    if (active) {
-        newClass =
-            "z-10 border-gray-500 bg-gray-100 text-grey-600 dark:bg-gray-700 dark:text-white";
-    }
+const meta = computed(() => props.list?.meta ?? props.list ?? {});
 
-    if (index === 0) {
-        newClass += "rounded-l-md ";
-    }
+const pageLinks = computed(() => {
+    const links = Array.isArray(meta.value.links) ? meta.value.links : [];
+    return links.slice(1, -1);
+});
 
-    if (index === length - 1) {
-        newClass += "rounded-r-md ";
-    }
+const previousUrl = computed(() => {
+    const links = meta.value.links;
+    return Array.isArray(links) ? links[0]?.url : null;
+});
 
-    return newClass;
-}
+const nextUrl = computed(() => {
+    const links = meta.value.links;
+    return Array.isArray(links) ? links[links.length - 1]?.url : null;
+});
+
+const lastPage = computed(() => meta.value.last_page ?? 1);
+const currentPage = computed(() => meta.value.current_page ?? 1);
 </script>
+
+<template>
+    <nav
+        v-if="meta.total > 0"
+        aria-label="Paginação"
+        class="flex items-center justify-between gap-4 border-t border-stone-200 px-4 py-3 text-sm dark:border-stone-800 sm:px-5"
+    >
+        <p class="text-stone-600 dark:text-stone-400">
+            <span class="hidden sm:inline">
+                <span class="tabular-nums text-stone-900 dark:text-stone-100">{{ meta.from }}–{{ meta.to }}</span>
+                de
+                <span class="tabular-nums text-stone-900 dark:text-stone-100">{{ meta.total }}</span>
+            </span>
+            <span class="sm:hidden">
+                Página <span class="tabular-nums">{{ currentPage }}</span> de
+                <span class="tabular-nums">{{ lastPage }}</span>
+            </span>
+        </p>
+
+        <div v-if="lastPage > 1" class="flex items-center gap-1">
+            <component
+                :is="previousUrl ? Link : 'span'"
+                :aria-disabled="!previousUrl || undefined"
+                :href="previousUrl ?? undefined"
+                aria-label="Página anterior"
+                class="inline-flex h-9 w-9 items-center justify-center rounded-md text-stone-600 hover:bg-stone-100 aria-disabled:pointer-events-none aria-disabled:opacity-40 dark:text-stone-300 dark:hover:bg-stone-800"
+                preserve-scroll
+            >
+                <ChevronLeftIcon aria-hidden="true" class="h-4 w-4" />
+            </component>
+
+            <template v-for="(link, index) in pageLinks" :key="index">
+                <span
+                    v-if="!link.url"
+                    aria-hidden="true"
+                    class="hidden h-9 w-6 items-center justify-center text-stone-400 md:inline-flex"
+                    >…</span
+                >
+                <Link
+                    v-else
+                    :aria-current="link.active ? 'page' : undefined"
+                    :aria-label="`Página ${link.label}`"
+                    :class="
+                        link.active
+                            ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900'
+                            : 'text-stone-700 hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800'
+                    "
+                    :href="link.url"
+                    class="hidden h-9 min-w-[2.25rem] items-center justify-center rounded-md px-2 tabular-nums md:inline-flex"
+                    preserve-scroll
+                    >{{ link.label }}</Link
+                >
+            </template>
+
+            <component
+                :is="nextUrl ? Link : 'span'"
+                :aria-disabled="!nextUrl || undefined"
+                :href="nextUrl ?? undefined"
+                aria-label="Próxima página"
+                class="inline-flex h-9 w-9 items-center justify-center rounded-md text-stone-600 hover:bg-stone-100 aria-disabled:pointer-events-none aria-disabled:opacity-40 dark:text-stone-300 dark:hover:bg-stone-800"
+                preserve-scroll
+            >
+                <ChevronRightIcon aria-hidden="true" class="h-4 w-4" />
+            </component>
+        </div>
+    </nav>
+</template>

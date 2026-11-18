@@ -1,204 +1,93 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import Checkbox from "@/Components/Checkbox.vue";
-import SaveButton from "@/Components/Buttons/SaveButton.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import SearchableSelect from "@/Components/SearchableSelect.vue";
-import { vMaska } from "maska/vue";
+import { computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+import Combobox from "@/Components/Ui/Combobox.vue";
+import FilterChip from "@/Components/Ui/FilterChip.vue";
+import { formatCurrency, parseMoney, vMoneyMask } from "@/composables/useMoney";
 
-defineProps({
+const props = defineProps({
     submit: Function,
     form: Object,
-    passengers: Object,
-    data: {
-        type: Object,
-        default: null,
-    },
+    passengers: Array,
+    submitLabel: { type: String, default: "Salvar" },
+    cancelHref: { type: String, default: null },
 });
 
-const moneyMask = { number: { locale: "pt-BR", fraction: 2, unsigned: true } };
+const page = usePage();
+const fare = computed(() => Number(page.props.valor_onibus ?? 0));
 
-function priceFormat(price) {
-    // Replace all occurrences of '.' with an empty string
-    let valueFormatted = price.replace(/\./g, "");
-
-    // Replace ',' with '.'
-    valueFormatted = valueFormatted.replace(",", ".");
-
-    return valueFormatted;
-}
+const tripCount = computed(() => Number(!!props.form.friday) + Number(!!props.form.saturday) + Number(!!props.form.sunday));
+const amountDue = computed(() => tripCount.value * fare.value);
+const balance = computed(() => parseMoney(props.form.amount) - amountDue.value);
 </script>
 
 <template>
-    <form class="space-y-6" @submit.prevent="submit">
-        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
-            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <fieldset>
-                    <InputLabel for="passenger_id" value="Nome" />
+    <form class="max-w-2xl" novalidate @submit.prevent="submit">
+        <div class="space-y-6">
+            <FormField id="passenger_id" v-slot="{ field }" :error="form.errors.passenger_id" label="Passageiro" required>
+                <Combobox
+                    :id="field.id"
+                    v-model="form.passenger_id"
+                    :described-by="field['aria-describedby']"
+                    :invalid="!!form.errors.passenger_id"
+                    :options="passengers"
+                    empty-value=""
+                    placeholder="Buscar passageiro"
+                />
+            </FormField>
 
-                    <SearchableSelect
-                        v-model="form.passenger_id"
-                        :options="passengers"
-                        class="mt-1"
-                        display-key="name"
-                        placeholder="Selecione um passageiro..."
-                        search-placeholder="Pesquisar passageiro..."
-                        value-key="id"
-                    />
+            <div aria-labelledby="days-label" role="group">
+                <p id="days-label" class="mb-1.5 text-sm font-medium text-stone-800 dark:text-stone-200">Dias de viagem</p>
+                <div class="flex flex-wrap gap-2">
+                    <FilterChip v-model="form.friday">Sexta</FilterChip>
+                    <FilterChip v-model="form.saturday">Sábado</FilterChip>
+                    <FilterChip v-model="form.sunday">Domingo</FilterChip>
+                </div>
+            </div>
 
-                    <InputError
-                        :message="form.errors.passenger_id"
-                        class="mt-2"
-                    />
-                </fieldset>
-
-                <fieldset>
-                    <InputLabel value="Dias" />
-                    <div class="flex justify-between">
-                        <div class="relative flex gap-x-3">
-                            <div class="flex h-6 items-center">
-                                <Checkbox
-                                    id="friday"
-                                    v-model:checked="form.friday"
-                                    name="friday"
-                                    value="1"
-                                />
-                            </div>
-                            <div class="text-sm leading-6">
-                                <label
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    for="friday"
-                                >
-                                    Sexta
-                                </label>
-                            </div>
-                        </div>
-                        <div class="relative flex gap-x-3">
-                            <div class="flex h-6 items-center">
-                                <Checkbox
-                                    id="saturday"
-                                    v-model:checked="form.saturday"
-                                    name="saturday"
-                                    value="1"
-                                />
-                            </div>
-                            <div class="text-sm leading-6">
-                                <label
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    for="saturday"
-                                >
-                                    Sábado
-                                </label>
-                            </div>
-                        </div>
-                        <div class="relative flex gap-x-3">
-                            <div class="flex h-6 items-center">
-                                <Checkbox
-                                    id="sunday"
-                                    v-model:checked="form.sunday"
-                                    name="sunday"
-                                    value="1"
-                                />
-                            </div>
-                            <div class="text-sm leading-6">
-                                <label
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    for="sunday"
-                                >
-                                    Domingo
-                                </label>
-                            </div>
-                        </div>
+            <div class="grid gap-5 sm:grid-cols-[12rem_minmax(0,1fr)] sm:items-end">
+                <FormField id="amount" v-slot="{ field }" :error="form.errors.amount" label="Valor pago">
+                    <div class="relative">
+                        <span aria-hidden="true" class="pointer-events-none absolute left-3 top-2.5 text-sm text-stone-500">R$</span>
+                        <input
+                            v-model="form.amount"
+                            v-money-mask
+                            autocomplete="off"
+                            class="field h-10 pl-9 text-right tabular-nums"
+                            inputmode="numeric"
+                            placeholder="0,00"
+                            type="text"
+                            v-bind="field"
+                        />
                     </div>
-                </fieldset>
-
-                <fieldset>
-                    <InputLabel for="amount" value="Pago" />
-
-                    <TextInput
-                        id="amount"
-                        v-model="form.amount"
-                        v-maska="moneyMask"
-                        autocomplete="off"
-                        class="mt-1 block w-full"
-                        type="text"
-                    />
-                </fieldset>
-
-                <fieldset class="flex gap-4">
+                </FormField>
+                <dl class="grid grid-cols-2 gap-4 rounded-md bg-stone-100 px-4 py-2.5 text-sm dark:bg-stone-900" aria-live="polite">
                     <div>
-                        <InputLabel for="amount" value="A Pagar" />
-
-                        <p
-                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                        >
-                            {{
-                                (
-                                    (form.friday +
-                                        form.saturday +
-                                        form.sunday) *
-                                    $page.props.valor_onibus
-                                ).toLocaleString("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                })
-                            }}
-                        </p>
+                        <dt class="text-xs text-stone-500 dark:text-stone-400">A pagar ({{ tripCount }}× {{ formatCurrency(fare) }})</dt>
+                        <dd class="font-medium tabular-nums text-stone-900 dark:text-stone-100">{{ formatCurrency(amountDue) }}</dd>
                     </div>
-
                     <div>
-                        <InputLabel for="amount" value="Saldo" />
-
-                        <p
-                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                        <dt class="text-xs text-stone-500 dark:text-stone-400">Saldo</dt>
+                        <dd
+                            :class="balance < 0 ? 'text-red-700 dark:text-red-400' : 'text-pine-800 dark:text-pine-300'"
+                            class="font-medium tabular-nums"
                         >
-                            {{
-                                (
-                                    priceFormat(form.amount) -
-                                    (form.friday +
-                                        form.saturday +
-                                        form.sunday) *
-                                        $page.props.valor_onibus
-                                ).toLocaleString("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                })
-                            }}
-                        </p>
+                            {{ formatCurrency(balance) }}
+                        </dd>
                     </div>
-                </fieldset>
+                </dl>
+            </div>
 
-                <fieldset class="sm:col-span-2">
-                    <InputLabel for="obs" value="Observações" />
-
-                    <textarea
-                        id="obs"
-                        v-model="form.obs"
-                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-gray-900 dark:text-gray-300 dark:ring-gray-700 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        name="about"
-                        rows="3"
-                    ></textarea>
-                </fieldset>
-            </section>
+            <FormField id="obs" v-slot="{ field }" :error="form.errors.obs" label="Observação">
+                <textarea v-model="form.obs" class="field min-h-[5rem] py-2" rows="3" v-bind="field" />
+            </FormField>
         </div>
-        <div class="flex items-center gap-4">
-            <PrimaryButton
-                :disabled="form.processing"
-                :href="route('bus.index')"
-                class="flex-1 sm:flex-none"
-                type="button"
-            >
-                Voltar
-            </PrimaryButton>
-            <SaveButton :disabled="form.processing" class="flex-1 sm:flex-none">
-                <p v-if="!form.processing">Salvar</p>
-                <p v-else>
-                    <font-awesome-icon icon="fa-solid fa-spinner" spin />
-                    Aguarde...
-                </p>
-            </SaveButton>
+
+        <div class="mt-8 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button v-if="cancelHref" :href="cancelHref" variant="ghost">Cancelar</Button>
+            <Button :loading="form.processing" loading-text="Salvando…" type="submit">{{ submitLabel }}</Button>
         </div>
     </form>
 </template>

@@ -1,96 +1,41 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import LoadingButton from "@/Components/LoadingButton.vue";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+import { vPhoneMask } from "@/composables/vPhoneMask";
 
 defineProps({
     submit: Function,
     form: Object,
-    passenger: {
-        type: Object,
-        default: null,
-    },
+    submitLabel: { type: String, default: "Salvar" },
+    cancelHref: { type: String, default: null },
 });
-
-const back = () => {
-    window.history.back();
-};
 </script>
 
 <template>
-    <form class="space-y-6" @submit.prevent="submit">
-        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
-            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div class="sm:col-span-2">
-                    <InputLabel for="name" value="Nome" />
-
-                    <TextInput
-                        id="name"
-                        ref="nameInput"
-                        v-model="form.name"
-                        autocomplete="off"
-                        class="mt-1 block w-full"
-                        type="text"
-                    />
-
-                    <InputError :message="form.errors.name" class="mt-2" />
-                </div>
-
-                <div>
-                    <InputLabel for="doc" value="Documento" />
-
-                    <TextInput
-                        id="doc"
-                        ref="docInput"
-                        v-model="form.doc"
-                        autocomplete="off"
-                        class="mt-1 block w-full"
-                        type="text"
-                    />
-
-                    <InputError :message="form.errors.doc" class="mt-2" />
-                </div>
-
-                <div>
-                    <InputLabel for="phone" value="Telefone" />
-
-                    <TextInput
-                        id="phone"
-                        ref="phoneInput"
-                        v-model="form.phone"
-                        autocomplete="off"
-                        class="mt-1 block w-full"
-                        type="text"
-                    />
-
-                    <InputError :message="form.errors.phone" class="mt-2" />
-                </div>
-
-                <p class="dark:text-gray-400">
-                    <i>{{
-                        passenger &&
-                        `Atualizado em: ${passenger.updated_at} por ${passenger.user_updated?.name}`
-                    }}</i>
-                </p>
-            </section>
+    <form class="max-w-2xl" novalidate @submit.prevent="submit">
+        <div class="grid gap-5 sm:grid-cols-2">
+            <FormField id="name" v-slot="{ field }" :error="form.errors.name" class="sm:col-span-2" label="Nome" required>
+                <input v-model="form.name" autocomplete="off" class="field h-10" type="text" v-bind="field" />
+            </FormField>
+            <FormField id="doc" v-slot="{ field }" :error="form.errors.doc" label="Documento (RG ou CPF)">
+                <input v-model="form.doc" autocomplete="off" class="field h-10 tabular-nums" type="text" v-bind="field" />
+            </FormField>
+            <FormField id="phone" v-slot="{ field }" :error="form.errors.phone" label="Telefone">
+                <input
+                    v-model="form.phone"
+                    v-phone-mask
+                    autocomplete="off"
+                    class="field h-10 tabular-nums"
+                    inputmode="tel"
+                    placeholder="(00) 00000-0000"
+                    type="tel"
+                    v-bind="field"
+                />
+            </FormField>
         </div>
-        <div class="flex items-center gap-4">
-            <PrimaryButton
-                :disabled="form.processing"
-                type="button"
-                @click="back"
-                >Voltar
-            </PrimaryButton>
-            <LoadingButton
-                :loading="form.processing"
-                class="flex-1 sm:flex-none"
-                color="green"
-                loading-text="Salvando..."
-                text="Salvar"
-                type="submit"
-            />
+        <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button v-if="cancelHref" :href="cancelHref" variant="ghost">Cancelar</Button>
+            <Button :loading="form.processing" loading-text="Salvando…" type="submit">{{ submitLabel }}</Button>
         </div>
     </form>
 </template>

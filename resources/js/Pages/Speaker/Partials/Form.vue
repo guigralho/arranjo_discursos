@@ -1,114 +1,45 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import LoadingButton from "@/Components/LoadingButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import SelectInput from "@/Components/SelectInput.vue";
-import { vMaska } from "maska/vue";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+import { vPhoneMask } from "@/composables/vPhoneMask";
 
 defineProps({
     submit: Function,
     form: Object,
-    data: {
-        type: Object,
-        default: null,
-    },
+    submitLabel: { type: String, default: "Salvar" },
+    cancelHref: { type: String, default: null },
 });
-
-const phoneMask = { mask: ["(##) ####-####", "(##) #####-####"] };
-
-const back = () => {
-    window.history.back();
-};
 </script>
 
 <template>
-    <form class="space-y-6" @submit.prevent="submit">
-        <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-8">
-            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div class="sm:col-span-2">
-                    <InputLabel for="name" value="Orador" />
-
-                    <TextInput
-                        id="name"
-                        ref="nameInput"
-                        v-model="form.name"
-                        autocomplete="off"
-                        class="mt-1 block w-full"
-                        type="text"
-                    />
-
-                    <InputError :message="form.errors.name" class="mt-2" />
-                </div>
-
-                <div>
-                    <InputLabel for="privilege" value="Privilégio" />
-
-                    <SelectInput
-                        id="privilege"
-                        ref="privilegeInput"
-                        v-model="form.privilege"
-                        class="mt-1 block w-full"
-                    >
-                        <option value="">Selecione...</option>
-                        <option value="Ancião">Ancião</option>
-                        <option value="Servo">Servo</option>
-                    </SelectInput>
-
-                    <InputError :message="form.errors.privilege" class="mt-2" />
-                </div>
-
-                <div>
-                    <InputLabel for="phone" value="Celular" />
-
-                    <TextInput
-                        id="phone"
-                        ref="phoneInput"
-                        v-model="form.phone"
-                        v-maska="phoneMask"
-                        autocomplete="off"
-                        class="mt-1 block w-full"
-                        type="tel"
-                    />
-
-                    <InputError :message="form.errors.phone" class="mt-2" />
-                </div>
-
-                <div class="sm:col-span-2">
-                    <p class="text-sm dark:text-gray-400">
-                        <i>{{
-                            data &&
-                            data.created_at &&
-                            `Criado em: ${data.created_at} por ${data.user_created?.name}`
-                        }}</i>
-                    </p>
-                    <p class="text-sm dark:text-gray-400">
-                        <i>{{
-                            data &&
-                            data.updated_at &&
-                            `Atualizado em: ${data.updated_at} por ${data.user_updated?.name}`
-                        }}</i>
-                    </p>
-                </div>
-            </section>
+    <form novalidate @submit.prevent="submit">
+        <div class="grid gap-5 sm:grid-cols-2">
+            <FormField id="name" v-slot="{ field }" :error="form.errors.name" class="sm:col-span-2" label="Nome" required>
+                <input v-model="form.name" autocomplete="off" class="field h-10" type="text" v-bind="field" />
+            </FormField>
+            <FormField id="privilege" v-slot="{ field }" :error="form.errors.privilege" label="Privilégio" required>
+                <select v-model="form.privilege" class="field h-10" v-bind="field">
+                    <option value="">Selecione…</option>
+                    <option value="Ancião">Ancião</option>
+                    <option value="Servo">Servo ministerial</option>
+                </select>
+            </FormField>
+            <FormField id="phone" v-slot="{ field }" :error="form.errors.phone" hint="Usado para enviar o convite por WhatsApp." label="Telefone">
+                <input
+                    v-model="form.phone"
+                    v-phone-mask
+                    autocomplete="off"
+                    class="field h-10 tabular-nums"
+                    inputmode="tel"
+                    placeholder="(00) 00000-0000"
+                    type="tel"
+                    v-bind="field"
+                />
+            </FormField>
         </div>
-        <div class="flex items-center gap-4">
-            <PrimaryButton
-                :disabled="form.processing"
-                :href="route('speakers.index')"
-                class="flex-1 sm:flex-none"
-                type="button"
-                >Voltar</PrimaryButton
-            >
-            <LoadingButton
-                :loading="form.processing"
-                class="flex-1 sm:flex-none"
-                color="green"
-                loading-text="Salvando..."
-                text="Salvar"
-                type="submit"
-            />
+        <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button v-if="cancelHref" :href="cancelHref" variant="ghost">Cancelar</Button>
+            <Button :loading="form.processing" loading-text="Salvando…" type="submit">{{ submitLabel }}</Button>
         </div>
     </form>
 </template>

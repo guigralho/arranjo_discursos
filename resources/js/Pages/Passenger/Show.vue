@@ -1,6 +1,7 @@
 <script setup>
-import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/vue3";
+import Form from "./Partials/Form.vue";
+import PageHeader from "@/Components/Ui/PageHeader.vue";
 
 const props = defineProps({
     name: String,
@@ -16,26 +17,18 @@ const form = useForm({
 const submit = () => {
     form.put(route("passengers.update", props.passenger.id), {
         preserveScroll: true,
-        onSuccess: () => {},
-        onError: () => {
-            if (form.errors.name) {
-                form.reset("name");
-            }
-            if (form.errors.doc) {
-                form.reset("doc");
-            }
-            if (form.errors.phone) {
-                form.reset("phone");
-            }
-        },
+        onSuccess: () => form.defaults(),
     });
 };
 </script>
 
 <template>
-    <Head :title="name" />
+    <Head :title="passenger.name" />
 
-    <div class="mx-auto max-w-7xl space-y-6 py-6 px-4 sm:px-6 lg:px-8">
-        <Form :form="form" :passenger="passenger" :submit="submit" />
-    </div>
+    <PageHeader :back-href="route('passengers.index')" :title="passenger.name" back-label="Passageiros" eyebrow="Passageiro" />
+
+    <Form :form="form" :submit="submit" />
+    <p v-if="passenger.user_updated" class="mt-6 max-w-2xl text-xs text-stone-500 dark:text-stone-400">
+        Atualizado em {{ passenger.updated_at }} por {{ passenger.user_updated.name }}.
+    </p>
 </template>

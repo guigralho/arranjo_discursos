@@ -1,6 +1,11 @@
 <script setup>
-import Form from "./Partials/Form.vue";
 import { Head, useForm } from "@inertiajs/vue3";
+import Form from "./Partials/Form.vue";
+import PageHeader from "@/Components/Ui/PageHeader.vue";
+
+defineProps({
+    name: String,
+});
 
 const form = useForm({
     number: "",
@@ -10,31 +15,14 @@ const form = useForm({
 const submit = () => {
     form.post(route("speeches.store"), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
-        onError: () => {
-            if (form.errors.theme) {
-                form.reset("theme");
-            }
-            if (form.errors.number) {
-                form.reset("number");
-            }
-        },
     });
 };
-
-const back = () => {
-    window.history.back();
-};
-
-defineProps({
-    name: String,
-});
 </script>
 
 <template>
     <Head :title="name" />
 
-    <div class="mx-auto max-w-7xl space-y-6 py-6 px-4 sm:px-6 lg:px-8">
-        <Form :form="form" :submit="submit" />
-    </div>
+    <PageHeader :back-href="route('speeches.index')" back-label="Discursos" title="Novo discurso" />
+
+    <Form :cancel-href="route('speeches.index')" :form="form" :submit="submit" submit-label="Criar discurso" />
 </template>

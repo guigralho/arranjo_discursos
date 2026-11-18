@@ -1,9 +1,10 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import GuestLayout from "@/Layouts/GuestLayout.vue";
+import FormField from "@/Components/Ui/FormField.vue";
+import Button from "@/Components/Ui/Button.vue";
+
+defineOptions({ layout: null });
 
 const form = useForm({
     name: "",
@@ -21,111 +22,31 @@ const submit = () => {
 };
 </script>
 
-<script>
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-
-export default {
-    layout: GuestLayout,
-};
-</script>
-
 <template>
-    <Head title="Register" />
+    <GuestLayout description="Cadastre-se para organizar os arranjos da sua congregação." title="Criar conta">
+        <Head title="Criar conta" />
 
-    <form @submit.prevent="submit">
-        <div>
-            <InputLabel for="name" value="Nome" />
-
-            <TextInput
-                id="name"
-                v-model="form.name"
-                autocomplete="name"
-                autofocus
-                class="mt-1 block w-full"
-                required
-                type="text"
-            />
-
-            <InputError :message="form.errors.name" class="mt-2" />
-        </div>
-
-        <div class="mt-4">
-            <InputLabel for="email" value="Email" />
-
-            <TextInput
-                id="email"
-                v-model="form.email"
-                autocomplete="username"
-                class="mt-1 block w-full"
-                required
-                type="email"
-            />
-
-            <InputError :message="form.errors.email" class="mt-2" />
-        </div>
-
-        <div class="mt-4">
-            <InputLabel for="congregation_id" value="Congregação" />
-
-            <TextInput
-                id="congregation_id"
-                v-model="form.congregation_id"
-                class="mt-1 block w-full"
-                required
-                type="text"
-            />
-
-            <InputError :message="form.errors.congregation_id" class="mt-2" />
-        </div>
-
-        <div class="mt-4">
-            <InputLabel for="password" value="Senha" />
-
-            <TextInput
-                id="password"
-                v-model="form.password"
-                autocomplete="new-password"
-                class="mt-1 block w-full"
-                required
-                type="password"
-            />
-
-            <InputError :message="form.errors.password" class="mt-2" />
-        </div>
-
-        <div class="mt-4">
-            <InputLabel for="password_confirmation" value="Confirme a senha" />
-
-            <TextInput
-                id="password_confirmation"
-                v-model="form.password_confirmation"
-                autocomplete="new-password"
-                class="mt-1 block w-full"
-                required
-                type="password"
-            />
-
-            <InputError
-                :message="form.errors.password_confirmation"
-                class="mt-2"
-            />
-        </div>
-
-        <div class="mt-4 flex items-center justify-end">
-            <Link
-                :href="route('login')"
-                class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-            >
-                Já possui um cadastro?
-            </Link>
-
-            <PrimaryButton
-                :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing"
-                class="ml-4"
-            >
-                Cadastrar
-            </PrimaryButton>
-        </div>
-    </form>
+        <form class="space-y-5" novalidate @submit.prevent="submit">
+            <FormField id="name" v-slot="{ field }" :error="form.errors.name" label="Nome" required>
+                <input v-model="form.name" autocomplete="name" autofocus class="field h-11" type="text" v-bind="field" />
+            </FormField>
+            <FormField id="email" v-slot="{ field }" :error="form.errors.email" label="E-mail" required>
+                <input v-model="form.email" autocomplete="username" class="field h-11" type="email" v-bind="field" />
+            </FormField>
+            <FormField id="congregation_id" v-slot="{ field }" :error="form.errors.congregation_id" label="Congregação">
+                <input v-model="form.congregation_id" autocomplete="off" class="field h-11" type="text" v-bind="field" />
+            </FormField>
+            <FormField id="password" v-slot="{ field }" :error="form.errors.password" label="Senha" required>
+                <input v-model="form.password" autocomplete="new-password" class="field h-11" type="password" v-bind="field" />
+            </FormField>
+            <FormField id="password_confirmation" v-slot="{ field }" :error="form.errors.password_confirmation" label="Confirmar senha" required>
+                <input v-model="form.password_confirmation" autocomplete="new-password" class="field h-11" type="password" v-bind="field" />
+            </FormField>
+            <Button :loading="form.processing" block class="h-11" loading-text="Criando…" type="submit">Criar conta</Button>
+            <p class="text-center text-sm text-stone-600 dark:text-stone-400">
+                Já tem conta?
+                <Link :href="route('login')" class="font-medium text-pine-800 hover:underline dark:text-pine-300">Entrar</Link>
+            </p>
+        </form>
+    </GuestLayout>
 </template>
